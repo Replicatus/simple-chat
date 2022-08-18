@@ -1,3 +1,10 @@
+%form-layout
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  border-bottom: 1px solid $border-color
+  padding: 12px 0
 section
   display: flex
   flex-direction: column
@@ -38,8 +45,24 @@ section
       border-radius: 50%
       border: 1px solid $border-color
     h2
+      margin-top: 20px
       font-size: $font-size-16
       font-weight: 600
   form
+    margin-top: 60px
     display: flex
     flex-direction: column
+    > div
+      @extend %form-layout
+      span
+        color: $primary
+        font-weight: 500
+        font-family: Inter, sans-serif
+        font-size: $font-size-16
+        line-height: $font-size-16
+  &-actions
+    margin-top: 60px
+    display: flex
+    flex-direction: column
+    > div
+      @extend %form-layout

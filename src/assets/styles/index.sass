@@ -3,17 +3,20 @@
 @import "components/navbar"
 @import "pages"
 @import "components/index"
+@import "fonts/index"
 body
   margin: 0
   background: $white
   font-weight: normal
+div, h1, h2, h3, h4, h5, ul, li, label, span, input, p, button
+  font-family: Inter, sans-serif
 #app
   flex: 1 1 auto
   -webkit-backface-visibility: hidden
   backface-visibility: hidden
   display: flex
   flex-direction: column
-  min-height: calc(100vh - 38px)
+  min-height: calc(100vh - 40px)
   max-width: 100%
   position: relative
   section

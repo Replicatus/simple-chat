@@ -1,6 +1,23 @@
+%default-input-styles
+  background-color: $white
+  color: $secondary
+  font-weight: 500
+  font-family: Inter, sans-serif
+  font-size: $font-size-big
+  line-height: $font-size-big
+  text-align: right
+%default-input-styles-important
+  background-color: $white!important
+  color: $secondary!important
 .input
-  display: flex
-  flex-direction: row
-  justify-content: space-between
-  align-items: center
-  border-bottom: 1px solid $border-color
+  text-align: right
+  input
+    @extend %default-input-styles
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus
+    @extend %default-input-styles
+    @extend %default-input-styles-important
+    //&:autofill
+    //  @extend %default-input-styles
+    //  @extend %default-input-styles-important

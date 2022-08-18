@@ -7,6 +7,7 @@ import headerTemplate from './index.hbs';
 import components from "./components/index";
  // import Pages from "./pages/index"
 import pages from "./pages/index";
+import consts from './consts'
 const links = () => {
     return document.querySelectorAll('a');
 };
@@ -22,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const link = e.target.href;
             const path = link.split('/');
             const pageName = path[path.length - 1];
-            app.innerHTML = pages[pageName]();
+            app.innerHTML = pages[pageName]({...consts});
             refreshLink(links());
         });
     }
