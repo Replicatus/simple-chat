@@ -1,0 +1,45 @@
+section
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  //margin: auto
+.error-page
+  div
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    color: $primary
+  &__title
+    font-size: $font-size-title
+    line-height: $font-size-title
+    margin-bottom: 20px
+  &__subtitle
+    font-size: $font-size-subtitle
+    line-height: $font-size-subtitle
+    margin-bottom: 50px
+  a
+    font-size: $font-size-small
+    line-height: $font-size-small
+.profile-page__content
+  width: 510px
+  display: flex
+  flex-direction: column
+  .header
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    img
+      height: 130px
+      width: 130px
+      background-color: $border-color
+      border-radius: 50%
+      border: 1px solid $border-color
+    h2
+      font-size: $font-size-16
+      font-weight: 600
+  form
+    display: flex
+    flex-direction: column
