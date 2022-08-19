@@ -38,12 +38,50 @@ section
     justify-content: center
     align-items: center
     flex-direction: column
-    img
+    div:first-child
+      position: relative
       height: 130px
       width: 130px
-      background-color: $border-color
       border-radius: 50%
-      border: 1px solid $border-color
+      span
+        display: none
+        position: absolute
+      .avatar
+        position: absolute
+        z-index: 1
+        height: 130px
+        width: 130px
+        background-color: $border-color
+        border-radius: 50%
+        background-repeat: no-repeat
+        background-position: center center
+        background-image: url('~/src/assets/icons/Union.svg')
+        border: 1px solid $border-color
+      &:hover
+        cursor: pointer
+        span
+          display: flex
+          flex-direction: row
+          justify-content: center
+          align-items: center
+          text-align: center
+          text-wrap: normal
+          z-index: 2
+          color: $white
+          background-color: #000000
+          opacity: 0.5
+          height: 130px
+          width: 130px
+          border-radius: 50%
+        //&::before
+        //  content: ''
+        //  position: absolute
+        //  width: 28px
+        //  font-size: $font-size-big
+        //  line-height: $font-size-big
+        //  top: calc(50% - 7.5px)
+        //  left: calc(50% - 28px)
+
     h2
       margin-top: 20px
       font-size: $font-size-16
