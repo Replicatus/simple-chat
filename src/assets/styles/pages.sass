@@ -29,78 +29,82 @@ section
   a
     font-size: $font-size-small
     line-height: $font-size-small
-.profile-page__content
-  width: 510px
-  display: flex
-  flex-direction: column
-  .header
+.profile-page
+  .file-form
     display: flex
-    justify-content: center
-    align-items: center
     flex-direction: column
-    div:first-child
-      position: relative
-      height: 130px
-      width: 130px
-      border-radius: 50%
-      span
-        display: none
-        position: absolute
-      .avatar
-        position: absolute
-        z-index: 1
+    justify-content: space-around
+    align-items: center
+    padding: 20px
+    h2
+      margin-bottom: 42px
+    >div:first-child
+      margin-bottom: 42px
+    >div:last-child
+      margin-top: 42px
+  &__content
+    width: 510px
+    display: flex
+    flex-direction: column
+    .header
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      div:first-child
+        position: relative
         height: 130px
         width: 130px
-        background-color: $border-color
         border-radius: 50%
-        background-repeat: no-repeat
-        background-position: center center
-        background-image: url('~/src/assets/icons/Union.svg')
-        border: 1px solid $border-color
-      &:hover
-        cursor: pointer
         span
-          display: flex
-          flex-direction: row
-          justify-content: center
-          align-items: center
-          text-align: center
-          text-wrap: normal
-          z-index: 2
-          color: $white
-          background-color: #000000
-          opacity: 0.5
+          display: none
+          position: absolute
+        .avatar
+          position: absolute
+          z-index: 1
           height: 130px
           width: 130px
+          background-color: $border-color
           border-radius: 50%
-        //&::before
-        //  content: ''
-        //  position: absolute
-        //  width: 28px
-        //  font-size: $font-size-big
-        //  line-height: $font-size-big
-        //  top: calc(50% - 7.5px)
-        //  left: calc(50% - 28px)
-
-    h2
-      margin-top: 20px
-      font-size: $font-size-16
-      font-weight: 600
-  form
-    margin-top: 60px
-    display: flex
-    flex-direction: column
-    > div
-      @extend %form-layout
-      span
-        color: $primary
-        font-weight: 500
-        font-family: Inter, sans-serif
+          background-repeat: no-repeat
+          background-position: center center
+          background-image: url('~/src/assets/icons/Union.svg')
+          border: 1px solid $border-color
+        &:hover
+          cursor: pointer
+          span
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            text-align: center
+            text-wrap: normal
+            z-index: 2
+            color: $white
+            background-color: #000000
+            opacity: 0.5
+            height: 130px
+            width: 130px
+            border-radius: 50%
+      h2
+        margin-top: 20px
         font-size: $font-size-16
-        line-height: $font-size-16
-  &-actions
-    margin-top: 60px
-    display: flex
-    flex-direction: column
-    > div
-      @extend %form-layout
+        font-weight: 600
+    form
+      margin-top: 60px
+      display: flex
+      flex-direction: column
+      > div
+        @extend %form-layout
+        span
+          color: $primary
+          font-weight: 500
+          font-family: Inter, sans-serif
+          font-size: $font-size-16
+          line-height: $font-size-16
+    &-actions
+      margin-top: 60px
+      display: flex
+      flex-direction: column
+      > div
+        @extend %form-layout

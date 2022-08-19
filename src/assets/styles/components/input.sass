@@ -11,6 +11,17 @@
   color: $secondary!important
 .input
   text-align: right
+  &.file
+    cursor: pointer
+    max-width: 122px
+    font-size: 12px
+    text-align: center
+    color: $blue
+    input
+      display: none!important
+    &:hover
+      text-decoration: underline
+
   input
     @extend %default-input-styles
   input:-webkit-autofill,

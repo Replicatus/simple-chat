@@ -1,0 +1,31 @@
+#left-bar
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  left: 0
+  max-width: 100%
+  overflow: hidden
+  pointer-events: auto
+  top: 0
+  height: 100%
+  transform: translateX(0%)
+  width: 64px
+  position: fixed
+  z-index: 6
+  background-color: $background-color-second
+  border-right: 1px solid $border-color
+  a
+    position: relative
+    &::before
+      position: absolute
+      content: ''
+      left: -14px
+      height: 28px
+      width: 28px
+      background-color: $border-color
+      border-radius: 50%
+      background-repeat: no-repeat
+      background-position: center center
+      background-image: url('~/src/assets/icons/Group 202.svg')
+      border: 1px solid $blue
