@@ -108,3 +108,48 @@ section
       flex-direction: column
       > div
         @extend %form-layout
+.enter-page
+  &__content
+    width: 340px
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    min-height: 450px
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14)
+    border-radius: 12px
+    &-main
+      display: flex
+      flex-direction: column
+    .header
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      h2
+        margin: 50px 106px
+        font-size: $font-size-subtitle
+        font-weight: 600
+    form
+      //margin-top: 40px
+      display: flex
+      flex-direction: column
+      padding: 0 30px
+      > div
+        //span
+        //  color: $primary
+        //  font-weight: 500
+        //  font-family: Inter, sans-serif
+        //  font-size: $font-size-16
+        //  line-height: $font-size-16
+    &-actions
+      //margin-top: 60px
+      display: flex
+      flex-direction: column
+      justify-content: center
+      margin-bottom: 30px
+      > div
+        justify-content: center
+        text-align: center
+        &:not(:last-child)
+          margin-bottom: 14px
+      //margin: auto

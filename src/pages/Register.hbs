@@ -1,0 +1,28 @@
+<section class="enter-page">
+    <div class="enter-page__content">
+        <div class="enter-page__content-main">
+            <div class="header">
+                <h2>Регистрация</h2>
+            </div>
+            <form>
+                {{#each fieldsRegisterPage}}
+                    <div>
+                        <span>{{this.text}}</span>
+                        {{> input name=this.name value=this.value error=this.error}}
+                    </div>
+                {{/each}}
+            </form>
+        </div>
+        <div class="enter-page__content-actions">
+            <div class="enter-page__content-actions">
+                <div class="d-flex align-center" style="flex: 1 0 100%">
+                    {{> button class="" label="Зарегистрироваться" style="max-width: 280px;"}}
+                </div>
+                <div>
+                    {{> link label="Войти" href="Login"}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

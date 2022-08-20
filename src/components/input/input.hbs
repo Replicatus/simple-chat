@@ -1,14 +1,24 @@
-<label class="input {{labelClass}}">
-   {{label}}
-    <input
-            class="{{class}}"
-            type="{{type}}"
-            id="{{id}}"
-            name="{{name}}"
-            value="{{value}}"
-            placeholder="{{placeholder}}"
+<div class="input">
+    <div class="input__control">
+        <label
+            {{#if id}} for="{{id}}" {{/if}}
+                       class="input {{labelClass}}"
+        >
+            {{#if value}}{{else}}{{label}}{{/if}}
+        </label>
+        <input
+                class="{{class}}"
+                type="{{type}}"
+                {{#if id}}id="{{id}}"{{/if}}
+                name="{{name}}"
+                value="{{value}}"
+                placeholder="{{placeholder}}"
             {{disabled}}
-            autocomplete="off"
-    >
-    <span class="error">{{errorText}}</span>
-</label>
+                autocomplete="off"
+        >
+
+    </div>
+    <div class="input__details">
+        <span class="error">{{errorText}}</span>
+    </div>
+</div>

@@ -5,6 +5,8 @@ import Profile from "./Profile.hbs"
 import ProfileChange from "./ProfileChange.hbs"
 import ProfileChangePassword from "./ProfileChangePassword.hbs"
 import ChangeAvatar from "./ChangeAvatar.hbs"
+import Register from "./Register.hbs"
+import Login from "./Login.hbs"
 
 export default {
     Page404,
@@ -13,5 +15,7 @@ export default {
     Profile,
     ProfileChange,
     ProfileChangePassword,
-    ChangeAvatar
+    ChangeAvatar,
+    Register,
+    Login
 };

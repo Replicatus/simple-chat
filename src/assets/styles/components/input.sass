@@ -10,6 +10,8 @@
   background-color: $white!important
   color: $secondary!important
 .input
+  display: flex
+  flex-direction: column
   text-align: right
   &.file
     cursor: pointer
@@ -21,6 +23,7 @@
       display: none!important
     &:hover
       text-decoration: underline
+  &.enter
 
   input
     @extend %default-input-styles
