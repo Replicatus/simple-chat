@@ -12,18 +12,18 @@ const fieldsForPasswordPage = [
     {text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value'},
 ];
 const fieldsLoginPage = [
-    {text: 'Логин',type: 'text', name: 'login', value: 'test-login',},
-    {text: 'Пароль',type: 'password', name: 'password', value: 'test value', },
+    {label: 'Логин',type: 'text', name: 'login', value: 'test-login',},
+    {label: 'Пароль',type: 'password', name: 'password', value: 'test value', },
 ];
 const fieldsRegisterPage = [
-    {text: 'Почта', name: 'email', value: 'test@test.ru', },
-    {text: 'Логин', name: 'login', value: 'test value', },
-    {text: 'Имя', name: 'second_name', value: 'test value', },
-    {text: 'Фамилия', name: 'first_name', value: 'test value', },
-    {text: 'Имя в чате', name: 'display_name', value: 'test value', },
-    {text: 'Телефон', name: 'phone', value: '+ 7916161', },
-    {text: 'Пароль',type: 'password', name: 'password', value: 'test value', error: true, errorText: ''},
-    {text: 'Повторите пароль',type: 'password', name: 'passwordConfirmed', value: 'test value', error: '', errorText: 'Пароли не совпадают'},
+    {label: 'Почта', name: 'email', value: 'test@test.ru', },
+    {label: 'Логин', name: 'login', value: 'test value', },
+    {label: 'Имя', name: 'second_name', value: 'test value', },
+    {label: 'Фамилия', name: 'first_name', value: 'test value', },
+    {label: 'Имя в чате', name: 'display_name', value: 'test value', },
+    {label: 'Телефон', name: 'phone', value: '+ 7916161', },
+    {label: 'Пароль',type: 'password', name: 'password', value: 'test value', error: true, errorText: ''},
+    {label: 'Повторите пароль',type: 'password', name: 'passwordConfirmed', value: 'test value', error: true, errorText: 'Пароли не совпадают'},
 ];
 export default {
     fields,

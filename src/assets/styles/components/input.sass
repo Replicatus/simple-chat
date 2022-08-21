@@ -10,21 +10,123 @@
   background-color: $white!important
   color: $secondary!important
 .input
+  align-items: flex-start
+  display: flex
+  flex: 1 1 auto
+  font-size: 16px
+  letter-spacing: normal
+  max-width: 100%
+  text-align: left
+  &.error
+   .input__slot
+     border-bottom: 1px solid $error
+   input
+      color: $error
+  &__control
+    display: flex
+    flex-direction: column
+    height: auto
+    flex-grow: 1
+    flex-wrap: wrap
+    min-width: 0
+    width: 100%
+  &__slot
+    align-items: center
+    color: inherit
+    display: flex
+    min-height: inherit
+    position: relative
+    transition: .3s cubic-bezier(.25,.8,.5,1)
+    width: 100%
+    cursor: text
+    flex: 1 1 auto
+    border-bottom: 1px solid $blue
+    label
+      left: 0px
+      right: auto
+      position: absolute
+      height: 11px
+      font-size: 11px
+      line-height: 11px
+      letter-spacing: normal
+      max-width: 90%
+      overflow: hidden
+      text-overflow: ellipsis
+      top: -6px
+      color: $secondary
+      white-space: nowrap
+      pointer-events: none
+    input
+      max-height: 32px
+      color: $primary
+      flex: 1 1 auto
+      line-height: $font-size-big
+      font-size: $font-size-big
+      padding: 8px 0
+      max-width: 100%
+      min-width: 0
+      width: 100%
+  &__details
+    display: flex
+    flex: 1 0 auto
+    max-width: 100%
+    min-height: 14px
+    overflow: hidden
+    margin-top: 4px
+    .error
+      color: $error!important
+      caret-color: $error!important
+      flex: 1 1 auto
+      font-size: 12px
+      min-height: 14px
+      min-width: 1px
+      position: relative
+  &.profile
+    display: flex
+    flex-direction: column
+    text-align: right
+    .input__slot
+      border-bottom: 0
+    .input__details
+      display: none
+    input
+      padding: 0
+      @extend %default-input-styles
+    &.file
+      cursor: pointer
+      max-width: 122px
+      font-size: 12px
+      text-align: center
+      color: $blue
+      min-height: 16px
+      width: 122px
+      .input__slot
+        cursor: pointer
+      input
+        display: none
+        min-width: 130px
+        min-height: 30px
+      label
+        overflow: visible
+      &:hover
+        text-decoration: underline
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus
+      @extend %default-input-styles
+      @extend %default-input-styles-important
+.input-file
   display: flex
   flex-direction: column
-  text-align: right
-  &.file
-    cursor: pointer
-    max-width: 122px
-    font-size: 12px
-    text-align: center
-    color: $blue
-    input
-      display: none!important
-    &:hover
+  cursor: pointer
+  max-width: 122px
+  font-size: 12px
+  text-align: center
+  color: $blue
+  input
+      display: none
+  &:hover
       text-decoration: underline
-  &.enter
-
   input
     @extend %default-input-styles
   input:-webkit-autofill,
@@ -32,6 +134,3 @@
   input:-webkit-autofill:focus
     @extend %default-input-styles
     @extend %default-input-styles-important
-    //&:autofill
-    //  @extend %default-input-styles
-    //  @extend %default-input-styles-important

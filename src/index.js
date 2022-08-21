@@ -1,11 +1,5 @@
-// const root = document.querySelector('#app');
-// import Handlebars from 'handlebars';
-// import "/src/assets/styles/index.sass";
-
-// Handlebars.registerPartial();
 import headerTemplate from './index.hbs';
 import components from "./components/index";
- // import Pages from "./pages/index"
 import pages from "./pages/index";
 import consts from './consts'
 const links = () => {
@@ -16,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const app = document.querySelector('#app');
     const header = document.querySelector('#header');
     header.innerHTML = headerTemplate();
+    app.innerHTML = pages['']({...consts});
     const a = links();
     const refreshLink = (arr) => {
         arr.forEach(el => el.onclick = (e) => {

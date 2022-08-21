@@ -11,7 +11,7 @@
             {{#each fields}}
                 <div>
                     <span>{{this.text}}</span>
-                    {{> input name=this.name value=this.value}}
+                    {{> input class="profile" name=this.name value=this.value}}
                 </div>
             {{/each}}
         </form>
@@ -30,9 +30,16 @@
     {{#dialog}}
         <form class="file-form">
             <h2>Загрузите файл</h2>
-            <div >
-                {{> input type="file" name="file" style="" labelClass="file" label="Выбрать файл на компьютере"}}
-            </div>
+            <label class="input-file">
+                Выбрать файл на компьютере
+                <input
+                        type="file"
+                        id="avatar"
+                        name="avatar"
+                        autocomplete="off"
+                >
+            </label>
+
             <div class="d-flex align-center" style="flex: 1 0 100%">
                 {{> button class="" label="Поменять" style="width: 280px;"}}
             </div>
