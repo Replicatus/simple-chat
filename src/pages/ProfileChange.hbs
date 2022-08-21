@@ -1,0 +1,24 @@
+<section class="profile-page">
+    <div class="profile-page__content">
+        <div class="header">
+            <div >
+                <span>Поменять аватар</span>
+                <div class="avatar"></div>
+            </div>
+            <h2>Roman</h2>
+        </div>
+        <form>
+            {{#each fields}}
+                <div>
+                    <span>{{this.text}}</span>
+                    {{> input class="profile" name=this.name value=this.value}}
+                </div>
+            {{/each}}
+        </form>
+        <div class="profile-page__content-actions">
+            <div style="border: 0; display: flex; justify-content: center; flex: 1 0 100%">
+                {{> button class="" label="Сохранить" style="max-width: 280px;"}}
+            </div>
+        </div>
+    </div>
+</section>

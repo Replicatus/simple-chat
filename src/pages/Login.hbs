@@ -1,0 +1,25 @@
+<section class="enter-page">
+    <div class="enter-page__content">
+        <div class="enter-page__content-main">
+            <div class="header">
+                <h2>Вход</h2>
+            </div>
+            <form>
+                {{#each fieldsLoginPage}}
+                    <div>
+                        <span>{{this.text}}</span>
+                        {{> input class="enter" name=this.name value=this.value error=this.error}}
+                    </div>
+                {{/each}}
+            </form>
+        </div>
+        <div class="enter-page__content-actions">
+            <div class="d-flex align-center" style="flex: 1 0 100%">
+                {{> button class="" label="Авторизоваться" style="max-width: 280px;"}}
+            </div>
+            <div>
+                {{> link label="Нет аккаунта?" href="Register"}}
+            </div>
+        </div>
+    </div>
+</section>
