@@ -1,3 +1,4 @@
 [build]
+  NODE_VERSION = "16"
   publish = "dist" 
   command = "npm run build"
