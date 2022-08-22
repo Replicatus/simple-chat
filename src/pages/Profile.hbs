@@ -1,0 +1,30 @@
+<section class="profile-page">
+    <div class="profile-page__content">
+        <div class="header">
+            <div >
+                <span>Поменять аватар</span>
+                <div class="avatar"></div>
+            </div>
+            <h2>Roman</h2>
+        </div>
+        <form>
+            {{#each fields}}
+                <div>
+                    <span>{{this.text}}</span>
+                    {{> input class="profile" name=this.name value=this.value}}
+                </div>
+            {{/each}}
+        </form>
+        <div class="profile-page__content-actions">
+            <div>
+                {{> button class="text" label="Изменить данные"}}
+            </div>
+            <div>
+                {{> button class="text" label="Изменить пароль"}}
+            </div>
+            <div>
+                {{> button label="Выйти" class="text error"}}
+            </div>
+        </div>
+    </div>
+</section>

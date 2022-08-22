@@ -1,0 +1,26 @@
+<div class="input {{class}} {{#if error}}error{{/if}}">
+    <div class="input__control">
+        <div class="input__slot">
+            <label
+                {{#if id}} for="{{id}}" {{/if}}
+                           class="input {{labelClass}}"
+            >
+
+                    {{label}}
+
+            </label>
+            <input
+                    type="{{type}}"
+                    {{#if id}}id="{{id}}"{{/if}}
+                    name="{{name}}"
+                    value="{{value}}"
+                    placeholder="{{placeholder}}"
+                {{disabled}}
+                    autocomplete="off"
+            >
+        </div>
+        <div class="input__details">
+            <span class="error">{{errorText}}</span>
+        </div>
+    </div>
+</div>
