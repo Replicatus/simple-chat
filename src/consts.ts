@@ -1,4 +1,5 @@
-const fields = [
+import type {formField} from './types'
+const fields :formField[] = [
     {text: 'Почта', name: 'email', value: 'test@test.ru', disabled: 'disabled'},
     {text: 'Логин', name: 'login', value: 'test value', disabled: 'disabled'},
     {text: 'Имя', name: 'second_name', value: 'test value', disabled: 'disabled'},
@@ -6,16 +7,16 @@ const fields = [
     {text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: 'disabled'},
     {text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: 'disabled'},
 ];
-const fieldsForPasswordPage = [
+const fieldsForPasswordPage:formField[] = [
     {text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru',},
     {text: 'Новый пароль',type: 'password', name: 'newPassword', value: 'test value', },
     {text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value'},
 ];
-const fieldsLoginPage = [
+const fieldsLoginPage:formField[] = [
     {label: 'Логин',type: 'text', name: 'login', value: 'test-login',},
     {label: 'Пароль',type: 'password', name: 'password', value: 'test value', },
 ];
-const fieldsRegisterPage = [
+const fieldsRegisterPage:formField[] = [
     {label: 'Почта', name: 'email', value: 'test@test.ru', },
     {label: 'Логин', name: 'login', value: 'test value', },
     {label: 'Имя', name: 'second_name', value: 'test value', },
