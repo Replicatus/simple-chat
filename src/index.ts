@@ -1,8 +1,6 @@
-// @ts-ignore
 import headerTemplate from './index.hbs';
-// @ts-ignore
-import components from "./components/index.js";
-// @ts-ignore
+import components from "./components";
+import Handlebars from 'handlebars/dist/handlebars.runtime.js';
 import pages from "./pages/index.js";
 import consts from './consts'
 import type {ArrayLinks} from "./types";
