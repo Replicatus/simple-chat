@@ -4,6 +4,7 @@ import Handlebars from 'handlebars/dist/handlebars.runtime.js';
 import pages from "./pages/index.js";
 import consts from './consts'
 import type {ArrayLinks} from "./types";
+import {Page500} from "./pages/500";
 
 const links = () : ArrayLinks => {
     return document.querySelectorAll('a');
@@ -16,7 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!app || !header)
             return;
         header.innerHTML = headerTemplate();
-        app.innerHTML = pages['']({...consts});
+        // app.innerHTML = pages['']({...consts});
+        app.innerHTML = new Page500().render();
         const a = links();
         const refreshLink = (arr: ArrayLinks) => {
             arr.forEach((el : HTMLAnchorElement) => el.onclick = (e: MouseEvent) => {
