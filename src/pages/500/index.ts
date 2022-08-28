@@ -1,23 +1,23 @@
 import Block from "../../utils/Block";
 import {Link} from "../../components/link";
 
+import  template from "./500.hbs"
+
+interface Page500Props{
+    link: Link
+}
 
 export class Page500 extends Block{
-    constructor() {
-        super('section', {class: 'error-page'});
+    constructor(props: Page500Props) {
+        super('section', {...props});
+        this.element.classList.add('error-page')
     }
-    render(): string {
-        const link = new Link({
-            label: "Назад к чатам",
-            href: "/"
-        });
-        return `
-<section class="error-page">
-<div>
-        <div class="error-page__title">500 </div>
-        <div class="error-page__subtitle">Мы уже фиксим</div>
-        ${(link.render())}
-    </div>
-</section>`
+    render() {
+        // const link = new Link({
+        //     label: "Назад к чатам",
+        //     href: "/"
+        // });
+        return this.compile(template, {link: this.props.link})
+
     }
 }

@@ -61,9 +61,8 @@ class Block {
     }
 
     _createResources() {
-        const { tagName, class : elementClass } = this._meta;
+        const { tagName} = this._meta;
         this._element = this._createDocumentElement(tagName);
-        this._element.classList.add(elementClass);
     }
 
     init() {
@@ -112,7 +111,7 @@ class Block {
         // Нужно компилировать не в строку (или делать это правильно),
         // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
         this._removeEvents();
-        this._element!.innerHTML = block;
+        this._element!.append(block);
 
         this._addEvents();
     }
@@ -132,8 +131,8 @@ class Block {
         });
     }
     // Переопределяется пользователем. Необходимо вернуть разметку
-    render() : string {
-        return  ''
+    render() : DocumentFragment {
+        return  new DocumentFragment()
     }
 
     protected compile(template: (context: unknown) => string, context: {}){
@@ -141,7 +140,17 @@ class Block {
         Object.entries(this.children).forEach(([name, component]) => {
             contextAndStubs[name] = `<div data-id="${component.id}"></div>`
         });
-        return template(contextAndStubs);
+        const html = template(contextAndStubs);
+        const bufTemplate = document.createElement('template');
+        bufTemplate.innerHTML = html;
+
+        Object.entries(this.children).forEach(([name, component]) => {
+            const stub = bufTemplate.content.querySelector(`[data-id="${component.id}"]`);
+            if (!stub)
+                return;
+            stub.replaceWith(component.getContent());
+        });
+        return bufTemplate.content;
     }
 
     getContent() {

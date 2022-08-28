@@ -5,6 +5,7 @@ import pages from "./pages/index.js";
 import consts from './consts'
 import type {ArrayLinks} from "./types";
 import {Page500} from "./pages/500";
+import {Link} from "./components/link";
 
 const links = () : ArrayLinks => {
     return document.querySelectorAll('a');
@@ -18,7 +19,12 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         header.innerHTML = headerTemplate();
         // app.innerHTML = pages['']({...consts});
-        app.innerHTML = new Page500().render();
+        const link = new Link({
+            label: "Назад к чатам",
+            href: "/"
+        });
+        const PageError500 = new Page500({link});
+        app.append(PageError500.getContent());
         const a = links();
         const refreshLink = (arr: ArrayLinks) => {
             arr.forEach((el : HTMLAnchorElement) => el.onclick = (e: MouseEvent) => {

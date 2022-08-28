@@ -15,6 +15,6 @@ export class Link extends Block{
         super('a', props);
     }
     render(): string {
-        return template(this.props);
+        return this.compile(template, {...this.props});
     }
 }
