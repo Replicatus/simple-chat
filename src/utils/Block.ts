@@ -13,16 +13,16 @@ class Block {
     protected props : Record<string, unknown>;
     private eventBus: () => EventBus;
     private _element : HTMLElement | null = null;
-    private children : Record<string, Block>;
+    public children : Record<string, Block>;
     private readonly _meta :{ tagName: string, props: unknown, class?: string};
 
     /** JSDoc
      * @param {string} tagName
-     * @param {Object} props
+     * @param propsAndChildrens
      *
      * @returns {void}
      */
-    constructor(tagName = "div", propsAndChildrens : unknown = {}) {
+    constructor(tagName = "div", propsAndChildrens : {}  = {}) {
         const eventBus = new EventBus();
 
         const {props, children} = this._getChildrensAndProps(propsAndChildrens);
@@ -40,16 +40,16 @@ class Block {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    _registerEvents(eventBus) {
+    _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _getChildrensAndProps(chAndProps){
-        const props = {};
-        const children = {};
+    _getChildrensAndProps(chAndProps: {} = {}){
+        const props: Record<string, unknown> = {};
+        const children: Record<string, Block> = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
             if (value instanceof Block){
                 children[key] = value;
@@ -74,6 +74,7 @@ class Block {
         this.componentDidMount();
     }
 
+    // @ts-ignore
     componentDidMount(oldProps ?: unknown) {
 
     }
@@ -82,17 +83,20 @@ class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps, newProps) {
+    _componentDidUpdate(oldProps: {}, newProps: {}) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (response)
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps, newProps) {
-        return true;
+    componentDidUpdate(oldProps: {}, newProps: {}) {
+        const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps.toString();
+        const stringNewProps = oldProps ? Object.entries(newProps).join(' ') : newProps.toString();
+        if (stringNewProps !==stringOldProps)
+         return true;
     }
 
-    setProps = nextProps => {
+    setProps = (nextProps: unknown) => {
         if (!nextProps) {
             return;
         }
@@ -120,13 +124,15 @@ class Block {
         const { events = {} } = this.props as {events: Record<string, () => void> };
 
         Object.keys(events).forEach(eventName => {
+            if (this._element instanceof HTMLElement)
             this._element.addEventListener(eventName, events[eventName]);
         });
     }
 
     _removeEvents() {
-        const { events = {} } = this.props;
+        const { events = {} } = this.props as {events: Record<string, () => void> };
         Object.keys(events).forEach(eventName => {
+            if (this._element instanceof HTMLElement)
             this._element.removeEventListener(eventName, events[eventName]);
         });
     }
@@ -136,7 +142,7 @@ class Block {
     }
 
     protected compile(template: (context: unknown) => string, context: {}){
-        const contextAndStubs = {...context};
+        const contextAndStubs : Record<string, string> = {...context};
         Object.entries(this.children).forEach(([name, component]) => {
             contextAndStubs[name] = `<div data-id="${component.id}"></div>`
         });
@@ -144,11 +150,12 @@ class Block {
         const bufTemplate = document.createElement('template');
         bufTemplate.innerHTML = html;
 
-        Object.entries(this.children).forEach(([name, component]) => {
+        Object.entries(this.children).forEach(([_, component]) => {
             const stub = bufTemplate.content.querySelector(`[data-id="${component.id}"]`);
             if (!stub)
                 return;
-            stub.replaceWith(component.getContent());
+            // stub.append(component.getContent());
+            stub.replaceWith(component.getContent()!);
         });
         return bufTemplate.content;
     }
@@ -180,7 +187,7 @@ class Block {
                     return true;
                 }
             },
-            deleteProperty(target, property) {
+            deleteProperty(_, __) {
                 //if (property.startsWith('_')) {
                 throw new Error("Нет прав");
                 // } else {
@@ -193,17 +200,21 @@ class Block {
         return proxy;
     }
 
-    _createDocumentElement(tagName) {
+    _createDocumentElement(tagName: string) {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
     show() {
-        this.getContent().style.display = "block";
+        const item = this.getContent();
+        if (item)
+            item.style.display = "block";
     }
 
     hide() {
-        this.getContent().style.display = "none";
+        const item = this.getContent();
+        if (item)
+            item.style.display = "none";
     }
 }
 

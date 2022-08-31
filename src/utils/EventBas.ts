@@ -1,5 +1,5 @@
 class EventBus {
-    private readonly listeners : {};
+    private readonly listeners : Record<string, Function[]>;
     constructor() {
         this.listeners = {};
     }
@@ -21,7 +21,7 @@ class EventBus {
         this.listeners[event] = this.listeners[event].filter(fn => fn !== callback);
     }
 
-    emit(event: string, ...args) {
+    emit(event: string, ...args: unknown[]) {
         if (!this.listeners[event])
             throw new Error(`Нет события: ${event}`);
         this.listeners[event].forEach(callback => callback(...args));

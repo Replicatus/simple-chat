@@ -1,24 +1,25 @@
 import Block from "../../utils/Block";
 import {Link} from "../../components/link";
 
-import  template from "./500.hbs"
+import  template from "./404.hbs"
 
 
 
-export class Page500 extends Block{
+export class Page404 extends Block{
     constructor(props: {}) {
         super('section', {...props});
         this.element!.classList.add('error-page')
     }
-    init() {
-        this.children.link = new Link({
+    render() {
+        // const link = new Link({
+        //     label: "Назад к чатам",
+        //     href: "/"
+        // });
+        const link = new Link({
             label: "Назад к чатам",
             href: "/"
         });
-    }
-
-    render() {
-        return this.compile(template, this.props)
+        return this.compile(template, {link: link})
 
     }
 }

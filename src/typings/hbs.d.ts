@@ -1,6 +1,7 @@
-import {TemplateDelegate} from "handlebars";
-
 declare module "*.hbs" {
-    const  template: TemplateDelegate;
-    export default template;
+  import { TemplateDelegate } from 'handlebars';
+
+  declare const template: TemplateDelegate;
+
+  export default template;
 }

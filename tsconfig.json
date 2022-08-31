@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "target": "es2016",
-    "declaration": true,
+//    "outDir": "dist",
+    "target": "es2019",
+   "declaration": true,
     "module": "commonjs",
-//    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
 //    "sourceMap": true,
 //    "noImplicitAny": true,
-//    "noUnusedLocals": true,
-//    "noUnusedParameters": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "exclude": [
-    ".hbs",
     "node_modules",
     "dist",
     ".parcel-cache"

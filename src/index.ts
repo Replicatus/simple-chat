@@ -1,12 +1,10 @@
-import headerTemplate from './index.hbs';
-import components from "./components";
-import Handlebars from 'handlebars/dist/handlebars.runtime.js';
-import pages from "./pages/index.js";
+import NavBar from "./blocks/navbar/index"
+// import components from "./components";
+// import Handlebars from 'handlebars/dist/handlebars.runtime.js';
+import pages from "./pages";
 import consts from './consts'
 import type {ArrayLinks} from "./types";
 import {Page500} from "./pages/500";
-import {Link} from "./components/link";
-
 const links = () : ArrayLinks => {
     return document.querySelectorAll('a');
 };
@@ -17,14 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
         const header: HTMLElement | null = document.querySelector('#header');
         if (!app || !header)
             return;
-        header.innerHTML = headerTemplate();
+        const navBar = new NavBar();
+        header.append(navBar.getContent()!);
         // app.innerHTML = pages['']({...consts});
-        const link = new Link({
-            label: "Назад к чатам",
-            href: "/"
-        });
-        const PageError500 = new Page500({link});
-        app.append(PageError500.getContent());
+
+        const PageError500 = new Page500({});
+        app.append(PageError500.getContent()!);
         const a = links();
         const refreshLink = (arr: ArrayLinks) => {
             arr.forEach((el : HTMLAnchorElement) => el.onclick = (e: MouseEvent) => {
@@ -34,7 +30,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 const href: any = e.target?.href;
                 const path = href.split('/');
                 const pageName = path[path.length - 1];
-                app.innerHTML = pages[pageName]({...consts});
+                const page = new pages[pageName]({...consts});
+                app.append(page.getContent());
+                page.dispatchComponentDidMount();
                 refreshLink(links());
             });
         }

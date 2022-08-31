@@ -1,5 +1,5 @@
-import Page404 from "./404.hbs"
-import {Page500} from "./500/index"
+import {Page404} from "./400"
+import {Page500} from "./500"
 import Main from "./Main.hbs"
 import Profile from "./Profile.hbs"
 import ProfileChange from "./ProfileChange.hbs"
@@ -8,7 +8,8 @@ import ChangeAvatar from "./ChangeAvatar.hbs"
 import Register from "./Register.hbs"
 import Login from "./Login.hbs"
 
-export default {
+
+const pages: Record<string, any> = {
     Page404,
     Page500,
     "": Main,
@@ -19,3 +20,4 @@ export default {
     Register,
     Login
 };
+export default pages;

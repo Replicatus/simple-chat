@@ -1,9 +1,7 @@
 // @ts-ignore
 import template from './link.hbs';
-import Handlebars from 'handlebars/dist/handlebars.runtime.js';
 import Block from "../../utils/Block";
 
-Handlebars.registerPartial('link', (props) => template({...props}));
 interface LinkProps {
     href: string;
     class?: string;
@@ -14,7 +12,7 @@ export class Link extends Block{
     constructor(props: LinkProps) {
         super('a', props);
     }
-    render(): string {
+    render() {
         return this.compile(template, {...this.props});
     }
 }
