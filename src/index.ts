@@ -1,10 +1,8 @@
 import NavBar from "./blocks/navbar/index"
-// import components from "./components";
-// import Handlebars from 'handlebars/dist/handlebars.runtime.js';
 import pages from "./pages";
 import consts from './consts'
 import type {ArrayLinks} from "./types";
-import {Page500} from "./pages/500";
+
 const links = () : ArrayLinks => {
     return document.querySelectorAll('a');
 };
@@ -19,7 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
         header.append(navBar.getContent()!);
         // app.innerHTML = pages['']({...consts});
 
-        const PageError500 = new Page500({});
+        const PageError500 = new pages['']({});
         app.append(PageError500.getContent()!);
         const a = links();
         const refreshLink = (arr: ArrayLinks) => {
@@ -31,6 +29,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 const path = href.split('/');
                 const pageName = path[path.length - 1];
                 const page = new pages[pageName]({...consts});
+                app.innerText = '';
+                console.log('page', page)
                 app.append(page.getContent());
                 page.dispatchComponentDidMount();
                 refreshLink(links());

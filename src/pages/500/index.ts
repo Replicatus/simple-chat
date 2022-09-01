@@ -8,17 +8,18 @@ import  template from "./500.hbs"
 export class Page500 extends Block{
     constructor(props: {}) {
         super('section', {...props});
-        this.element!.classList.add('error-page')
     }
     init() {
+
         this.children.link = new Link({
             label: "Назад к чатам",
             href: "/"
         });
+        super.init();
     }
 
     render() {
+        this.element!.classList.add('error-page')
         return this.compile(template, this.props)
-
     }
 }

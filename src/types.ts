@@ -1,5 +1,6 @@
 type formField = {
     text?: string;
+    key?: string;
     name: string;
     type?: string;
     label?: string;

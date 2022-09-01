@@ -1,6 +1,6 @@
 import {EventBus} from "./EventBas";
 import {nanoid} from "nanoid";
-
+type Children = Record<string, Block | Block[]>;
 // Нельзя создавать экземпляр данного класса
 class Block {
     static EVENTS = {
@@ -9,11 +9,11 @@ class Block {
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render"
     };
-    public id : string | null = nanoid(5);
+    public id : string | null = nanoid(6);
     protected props : Record<string, unknown>;
     private eventBus: () => EventBus;
     private _element : HTMLElement | null = null;
-    public children : Record<string, Block>;
+    public children : Children;
     private readonly _meta :{ tagName: string, props: unknown, class?: string};
 
     /** JSDoc
@@ -49,9 +49,11 @@ class Block {
 
     _getChildrensAndProps(chAndProps: {} = {}){
         const props: Record<string, unknown> = {};
-        const children: Record<string, Block> = {};
+        const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
-            if (value instanceof Block){
+            if (Array.isArray(value) && value.every(v => v instanceof Block)) {
+                children[key] = value;
+            } else if (value instanceof Block){
                 children[key] = value;
             }else {
                 props[key] = value;
@@ -114,10 +116,14 @@ class Block {
         // Используйте шаблонизатор из npm или напишите свой безопасный
         // Нужно компилировать не в строку (или делать это правильно),
         // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
-        this._removeEvents();
-        this._element!.append(block);
-
-        this._addEvents();
+        if (this._element)
+        {
+            this._removeEvents();
+            this._element.innerText = '';
+                this._element.append(block);
+            this._addEvents();
+        }else
+            throw new Error(`_element doesn\'t exist ${this._element}`)
     }
 
     _addEvents() {
@@ -142,20 +148,38 @@ class Block {
     }
 
     protected compile(template: (context: unknown) => string, context: {}){
-        const contextAndStubs : Record<string, string> = {...context};
+        const contextAndStubs : Record<string, any> = {...context};
         Object.entries(this.children).forEach(([name, component]) => {
+            if (Array.isArray(component))
+            {
+                contextAndStubs[name] = component;
+            }
+            else
             contextAndStubs[name] = `<div data-id="${component.id}"></div>`
         });
+        console.log('contextAndStubs',contextAndStubs)
         const html = template(contextAndStubs);
         const bufTemplate = document.createElement('template');
         bufTemplate.innerHTML = html;
-
+        // console.log('html',html)
         Object.entries(this.children).forEach(([_, component]) => {
+            if (Array.isArray(component))
+            {
+                component.forEach((el : Block) => {
+                    const stub = bufTemplate.content.querySelector(`[data-id="${el.id}"]`);
+                    if (!stub)
+                        return;
+                    // stub.append(component.getContent());
+                    stub.replaceWith(el.getContent()!);
+                })
+            }
+            else{
             const stub = bufTemplate.content.querySelector(`[data-id="${component.id}"]`);
             if (!stub)
                 return;
             // stub.append(component.getContent());
             stub.replaceWith(component.getContent()!);
+            }
         });
         return bufTemplate.content;
     }

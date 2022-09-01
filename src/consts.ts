@@ -1,11 +1,11 @@
 import type {formField} from './types'
 const fields :formField[] = [
-    {text: 'Почта', name: 'email', value: 'test@test.ru', disabled: 'disabled'},
-    {text: 'Логин', name: 'login', value: 'test value', disabled: 'disabled'},
-    {text: 'Имя', name: 'second_name', value: 'test value', disabled: 'disabled'},
-    {text: 'Фамилия', name: 'first_name', value: 'test value', disabled: 'disabled'},
-    {text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: 'disabled'},
-    {text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: 'disabled'},
+    { key: 'input0', text: 'Почта', name: 'email', value: 'test@test.ru', disabled: 'disabled'},
+    { key: 'input1', text: 'Логин', name: 'login', value: 'test value', disabled: 'disabled'},
+    { key: 'input2', text: 'Имя', name: 'second_name', value: 'test value', disabled: 'disabled'},
+    { key: 'input3', text: 'Фамилия', name: 'first_name', value: 'test value', disabled: 'disabled'},
+    { key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: 'disabled'},
+    { key: 'input5', text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: 'disabled'},
 ];
 const fieldsForPasswordPage:formField[] = [
     {text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru',},
