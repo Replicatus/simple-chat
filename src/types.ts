@@ -7,7 +7,7 @@ type formField = {
     value?: string | number | null | undefined;
     disabled?: string | boolean;
     error?: boolean;
-    errorRules?: [];
+    rules?: ((v: string | number) => boolean | string) [];
     errorText?: string;
 }
 type ArrayLinks = NodeListOf<HTMLElementTagNameMap['a']>;

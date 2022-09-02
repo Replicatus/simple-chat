@@ -1,30 +1,46 @@
 <!--<section class="profile-page">-->
-    <div class="profile-page__content">
-        <div class="header">
-            <div >
-                <span>Поменять аватар</span>
-                <div class="avatar"></div>
-            </div>
-            <h2>Roman</h2>
+<div class="profile-page__content">
+    <div class="header">
+        <div>
+            <span>Поменять аватар</span>
+            <div class="avatar"></div>
         </div>
-        <form>
-            {{#each inputs}}
-                <div>
-                    <span>{{this.text}}</span>
-                    {{{ this }}}
-                </div>
-            {{/each}}
-        </form>
-        <div class="profile-page__content-actions">
-            <div>
-                {{{ buttonChange }}}
-            </div>
-            <div>
-                {{{ buttonChangePassword }}}
-            </div>
-            <div>
-                {{{ buttonExit }}}
-            </div>
-        </div>
+        <h2>Roman</h2>
     </div>
+    <form>
+        {{#each inputs}}
+            <div>
+                    <span>
+                        {{#with (lookup ../fields @key)~}}
+                            {{text}}
+                        {{/with}}
+                    </span>
+                {{{ this }}}
+            </div>
+        {{/each}}
+    </form>
+    <div class="profile-page__content-actions">
+        {{#if changeProfile}}
+            <div class="border-zero d-flex justify-center flex-1" >
+                {{{ buttonSave }}}
+            </div>
+        {{else}}
+            {{#if changePassword}}
+                <div class="border-zero d-flex justify-center flex-1" >
+                    {{{ buttonSavePassword }}}
+                </div>
+            {{else}}
+                <div>
+                    {{{ buttonChange }}}
+                </div>
+                <div>
+                    {{{ buttonChangePassword }}}
+                </div>
+                <div>
+                    {{{ buttonExit }}}
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</div>
 <!--</section>-->

@@ -11,7 +11,7 @@ class Block {
     };
     public id : string | null = nanoid(6);
     protected props : Record<string, unknown>;
-    private eventBus: () => EventBus;
+    protected eventBus: () => EventBus;
     private _element : HTMLElement | null = null;
     public children : Children;
     private readonly _meta :{ tagName: string, props: unknown, class?: string};
@@ -152,16 +152,14 @@ class Block {
         Object.entries(this.children).forEach(([name, component]) => {
             if (Array.isArray(component))
             {
-                contextAndStubs[name] = component;
+                contextAndStubs[name] = component.map(el => `<div data-id="${el.id}"></div>`);
             }
             else
             contextAndStubs[name] = `<div data-id="${component.id}"></div>`
         });
-        console.log('contextAndStubs',contextAndStubs)
         const html = template(contextAndStubs);
         const bufTemplate = document.createElement('template');
         bufTemplate.innerHTML = html;
-        // console.log('html',html)
         Object.entries(this.children).forEach(([_, component]) => {
             if (Array.isArray(component))
             {
@@ -169,7 +167,6 @@ class Block {
                     const stub = bufTemplate.content.querySelector(`[data-id="${el.id}"]`);
                     if (!stub)
                         return;
-                    // stub.append(component.getContent());
                     stub.replaceWith(el.getContent()!);
                 })
             }

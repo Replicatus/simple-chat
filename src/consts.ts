@@ -1,16 +1,25 @@
 import type {formField} from './types'
+import {regularExpressions} from './helpers/helpers'
 const fields :formField[] = [
-    { key: 'input0', text: 'Почта', name: 'email', value: 'test@test.ru', disabled: 'disabled'},
-    { key: 'input1', text: 'Логин', name: 'login', value: 'test value', disabled: 'disabled'},
-    { key: 'input2', text: 'Имя', name: 'second_name', value: 'test value', disabled: 'disabled'},
-    { key: 'input3', text: 'Фамилия', name: 'first_name', value: 'test value', disabled: 'disabled'},
-    { key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: 'disabled'},
-    { key: 'input5', text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: 'disabled'},
+    { key: 'input0', text: 'Почта', name: 'email', value: 'test@test.ru', disabled: true, rules: [
+            (v ) => !!v || 'Обязательное поле',
+            (v ) => ( typeof v === 'string') && v.length  > 5 || 'Минимальное число символов 5',
+            value => {
+                const pattern = regularExpressions.email
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указан адрес почты'
+            },
+        ]
+    },
+    { key: 'input1', text: 'Логин', name: 'login', value: 'test value', disabled: true},
+    { key: 'input2', text: 'Имя', name: 'second_name', value: 'test value', disabled: true},
+    { key: 'input3', text: 'Фамилия', name: 'first_name', value: 'test value', disabled: true},
+    { key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: true},
+    { key: 'input5', text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: true},
 ];
 const fieldsForPasswordPage:formField[] = [
-    {text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru',},
-    {text: 'Новый пароль',type: 'password', name: 'newPassword', value: 'test value', },
-    {text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value'},
+    {key: 'input0',text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru',},
+    {key: 'input1',text: 'Новый пароль',type: 'password', name: 'newPassword', value: 'test value', },
+    {key: 'input2',text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value'},
 ];
 const fieldsLoginPage:formField[] = [
     {label: 'Логин',type: 'text', name: 'login', value: 'test-login',},

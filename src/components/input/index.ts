@@ -13,7 +13,7 @@ interface InputProps {
     disabled?: string | boolean;
     errorText?: string;
     error?: boolean;
-    errorRules?: Function[];
+    rules?: Function[];
 }
 export class Input extends Block{
     constructor(props: InputProps) {
@@ -28,6 +28,16 @@ export class Input extends Block{
             if (props.error)
                 this.element.classList.add('error');
         }
+    }
+
+    public getValue() : string | {name: unknown, value: string| number| null} | null {
+        const el = this.getContent();
+        if (el)
+        {
+            const input = el.querySelector("input");
+            return {name: this.props.name, value: input?.value ?? null}
+        }
+        return null
     }
 
     render(): DocumentFragment {
