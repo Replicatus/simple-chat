@@ -13,11 +13,17 @@ interface InputProps {
     disabled?: string | boolean;
     errorText?: string;
     error?: boolean;
+    events?: {},
     rules?: Function[];
 }
 export class Input extends Block{
     constructor(props: InputProps) {
-        super('div', props);
+        super('div', {...props,
+            events: props?.events ? {
+            ...props.events,
+                'input': (v: InputEvent) => console.log('on input ', v)
+        } : {}
+        });
         if (this.element){
             if (Array.isArray(props.className))
                 this.element.classList.add('input', [...props.className].join(', '));
