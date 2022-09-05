@@ -20,8 +20,8 @@ export class Input extends Block{
     constructor(props: InputProps) {
         super('div', {...props,
             events: props?.events ? {
-            ...props.events,
-                'input': (v: InputEvent) => console.log('on input ', v)
+                // 'input': (v: InputEvent) => this.checkInputValues(v),
+                ...props.events,
         } : {}
         });
         if (this.element){
@@ -35,6 +35,12 @@ export class Input extends Block{
                 this.element.classList.add('error');
         }
     }
+    // private checkInputValues = (e: InputEvent) => {
+    //     const pattern = /[a-zA-Z\-0-9]/;
+    //     console.log('input e: ',pattern.test(e.data!),e);
+    //     if (pattern.test(e.data!))
+    //         return e.data;
+    // }
 
     public getValue() : string | {name: unknown, value: string| number| null} | null {
         const el = this.getContent();
