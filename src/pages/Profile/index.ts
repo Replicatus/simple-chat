@@ -16,8 +16,10 @@ export class Profile extends Block {
     protected editProfile() {
         console.log('editProfile');
         if (Array.isArray(this.children.inputs))
-        this.children.inputs.forEach(el => {
-            el.props.disabled = false;
+            //@ts-ignore
+            // TODO: fix ts typs
+        this.children.inputs.forEach((el: Input ) => {
+            el.changeDisableProperty(false);
         });
         this.changeProfile = true;
         this.props.changeProfile = true;
@@ -27,13 +29,19 @@ export class Profile extends Block {
         this.changeProfile = false;
         this.props.changeProfile = false;
         const result: unknown[] = [];
-        if (Array.isArray(this.children.inputs))
+        let valid = false;
+        if (Array.isArray(this.children.inputs)){
+
             this.children.inputs.forEach((el: any) => {
                 const value = el.getValue();
                 result.push(value)
-                el.props.value = value.value;
-                el.props.disabled = true;
+                el.setProps({
+                    value: value.value,
+                    disabled: true
+                });
             });
+        }
+
         console.log('saved', result);
     }
 
@@ -48,13 +56,10 @@ export class Profile extends Block {
             });
         if (this.props.fields && Array.isArray(this.props.fields)) {
             console.log(1,this.children)
-            this.children.inputs = this.props.fields.map((el, index) => {
+            this.children.inputs = this.props.fields.map((el) => {
                 return new Input({
                     ...el,
                     className: 'profile',
-                    events: {
-                        click: () => console.log('clicked on :', 'input' + index),
-                    },
                 })
             });
         }
@@ -66,13 +71,10 @@ export class Profile extends Block {
     protected editPassword() {
         console.log('editPassword')
         if (this.props.fieldsForPasswordPage && Array.isArray(this.props.fieldsForPasswordPage)) {
-            this.children.inputs = this.props.fieldsForPasswordPage.map((el, index) => {
+            this.children.inputs = this.props.fieldsForPasswordPage.map((el) => {
                 return new Input({
                     ...el,
                     className: 'profile',
-                    events: {
-                        click: () => console.log('clicked on :', 'input' + index),
-                    },
                 })
             });
         }
@@ -82,13 +84,10 @@ export class Profile extends Block {
 
     init() {
         if (this.props.fields && Array.isArray(this.props.fields)) {
-            this.children.inputs = this.props.fields.map((el, index) => {
+            this.children.inputs = this.props.fields.map((el) => {
                 return new Input({
                     ...el,
                     className: 'profile',
-                    events: {
-                        click: () => console.log('clicked on :', 'input' + index),
-                    },
                 })
             });
         }

@@ -10,16 +10,68 @@ const fields :formField[] = [
             },
         ]
     },
-    { key: 'input1', text: 'Логин', name: 'login', value: 'test value', disabled: true},
-    { key: 'input2', text: 'Имя', name: 'second_name', value: 'test value', disabled: true},
-    { key: 'input3', text: 'Фамилия', name: 'first_name', value: 'test value', disabled: true},
-    { key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: true},
-    { key: 'input5', text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: true},
+    { key: 'input1', text: 'Логин', name: 'login', value: 'test value', disabled: true,
+        rules: [
+            (v ) => !!v || 'Обязательное поле',
+            (v ) => ( typeof v === 'string') && v.length  > 3 || 'Минимальное число символов 3',
+            (v ) => ( typeof v === 'string') && v.length  <= 20 || 'Максимальное число символов 20',
+            value => {
+                const pattern = regularExpressions.login
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указан логин'
+            },
+        ]
+    },
+    { key: 'input2', text: 'Имя', name: 'second_name', value: 'test value', disabled: true,
+        rules: [
+            (v ) => !!v || 'Обязательное поле',
+            value => {
+                const pattern = regularExpressions.fio
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указано имя'
+            },
+        ]},
+    { key: 'input3', text: 'Фамилия', name: 'first_name', value: 'test value', disabled: true,
+        rules: [
+            (v ) => !!v || 'Обязательное поле',
+            value => {
+                const pattern = regularExpressions.fio
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указана фамилия'
+            },
+        ]},
+    { key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'test value', disabled: true,
+        rules: [
+            (v ) => !!v || 'Обязательное поле',
+            value => {
+                const pattern = regularExpressions.fio
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указано имя в чате'
+            },
+        ]},
+    { key: 'input5', text: 'Телефон', name: 'phone', value: '+ 7916161', disabled: true,
+        rules: [
+            (v ) => !!v || 'Обязательное поле',
+            (v ) => ( typeof v === 'string') && v.length  >= 10 || 'Минимальное число символов 10',
+            (v ) => ( typeof v === 'string') && v.length  <= 15 || 'Максимальное число символов 15',
+            value => {
+                const pattern = regularExpressions.phone
+                return typeof value === 'string' && pattern.test(value) || 'Неверно указан телефон'
+            },
+        ]
+    },
 ];
+const passwordRules =  [
+    (v :any) => !!v || 'Обязательное поле',
+    (v:any) => ( typeof v === 'string') && v.length  >= 8 || 'Минимальное число символов 8',
+    (v:any) => ( typeof v === 'string') && v.length  <= 40 || 'Максимальное число символов 40',
+    (v:any) => {
+        const pattern = regularExpressions.password
+        return typeof v === 'string' && pattern.test(v) || 'Неверно указан пароль'
+    },
+]
+
 const fieldsForPasswordPage:formField[] = [
-    {key: 'input0',text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru',},
-    {key: 'input1',text: 'Новый пароль',type: 'password', name: 'newPassword', value: 'test value', },
-    {key: 'input2',text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value'},
+    {key: 'input0',text: 'Старый пароль',type: 'password', name: 'oldPassword', value: 'test@test.ru', rules: passwordRules
+    },
+    {key: 'input1',text: 'Новый пароль',type: 'password', name: 'newPassword', value: 'test value', rules: passwordRules, },
+    {key: 'input2',text: 'Повторите новый пароль',type: 'password', name: 'newPasswordConfirmed', value: 'test value', rules: passwordRules},
 ];
 const fieldsLoginPage:formField[] = [
     {label: 'Логин',type: 'text', name: 'login', value: 'test-login',},
