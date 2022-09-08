@@ -11,14 +11,15 @@ window.addEventListener('DOMContentLoaded', () => {
     try {
         const app: HTMLElement | null = document.querySelector('#app');
         const header: HTMLElement | null = document.querySelector('#header');
+        const leftBar: HTMLElement | null = document.querySelector('#left-bar');
         if (!app || !header)
             return;
         const navBar = new NavBar();
         header.append(navBar.getContent()!);
         // app.innerHTML = pages['']({...consts});
 
-        const PageError500 = new pages['']({});
-        app.append(PageError500.getContent()!);
+        const entryPage = new pages['']({});
+        app.append(entryPage.getContent()!);
         const a = links();
         const refreshLink = (arr: ArrayLinks) => {
             arr.forEach((el : HTMLAnchorElement) => el.onclick = (e: MouseEvent) => {
@@ -28,6 +29,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 const href: any = e.target?.href;
                 const path = href.split('/');
                 const pageName = path[path.length - 1];
+                if (pageName === 'Profile' && leftBar)
+                    leftBar.style.display = 'flex';
+                else if (leftBar)
+                    leftBar.style.display = 'none';
                 const page = new pages[pageName]({...consts});
                 app.innerText = '';
                 console.log('page', page)

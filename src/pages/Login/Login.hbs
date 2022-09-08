@@ -1,0 +1,27 @@
+<div class="enter-page__content">
+    <div class="enter-page__content-main">
+        <div class="header">
+            <h2>Вход</h2>
+        </div>
+        <form>
+            {{#each inputs}}
+                <div>
+                    <span>
+                        {{#with (lookup ../fieldsLoginPage @key)~}}
+                            {{text}}
+                        {{/with}}
+                    </span>
+                    {{{ this }}}
+                </div>
+            {{/each}}
+        </form>
+    </div>
+    <div class="enter-page__content-actions">
+        <div class="d-flex align-center" style="flex: 1 0 100%">
+            {{{buttonAuth}}}
+        </div>
+        <div>
+            {{{link}}}
+        </div>
+    </div>
+</div>

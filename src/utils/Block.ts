@@ -1,6 +1,8 @@
 import {EventBus} from "./EventBas";
 import {nanoid} from "nanoid";
+
 type Children = Record<string, Block | Block[]>;
+
 // Нельзя создавать экземпляр данного класса
 class Block {
     static EVENTS = {
@@ -9,12 +11,12 @@ class Block {
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render"
     };
-    public id : string | null = nanoid(6);
-    protected props : Record<string, unknown>;
+    public id: string | null = nanoid(6);
+    protected props: Record<string, any>;
     protected eventBus: () => EventBus;
-    private _element : HTMLElement | null = null;
-    public children : Children;
-    private readonly _meta :{ tagName: string, props: unknown, class?: string};
+    private _element: HTMLElement | null = null;
+    public children: Children;
+    private readonly _meta: { tagName: string, props: unknown, class?: string };
 
     /** JSDoc
      * @param {string} tagName
@@ -22,7 +24,7 @@ class Block {
      *
      * @returns {void}
      */
-    constructor(tagName = "div", propsAndChildrens : {}  = {}) {
+    constructor(tagName = "div", propsAndChildrens: {} = {}) {
         const eventBus = new EventBus();
 
         const {props, children} = this._getChildrensAndProps(propsAndChildrens);
@@ -47,15 +49,15 @@ class Block {
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _getChildrensAndProps(chAndProps: {} = {}){
+    _getChildrensAndProps(chAndProps: {} = {}) {
         const props: Record<string, unknown> = {};
         const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
             if (Array.isArray(value) && value.every(v => v instanceof Block)) {
                 children[key] = value;
-            } else if (value instanceof Block){
+            } else if (value instanceof Block) {
                 children[key] = value;
-            }else {
+            } else {
                 props[key] = value;
             }
         });
@@ -63,7 +65,8 @@ class Block {
     }
 
     _createResources() {
-        const { tagName} = this._meta;
+        const {tagName} = this._meta;
+        // if (!this.props.withoutWrapper)
         this._element = this._createDocumentElement(tagName);
     }
 
@@ -94,8 +97,8 @@ class Block {
     componentDidUpdate(oldProps: {}, newProps: {}) {
         const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps.toString();
         const stringNewProps = oldProps ? Object.entries(newProps).join(' ') : newProps.toString();
-        if (stringNewProps !==stringOldProps)
-         return true;
+        if (stringNewProps !== stringOldProps)
+            return true;
     }
 
     setProps = (nextProps: unknown) => {
@@ -112,70 +115,66 @@ class Block {
 
     _render() {
         const block = this.render();
-        // Это небезопасный метод для упрощения логики
-        // Используйте шаблонизатор из npm или напишите свой безопасный
-        // Нужно компилировать не в строку (или делать это правильно),
-        // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
-        if (this._element)
-        {
+        if (this._element) {
             this._removeEvents();
             this._element.innerText = '';
+
+            if (this.props.withoutWrapper) {
+                this._element = block.firstElementChild as HTMLElement;
+            } else
                 this._element.append(block);
             this._addEvents();
-        }else
+        } else
             throw new Error(`_element doesn\'t exist ${this._element}`)
     }
 
     _addEvents() {
-        const { events = {} } = this.props as {events: Record<string, () => void> };
+        const {events = {}} = this.props as { events: Record<string, () => void> };
 
         Object.keys(events).forEach(eventName => {
             if (this._element instanceof HTMLElement)
-            this._element.addEventListener(eventName, events[eventName]);
+                this._element.addEventListener(eventName, events[eventName]);
         });
     }
 
     _removeEvents() {
-        const { events = {} } = this.props as {events: Record<string, () => void> };
+        const {events = {}} = this.props as { events: Record<string, () => void> };
         Object.keys(events).forEach(eventName => {
             if (this._element instanceof HTMLElement)
-            this._element.removeEventListener(eventName, events[eventName]);
+                this._element.removeEventListener(eventName, events[eventName]);
         });
     }
+
     // Переопределяется пользователем. Необходимо вернуть разметку
-    render() : DocumentFragment {
-        return  new DocumentFragment()
+    render(): DocumentFragment | HTMLElement {
+        return new DocumentFragment()
     }
 
-    protected compile(template: (context: unknown) => string, context: {}){
-        const contextAndStubs : Record<string, any> = {...context};
+    protected compile(template: (context: unknown) => string, context: {}): HTMLElement | DocumentFragment {
+        const contextAndStubs: Record<string, any> = {...context};
         Object.entries(this.children).forEach(([name, component]) => {
-            if (Array.isArray(component))
-            {
+            if (Array.isArray(component)) {
                 contextAndStubs[name] = component.map(el => `<div data-id="${el.id}"></div>`);
-            }
-            else
-            contextAndStubs[name] = `<div data-id="${component.id}"></div>`
+            } else
+                contextAndStubs[name] = `<div data-id="${component.id}"></div>`
         });
         const html = template(contextAndStubs);
         const bufTemplate = document.createElement('template');
         bufTemplate.innerHTML = html;
         Object.entries(this.children).forEach(([_, component]) => {
-            if (Array.isArray(component))
-            {
-                component.forEach((el : Block) => {
+            if (Array.isArray(component)) {
+                component.forEach((el: Block) => {
                     const stub = bufTemplate.content.querySelector(`[data-id="${el.id}"]`);
                     if (!stub)
                         return;
                     stub.replaceWith(el.getContent()!);
                 })
-            }
-            else{
-            const stub = bufTemplate.content.querySelector(`[data-id="${component.id}"]`);
-            if (!stub)
-                return;
-            // stub.append(component.getContent());
-            stub.replaceWith(component.getContent()!);
+            } else {
+                const stub = bufTemplate.content.querySelector(`[data-id="${component.id}"]`);
+                if (!stub)
+                    return;
+                // stub.append(component.getContent());
+                stub.replaceWith(component.getContent()!);
             }
         });
         return bufTemplate.content;
@@ -189,7 +188,7 @@ class Block {
         // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
         const self = this;
         const proxy = new Proxy(props, {
-            get(target, property:string) {
+            get(target, property: string) {
                 if (property.startsWith('_'))
                     throw new Error('Нет прав');
                 else {
@@ -197,7 +196,7 @@ class Block {
                     return (typeof value === 'function') ? value.bind(target) : value;
                 }
             },
-            set(target, property:string, value, receiver) {
+            set(target, property: string, value, receiver) {
                 if (property.startsWith('_')) {
                     throw new Error("Нет прав");
                 } else {

@@ -7,7 +7,7 @@ export default class Navbar extends Block{
     constructor() {
         super('nav', {});
     }
-    render(): DocumentFragment {
+    render() {
         return this.compile(template, {});
     }
 }

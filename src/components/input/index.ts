@@ -16,6 +16,7 @@ interface InputProps {
     events?: {},
     rules?: Function[];
 }
+type ReturnedValueFromInput = { name: string, value: string | number | null } | null;
 
 export class Input extends Block {
     constructor(props: InputProps) {
@@ -77,11 +78,12 @@ export class Input extends Block {
         })
     }
     public checkValue(){
-        return new Promise((res,rej) =>{
+        return new Promise((resolve,_) => {
             if (Array.isArray(this.props.rules)) {
-                let res;
+                let res: string | boolean = true;
                 for (const func of this.props.rules) {
-                    res = func(this.getValue());
+                    const value = this.getValue()?.value ?? null;
+                    res = func(value);
                     if (res === false || typeof res === 'string')
                     {
                         this.setProps({
@@ -89,7 +91,7 @@ export class Input extends Block {
                             errorText: res,
                         });
                         this.element!.classList.add('error');
-                        rej(false);
+                        resolve(false);
                     }
                 }
                 if (res === true){
@@ -98,15 +100,15 @@ export class Input extends Block {
                         errorText: '',
                     });
                     this.element!.classList.remove('error');
-                    res(true)
+                    resolve(true)
                 }
             }else
-                res(true)
+                resolve(true)
         })
 
     }
 
-    public getValue(): string | { name: unknown, value: string | number | null } | null {
+    public getValue(): ReturnedValueFromInput {
         const el = this.getContent();
         if (el) {
             const input = el.querySelector("input");

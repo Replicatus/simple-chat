@@ -12,6 +12,9 @@ export class Link extends Block{
     constructor(props: LinkProps) {
         super('a', props);
     }
+    public click (){
+        this.element?.click();
+    }
     render() {
         return this.compile(template, {...this.props});
     }
