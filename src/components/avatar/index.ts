@@ -7,6 +7,7 @@ interface AvatarProps {
     withoutWrapper?: boolean;
     path?:string;
     url?:string;
+    label?:string;
     width?: string|number;
     height?: string|number;
     events ?: {}

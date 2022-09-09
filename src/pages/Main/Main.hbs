@@ -1,3 +1,22 @@
-<section class="main">
-    <div>Work in progress...</div>
-</section>
+<div class="chats-list-section">
+    <div class="chats-list-section__top">
+        <div class="chats-list-section__top-link">
+            {{{profileLink}}}
+        </div>
+        <div>
+            {{{filterInput}}}
+        </div>
+    </div>
+    <div class="chats-list-section__body">
+        {{#each ch}}
+            {{{this}}}
+        {{/each}}
+    </div>
+</div>
+{{#if chosenChat}}
+    {{{openedChat}}}
+{{else}}
+    <div class="chats-section">
+        <div class="chats-section__body-empty help-text">Выберите чат чтобы отправить сообщение</div>
+    </div>
+{{/if}}

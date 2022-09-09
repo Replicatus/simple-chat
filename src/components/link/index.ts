@@ -10,7 +10,7 @@ interface LinkProps {
 }
 export class Link extends Block{
     constructor(props: LinkProps) {
-        super('a', props);
+        super('a', {...props, withoutWrapper: true});
     }
     public click (){
         this.element?.click();

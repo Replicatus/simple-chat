@@ -117,7 +117,7 @@ export class Input extends Block {
         return null
     }
 
-    render(): DocumentFragment {
+    render() {
         return this.compile(template, {...this.props});
     }
 }

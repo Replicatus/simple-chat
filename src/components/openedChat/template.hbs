@@ -1,0 +1,21 @@
+<div class="chats-section__top">
+    <div class="d-flex flex-row align-center">
+        {{{avatar}}}
+        <span>{{chatName}}</span>
+    </div>
+    <div>
+        {{{buttonMenu}}}
+    </div>
+</div>
+<div class="chats-section__body">
+    <div class="chats-section__body-messages">
+        {{#each messages as |message|}}
+            {{message.message}}
+        {{/each}}
+    </div>
+    <div class="chats-section__body-actions">
+        {{{buttonFiles}}}
+        {{{inputMessage}}}
+        {{{buttonSend}}}
+    </div>
+</div>

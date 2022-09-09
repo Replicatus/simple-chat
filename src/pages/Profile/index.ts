@@ -121,6 +121,7 @@ export class Profile extends Block {
         this.children.avatar = new Avatar({
             url: `${imageUrl}`,
             withoutWrapper: false,
+            label: 'Поменять аватар',
             // path: `/src/assets/icons/Union.svg`,
             events: {
               click: () => this.editAvatar(),
