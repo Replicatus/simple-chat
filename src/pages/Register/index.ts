@@ -3,6 +3,7 @@ import {Button} from "../../components/button";
 import {Input} from "../../components/input";
 import template from "./Register.hbs"
 import {Link} from "../../components/link";
+import {formField} from "../../types";
 
 export class Register extends Block {
 
@@ -50,7 +51,7 @@ export class Register extends Block {
     init() {
 
         if (this.props.fieldsRegisterPage && Array.isArray(this.props.fieldsRegisterPage)) {
-            this.children.inputs = this.props.fieldsRegisterPage.map((el) => {
+            this.children.inputs = this.props.fieldsRegisterPage.map((el:formField) => {
                 return new Input({
                     ...el,
                     className: 'enter dense',

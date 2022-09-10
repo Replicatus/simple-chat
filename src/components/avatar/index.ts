@@ -13,7 +13,7 @@ interface AvatarProps {
     events ?: {}
 }
 
-export default class Avatar extends Block{
+export default class Avatar extends Block<AvatarProps>{
     constructor(props: AvatarProps) {
         super('div', {...props, withoutWrapper: props.withoutWrapper !== undefined ? props.withoutWrapper : true});
         if (this.element && this.element instanceof HTMLElement){

@@ -10,7 +10,9 @@
 <div class="chats-section__body">
     <div class="chats-section__body-messages">
         {{#each messages as |message|}}
-            {{message.message}}
+            <div class="message {{#if isYourMessage}}your-message{{else}}{{/if}}">
+                <p class="message-block">{{message.message}}</p>
+            </div>
         {{/each}}
     </div>
     <div class="chats-section__body-actions">

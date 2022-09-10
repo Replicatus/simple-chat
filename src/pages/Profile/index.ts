@@ -7,6 +7,7 @@ import Avatar from "../../components/avatar";
 import {Dialog} from "../../components/dialog";
 
 import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
+import {formField} from "../../types";
 
 export class Profile extends Block {
 
@@ -83,7 +84,7 @@ export class Profile extends Block {
             });
         }
         if (this.props.fields && Array.isArray(this.props.fields)) {
-            this.children.inputs = this.props.fields.map((el) => {
+            this.children.inputs = this.props.fields.map((el: formField) => {
                 return new Input({
                     ...el,
                     className: 'profile',
@@ -98,7 +99,7 @@ export class Profile extends Block {
     protected editPassword() {
         console.log('editPassword')
         if (this.props.fieldsForPasswordPage && Array.isArray(this.props.fieldsForPasswordPage)) {
-            this.children.inputs = this.props.fieldsForPasswordPage.map((el) => {
+            this.children.inputs = this.props.fieldsForPasswordPage.map((el: formField) => {
                 return new Input({
                     ...el,
                     className: 'profile',
@@ -128,7 +129,7 @@ export class Profile extends Block {
             }
         })
         if (this.props.fields && Array.isArray(this.props.fields)) {
-            this.children.inputs = this.props.fields.map((el) => {
+            this.children.inputs = this.props.fields.map((el:formField) => {
                 return new Input({
                     ...el,
                     className: 'profile',

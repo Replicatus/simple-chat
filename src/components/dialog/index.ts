@@ -9,12 +9,13 @@ import Block from "../../utils/Block";
 interface DialogProps {
     withoutWrapper?: boolean,
     template?: any,
+    templateWrapper?: any,
     events?: {}
 }
 
-export class Dialog extends Block{
+export class Dialog extends Block<DialogProps>{
     constructor(props: DialogProps) {
-        super('div', {...props, templateWrapper: defaultTemplate});
+        super('div', {templateWrapper: defaultTemplate , ...props});
     }
 
     render() {

@@ -112,18 +112,61 @@
       justify-content: space-between
       height: 54px
       border-bottom: 1px solid $border-color
+      .menu-btn
+        position: relative
+        padding: 0
+        height: 25px
+        width: 25px
+        background-color: $background-color!important
+        border-radius: 50%!important
+        &:before
+          position: absolute
+          content: ''
+          top: 5px
+          height: 15px
+          width: 25px
+          background-repeat: no-repeat
+          background-position: center center
+          background-image: url('~/src/assets/icons/Group 194.svg')
     &__body
       display: flex
       flex-direction: column
-      overflow-y: auto
       align-self: stretch
-      max-height: calc(100vh - 100px)
+      height: calc(100vh - 100px)
+      //flex: 1
       &-messages
         display: flex
         flex-direction: column
+        //justify-content: flex-end
+        min-height: min-content
         height: calc(100vh - 100px)
+        max-height: calc(100vh - 100px)
         overflow-y: auto
         border-bottom: 1px solid $border-color
+        padding-bottom: 10px
+        .message
+          display: flex
+          justify-content: flex-start
+          &:not(:last-child)
+            margin-bottom: 10px
+          p
+            margin-bottom: 0
+          &-block
+            max-width: 50%
+            background-color: $background-color-message
+            border-radius: 15px
+            color: $primary
+            padding: 11px
+            font-size: $font-size-big
+            line-height: 15px
+          &.your-message
+            display: flex
+            justify-content: flex-end
+            .message-block
+              background-color: $background-color-your-message
+              color: $primary
+              font-size: $font-size-big
+              line-height: 15px
       &-actions
         display: flex
         padding: 7px 0

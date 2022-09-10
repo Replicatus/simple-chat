@@ -16,6 +16,7 @@ interface ChatItemProps {
     name: string;
     unreadCount: number | null;
     chosen: boolean;
+    withoutWrapper?: boolean;
     events?: {},
     avatar?: string;
     lastMessage?: Message | null;
@@ -24,6 +25,7 @@ const defaultProps: ChatItemProps = {
     id: nanoid(6),
     name: '',
     chosen: false,
+    withoutWrapper: true,
     unreadCount: null,
     lastMessage: {
         id: nanoid(6),
@@ -33,9 +35,9 @@ const defaultProps: ChatItemProps = {
         status: 'SENT'
     }
 }
-export class ChatItem extends Block{
+export class ChatItem extends Block<ChatItemProps>{
     constructor(props: ChatItemProps = defaultProps) {
-        super('div', {...defaultProps,...props, withoutWrapper: true});
+        super('div', {...defaultProps,...props});
     }
     init() {
         this.children.avatar = new Avatar({

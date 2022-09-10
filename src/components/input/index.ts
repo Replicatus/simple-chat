@@ -18,7 +18,7 @@ interface InputProps {
 }
 type ReturnedValueFromInput = { name: string, value: string | number | null } | null;
 
-export class Input extends Block {
+export class Input extends Block<InputProps> {
     constructor(props: InputProps) {
         super('div', {
             ...props,
@@ -112,7 +112,7 @@ export class Input extends Block {
         const el = this.getContent();
         if (el) {
             const input = el.querySelector("input");
-            return {name: this.props.name, value: input?.value ?? null}
+            return {name: this.props.name ?? '', value: input?.value ?? null}
         }
         return null
     }

@@ -3,6 +3,7 @@ import {Button} from "../../components/button";
 import {Input} from "../../components/input";
 import template from "./Login.hbs"
 import {Link} from "../../components/link";
+import {formField} from "../../types";
 
 export class Login extends Block {
 
@@ -48,7 +49,7 @@ export class Login extends Block {
     init() {
 
         if (this.props.fieldsLoginPage && Array.isArray(this.props.fieldsLoginPage)) {
-            this.children.inputs = this.props.fieldsLoginPage.map((el) => {
+            this.children.inputs = this.props.fieldsLoginPage.map((el:formField) => {
                 return new Input({
                     ...el,
                     className: 'enter',

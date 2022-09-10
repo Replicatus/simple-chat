@@ -4,13 +4,14 @@ import Block from "../../utils/Block";
 
 interface LinkProps {
     href: string;
+    withoutWrapper?: boolean;
     class?: string;
     label: string;
     style?: string;
 }
-export class Link extends Block{
+export class Link extends Block<LinkProps>{
     constructor(props: LinkProps) {
-        super('a', {...props, withoutWrapper: true});
+        super('a', {withoutWrapper: true, ...props });
     }
     public click (){
         this.element?.click();

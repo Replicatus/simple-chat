@@ -6,9 +6,10 @@ import {Input} from "../input";
 import {Button} from "../button";
 
 
-type Message = {
+export type Message = {
     id: string | number;
     message: string;
+    isYourMessage: boolean;
     date: number | string;
     senderId: number | string;
     status: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
@@ -17,17 +18,25 @@ type Message = {
 interface ChatOpenItemProps {
     id: string | number;
     chatName: string;
+    callParentMethodFiles: Function;
+    callParentMethodSend: Function;
+    buttonSend?: null;
     events?: {},
     avatar?: string;
+    userId: string;
     messages: Message[]
 }
 const defaultProps: ChatOpenItemProps = {
     id: nanoid(6),
     chatName: '',
+    callParentMethodFiles: () => {},
+    callParentMethodSend: () => {},
+    userId: '',
+    buttonSend: null,
     messages: []
 }
 
-export class OpenedChat extends Block{
+export class OpenedChat extends Block<ChatOpenItemProps>{
     constructor(props: ChatOpenItemProps = defaultProps) {
         super('div', {...defaultProps,...props});
     }
@@ -51,7 +60,7 @@ export class OpenedChat extends Block{
             label: '',
             style: "",
             events: {
-                click: () => console.log('click on file input')
+                click: () => this.props.callParentMethodFiles()
             },
             replaceNode: true
         });
@@ -60,24 +69,38 @@ export class OpenedChat extends Block{
             label: '',
             style: "",
             events: {
-                click: () => console.log('send msg')
+                click: () => this.props.callParentMethodSend()
             },
             replaceNode: true
         });
         this.children.buttonMenu = new Button({
-            className: 'button',
-            label: 'Открыть меню',
+            className: 'menu-btn',
+            label: '',
             style: "",
             events: {},
             replaceNode: true
         });
         super.init();
     }
+    protected getMessage(){
+        let value;
+        if (this.children.inputMessage instanceof Input)
+            value = this.children.inputMessage.getValue();
+        if (value?.value)
+            return value;
+        else
+            return;
+    }
+    public getNewMessages(data: Message[] = []){
+        this.props.messages = [...data];
+    }
+    public sendMessage(){
+        return this.getMessage();
+    }
 
 
     render(): DocumentFragment | HTMLElement {
         this.element?.classList.add('chats-section');
-        console.log("!", this.props.chatName)
         return this.compile(template, this.props);
     }
 }

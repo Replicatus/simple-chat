@@ -4,19 +4,19 @@ import {nanoid} from "nanoid";
 type Children = Record<string, Block | Block[]>;
 
 // Нельзя создавать экземпляр данного класса
-class Block {
+class Block<P extends Record<string, any> = any> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render"
-    };
+    } as const;
     public id: string | null = nanoid(6);
-    protected props: Record<string, any>;
+    protected props: P;
     protected eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
     public children: Children;
-    private readonly _meta: { tagName: string, props: unknown, class?: string };
+    private readonly _meta: { tagName: string, props: P, class?: string };
 
     /** JSDoc
      * @param {string} tagName
@@ -24,13 +24,13 @@ class Block {
      *
      * @returns {void}
      */
-    constructor(tagName = "div", propsAndChildrens: {} = {}) {
+    constructor(tagName = "div", propsAndChildrens: P) {
         const eventBus = new EventBus();
 
         const {props, children} = this._getChildrensAndProps(propsAndChildrens);
         this._meta = {
             tagName,
-            props
+            props: props as P
         };
         this.children = children;
         this.props = this._makePropsProxy(props);
@@ -49,7 +49,7 @@ class Block {
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _getChildrensAndProps(chAndProps: {} = {}) {
+    _getChildrensAndProps(chAndProps: P) : {props: P, children: Children} {
         const props: Record<string, unknown> = {};
         const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
@@ -61,7 +61,7 @@ class Block {
                 props[key] = value;
             }
         });
-        return {children, props};
+        return {children, props: props as P};
     }
 
     _createResources() {
@@ -88,15 +88,15 @@ class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: {}, newProps: {}) {
+    _componentDidUpdate(oldProps: P, newProps: P) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (response)
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps: {}, newProps: {}) {
-        const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps.toString();
-        const stringNewProps = oldProps ? Object.entries(newProps).join(' ') : newProps.toString();
+    componentDidUpdate(oldProps: P, newProps: P) {
+        const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps;
+        const stringNewProps = newProps ? Object.entries(newProps).join(' ') : newProps;
         if (stringNewProps !== stringOldProps)
             return true;
     }
@@ -129,7 +129,7 @@ class Block {
     }
 
     _addEvents() {
-        const {events = {}} = this.props as { events: Record<string, () => void> };
+        const {events = {}} = this.props as P & { events: Record<string, () => void> };
 
         Object.keys(events).forEach(eventName => {
             if (this._element instanceof HTMLElement)
@@ -138,7 +138,7 @@ class Block {
     }
 
     _removeEvents() {
-        const {events = {}} = this.props as { events: Record<string, () => void> };
+        const {events = {}} = this.props as P &  { events: Record<string, () => void> };
         Object.keys(events).forEach(eventName => {
             if (this._element instanceof HTMLElement)
                 this._element.removeEventListener(eventName, events[eventName]);
@@ -150,7 +150,7 @@ class Block {
         return new DocumentFragment()
     }
 
-    protected compile(template: (context: unknown) => string, context: {}): HTMLElement | DocumentFragment {
+    protected compile(template: (context: any) => string, context: any): HTMLElement | DocumentFragment {
         const contextAndStubs: Record<string, any> = {...context};
         Object.entries(this.children).forEach(([name, component]) => {
             if (Array.isArray(component)) {
@@ -184,10 +184,10 @@ class Block {
         return this.element;
     }
 
-    _makePropsProxy(props: Record<string, unknown>) {
+    _makePropsProxy(props: P) {
         // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
         const self = this;
-        const proxy = new Proxy(props, {
+        return new Proxy(props, {
             get(target, property: string) {
                 if (property.startsWith('_'))
                     throw new Error('Нет прав');
@@ -208,16 +208,9 @@ class Block {
                 }
             },
             deleteProperty(_, __) {
-                //if (property.startsWith('_')) {
                 throw new Error("Нет прав");
-                // } else {
-                //     delete target[property];
-                //     return true;
-                // }
             },
         });
-        // Здесь вам предстоит реализовать метод
-        return proxy;
     }
 
     _createDocumentElement(tagName: string) {

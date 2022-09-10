@@ -16,8 +16,6 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         const navBar = new NavBar();
         header.append(navBar.getContent()!);
-        // app.innerHTML = pages['']({...consts});
-
         const entryPage = new pages['']({});
         app.append(entryPage.getContent()!);
         const a = links();
