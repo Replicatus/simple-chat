@@ -23,6 +23,15 @@
       display: flex
       flex-direction: column
       padding: 0 30px
+      &:not(.register)
+        > div
+          &:not(:last-child)
+            margin-bottom: 14px
+      &.register
+        span
+          font-size: $font-size-small
+          line-height: $font-size-small
+          color: $secondary
     &-actions
       margin-top: 30px
       display: flex

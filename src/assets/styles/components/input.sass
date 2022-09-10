@@ -17,6 +17,16 @@
   letter-spacing: normal
   max-width: 100%
   text-align: left
+  &.dense
+    input
+      max-height: 24px
+    &.input__details
+      max-height: 12px
+      line-height: 10px
+      .error
+        max-height: 12px
+        line-height: 10px
+
   &.error
    .input__slot
      border-bottom: 1px solid $error
@@ -87,8 +97,6 @@
     text-align: right
     .input__slot
       border-bottom: 0
-    .input__details
-      display: none
     input
       padding: 0
       @extend %default-input-styles

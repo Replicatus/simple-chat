@@ -1,0 +1,15 @@
+type formField = {
+    text?: string;
+    key?: string;
+    name: string;
+    type?: string;
+    label?: string;
+    value?: string | number | null | undefined;
+    disabled?: string | boolean;
+    error?: boolean;
+    rules?: ((v: string | number) => boolean | string) [];
+    errorText?: string;
+}
+type ArrayLinks = NodeListOf<HTMLElementTagNameMap['a']>;
+
+export {formField, ArrayLinks}
