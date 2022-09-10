@@ -6,3 +6,7 @@
 "dev": run local server,<br>
 "build": run build,<br>
 "start": build and run node server
+
+#Sprint 2 
+Все страницы интерактивны<br>
+редактирование пароля и формы профиля можно делать на одной странице
