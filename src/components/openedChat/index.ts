@@ -43,7 +43,7 @@ export class OpenedChat extends Block<ChatOpenItemProps>{
     init() {
         this.children.avatar = new Avatar({
             withoutWrapper: true,
-            path: this.props.avatar ? this.props.avatar : '',
+            url: this.props.avatar ? this.props.avatar : '',
             label: '',
             width: 47,
             height: 47,

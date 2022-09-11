@@ -1,6 +1,7 @@
 import Block from "../../utils/Block";
 
-import template from "./Main.hbs"
+import template from "./Main.hbs";
+import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
 import {Link} from "../../components/link";
 import {Input} from "../../components/input";
 import {ChatItem} from "../../components/chatItem";
@@ -217,6 +218,7 @@ export class Main extends Block {
                 id: id,
                 name: `Chat number ${index}`,
                 chosen: false,
+                avatar: avatarDefault,
                 unreadCount: index % 2 ? index : null,
                 events: {
                     'click': () => {

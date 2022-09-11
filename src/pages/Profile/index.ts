@@ -5,7 +5,7 @@ import {Input} from "../../components/input";
 import template from "./Profile.hbs"
 import Avatar from "../../components/avatar";
 import {Dialog} from "../../components/dialog";
-
+import img from '../../assets/icons/Union.svg'
 import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
 import {formField} from "../../types";
 
@@ -113,14 +113,8 @@ export class Profile extends Block {
         this.props.changeAvatar = !this.props.changeAvatar;
     }
     init() {
-         const imageUrl = new URL(
-            '/src/assets/icons/Union.svg',
-            // @ts-ignore
-            import.meta.url
-        );
-        // console.log(import.meta.url, imageUrl)
         this.children.avatar = new Avatar({
-            url: `${imageUrl}`,
+            url: img,
             withoutWrapper: false,
             label: 'Поменять аватар',
             // path: `/src/assets/icons/Union.svg`,

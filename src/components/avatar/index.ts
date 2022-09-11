@@ -2,7 +2,7 @@ import Block from "../../utils/Block";
 import template from "./avatar.hbs";
 
 interface AvatarProps {
-    className?:string;
+    classes?:string[];
     style?: Record<string, string>;
     withoutWrapper?: boolean;
     path?:string;
@@ -18,22 +18,18 @@ export default class Avatar extends Block<AvatarProps>{
         super('div', {...props, withoutWrapper: props.withoutWrapper || true});
         if (this.element && this.element instanceof HTMLElement){
             try {
-                if (Array.isArray(props.className))
-                    this.element.classList.add('avatar', [...props.className].join(', '));
-                else if (props.className)
-                    this.element.classList.add('avatar', ...props.className.split(' ').map(el => `${el}`));
+                if (Array.isArray(props.classes))
+                    this.element.classList.add('avatar', ...props.classes);
                 else
                     this.element.classList.add('avatar');
                 if (props.style)
                     Object.entries(props.style).forEach(([key, value]: [any, string]) => this.element!.style[key] = value)
-                if (props.path)
+                if (props.path || props.url)
                 {
                     //TODO: change meta url
-                    const imageUrl = new URL(
-                        props.path,
-                        // @ts-ignore
-                        import.meta.url
-                    );
+                    let imageUrl;
+                    if (props.path)
+                        imageUrl = import(props.path);
                     this.element.style.backgroundImage = `url(${props.url? props.url :  imageUrl})`;
                 }
                 if (props.width)
