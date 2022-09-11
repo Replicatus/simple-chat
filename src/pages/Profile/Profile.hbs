@@ -1,0 +1,89 @@
+<div class="profile-page__content">
+    <div class="header">
+        <div>
+
+            {{{avatar}}}
+        </div>
+        <h2>Roman</h2>
+    </div>
+    <form>
+        {{#if changePassword}}
+            {{#each inputs}}
+                <div>
+                    <span>
+                        {{#with (lookup ../fieldsForPasswordPage @key)~}}
+                            {{text}}
+                        {{/with}}
+                    </span>
+                    {{{ this }}}
+                </div>
+            {{/each}}
+        {{else}}
+            {{#each inputs}}
+                <div>
+                    <span>
+                        {{#with (lookup ../fields @key)~}}
+                            {{text}}
+                        {{/with}}
+
+                    </span>
+                    {{{ this }}}
+                </div>
+            {{/each}}
+        {{/if}}
+    </form>
+    <div class="profile-page__content-actions">
+        {{#if changeProfile}}
+            <div class="border-zero d-flex justify-center flex-1">
+                {{{ buttonSave }}}
+            </div>
+        {{else}}
+            {{#if changePassword}}
+                <div class="border-zero d-flex justify-center flex-1">
+                    {{{ buttonSavePassword }}}
+                </div>
+            {{else}}
+                <div>
+                    {{{ buttonChange }}}
+                </div>
+                <div>
+                    {{{ buttonChangePassword }}}
+                </div>
+                <div>
+                    {{{ buttonExit }}}
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</div>
+
+{{#if changeAvatar}}
+    {{{dialog}}}
+<!--    <div>-->
+<!--        <div class="overlay">-->
+<!--            <div class="overlay__background">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="dialog">-->
+<!--            <div class="dialog__content">-->
+<!--                <form class="file-form">-->
+<!--                    <h2>Загрузите файл</h2>-->
+<!--                    <label class="input-file">-->
+<!--                        Выбрать файл на компьютере-->
+<!--                        <input-->
+<!--                                type="file"-->
+<!--                                id="avatar"-->
+<!--                                name="avatar"-->
+<!--                                autocomplete="off"-->
+<!--                        >-->
+<!--                    </label>-->
+
+<!--                    <div class="d-flex align-center" style="flex: 1 0 100%">-->
+<!--                        {{{ buttonChangeAvatar }}}-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+{{/if}}

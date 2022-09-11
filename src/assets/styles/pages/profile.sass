@@ -25,9 +25,18 @@
         height: 130px
         width: 130px
         border-radius: 50%
+        background-repeat: no-repeat
+        background-position: center center
+        background-color: $border-color
+        background-image: url('~/src/assets/icons/Union.svg')
         span
           display: none
           position: absolute
+          z-index: 2
+          opacity: 0.5
+          height: 130px
+          width: 130px
+          border-radius: 50%
         .avatar
           position: absolute
           z-index: 1
@@ -65,6 +74,8 @@
       flex-direction: column
       > div
         @extend %form-layout
+        align-items: flex-start
+        padding-bottom: 0
         span
           color: $primary
           font-weight: 500

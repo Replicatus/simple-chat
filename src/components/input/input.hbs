@@ -1,13 +1,11 @@
-<div class="input {{class}} {{#if error}}error{{/if}}">
+
     <div class="input__control">
         <div class="input__slot">
             <label
                 {{#if id}} for="{{id}}" {{/if}}
                            class="input {{labelClass}}"
             >
-
                     {{label}}
-
             </label>
             <input
                     type="{{type}}"
@@ -15,7 +13,7 @@
                     name="{{name}}"
                     value="{{value}}"
                     placeholder="{{placeholder}}"
-                {{disabled}}
+                    {{#if disabled}}disabled{{/if}}
                     autocomplete="off"
             >
         </div>
@@ -23,4 +21,3 @@
             <span class="error">{{errorText}}</span>
         </div>
     </div>
-</div>
