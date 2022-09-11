@@ -15,19 +15,17 @@ export class Login extends Block {
     protected async savePassword() {
         const result: unknown[] = [];
         let valid = false;
+        let beErrorValid = false;
         if (Array.isArray(this.children.inputs)) {
             for (const input of this.children.inputs) {
                 if (input instanceof Input)
-                    await input.checkValue()
-                        .then((data) => {
-                            valid = !!data;
-                        })
-                        .catch((e) => {
-                            console.error('err', e)
-                            valid = false
-                        })
+                {
+                    valid = !!(await input.checkValue());
+                    if (!valid && !beErrorValid)
+                        beErrorValid = true
+                }
             }
-            if (!valid)
+            if (!valid || beErrorValid)
                 return;
             this.children.inputs.forEach((el: any) => {
                 const value = el.getValue();
