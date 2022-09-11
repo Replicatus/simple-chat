@@ -1,6 +1,7 @@
 import Block from "../../utils/Block";
 
-import template from "./Main.hbs"
+import template from "./Main.hbs";
+import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
 import {Link} from "../../components/link";
 import {Input} from "../../components/input";
 import {ChatItem} from "../../components/chatItem";
@@ -204,9 +205,9 @@ export class Main extends Block {
                 })
                 this.props.chatInfo = {
                     ...chatInfo,
-                    messages: chatInfo.messages
+                    messages: chatInfo.messages.map((el: Message) => ({...el, isYourMessage: this.props.userId === el.senderId}))
                 };
-                this.children.openedChat = this.props.chatInfo.messages;
+                this.children.openedChat.getNewMessages(this.props.chatInfo.messages);
             }
         }
     }
@@ -217,6 +218,7 @@ export class Main extends Block {
                 id: id,
                 name: `Chat number ${index}`,
                 chosen: false,
+                avatar: avatarDefault,
                 unreadCount: index % 2 ? index : null,
                 events: {
                     'click': () => {
@@ -226,7 +228,7 @@ export class Main extends Block {
                 lastMessage: {
                     id: nanoid(6),
                     message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
-                    date: '12:06',
+                    date: new Date(),
                     senderId: index,
                     status: 'SENT'
                 }
@@ -248,7 +250,7 @@ export class Main extends Block {
         this.children.filterInput = new Input({
             label: 'Поиск',
             name: 'search',
-            className: 'chats-list-section__top-input',
+            classes: ['chats-list-section__top-input'],
             value: '',
         });
 

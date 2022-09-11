@@ -54,7 +54,7 @@ export class Register extends Block {
             this.children.inputs = this.props.fieldsRegisterPage.map((el:formField) => {
                 return new Input({
                     ...el,
-                    className: 'enter dense',
+                    classes: ['enter', 'dense'],
                 })
             });
         }
@@ -65,7 +65,7 @@ export class Register extends Block {
         });
 
         this.children.buttonRegister = new Button({
-            className: 'button',
+            classes: ['button'],
             label: 'Зарегистрироваться',
             style: "max-width: 280px;",
             events: {

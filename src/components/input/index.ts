@@ -1,8 +1,9 @@
 import template from './input.hbs';
 import Block from "../../utils/Block";
+import {Nullable, StringOrNumber} from "../../types";
 
 interface InputProps {
-    className?: string[] | string;
+    classes?: string[];
     labelClass?: string;
     id?: string;
     label?: string;
@@ -10,11 +11,11 @@ interface InputProps {
     name?: string;
     value?: unknown;
     placeholder?: string;
-    disabled?: string | boolean;
+    disabled?: boolean;
     errorText?: string;
     error?: boolean;
     events?: {},
-    rules?: Function[];
+    rules?: Array<(args: Nullable<StringOrNumber>) => boolean | string>;
 }
 type ReturnedValueFromInput = { name: string, value: string | number | null } | null;
 
@@ -34,10 +35,8 @@ export class Input extends Block<InputProps> {
             }
         });
         if (this.element) {
-            if (Array.isArray(props.className))
-                this.element.classList.add('input', [...props.className].join(', '));
-            else if (props.className)
-                this.element.classList.add('input', ...props.className.split(' ').map(el => `${el}`));
+            if (Array.isArray(props.classes))
+                this.element.classList.add('input', ...props.classes);
             else
                 this.element.classList.add('input');
             if (props.error)
@@ -49,8 +48,8 @@ export class Input extends Block<InputProps> {
         if (Array.isArray(this.props.rules)) {
             const input: any = e.target;
             let res;
-            for (const func of this.props.rules) {
-                res = func(input.value);
+            for (const rule of this.props.rules) {
+                res = rule(input.value);
                 if (res === false || typeof res === 'string')
                 {
                     this.setProps({
@@ -81,9 +80,9 @@ export class Input extends Block<InputProps> {
         return new Promise((resolve,_) => {
             if (Array.isArray(this.props.rules)) {
                 let res: string | boolean = true;
-                for (const func of this.props.rules) {
+                for (const rule of this.props.rules) {
                     const value = this.getValue()?.value ?? null;
-                    res = func(value);
+                    res = rule(value);
                     if (res === false || typeof res === 'string')
                     {
                         this.setProps({

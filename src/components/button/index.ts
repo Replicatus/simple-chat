@@ -1,11 +1,11 @@
 import template from './button.hbs';
 import Block from "../../utils/Block";
 
-interface ButtonProps {
+export interface ButtonProps {
     style?: string;
-    className?: string[] | string;
+    classes?: string[];
     label: string;
-    type?: string;
+    type?: 'button' | 'submit';
     onclick?: () => void,
     events?: {},
     replaceNode?: boolean
@@ -15,10 +15,8 @@ export class Button extends Block<ButtonProps>{
         super('button', props);
         if (this.element){
             try {
-                if (Array.isArray(props.className))
-                    this.element.classList.add('button', [...props.className].join(', '));
-                else if (props.className)
-                    this.element.classList.add('button', ...props.className.split(' ').map(el => `${el}`));
+                if (Array.isArray(props.classes))
+                    this.element.classList.add('button', ...props.classes);
                 else
                     this.element.classList.add('button');
                 if (props.type)
