@@ -87,7 +87,7 @@ export class Profile extends Block {
             this.children.inputs = this.props.fields.map((el: formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
@@ -102,7 +102,7 @@ export class Profile extends Block {
             this.children.inputs = this.props.fieldsForPasswordPage.map((el: formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
@@ -132,14 +132,14 @@ export class Profile extends Block {
             this.children.inputs = this.props.fields.map((el:formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
         [
             {
                 name: 'buttonChange',
-                className: 'text',
+                classes: ['text'],
                 label: 'Изменить данные',
                 events: {click: () => this.editProfile()}
             },
@@ -159,23 +159,23 @@ export class Profile extends Block {
             },
             {
                 name: 'buttonChangePassword',
-                className: 'text',
+                classes: ['text'],
                 label: 'Изменить пароль',
                 events: {click: () => this.editPassword()}
             },
             {
                 name: 'buttonChangeAvatar',
-                className: 'button',
+                classes: ['button'],
                 label: 'Поменять',
                 events: {click: () => console.log('changeAvatar')}
             },
             {
                 name: 'buttonExit',
-                className: 'text error',
+                classes: ['text', 'error'],
                 label: 'Выйти',
                 events: {click: () => console.log('clicked on buttonExit'),}
             },
-        ].forEach(el => {
+        ].forEach((el: any) => {
             this.children[el.name] = new Button({
                 ...el,
                 replaceNode: true
@@ -193,7 +193,7 @@ export class Profile extends Block {
             }
         });
         this.children.dialog.children.buttonChangeAvatar = new Button({
-            className: 'button',
+            classes: ['button'],
             label: 'Поменять',
             events: {click: () => console.log('changeAvatar')},
             replaceNode: true

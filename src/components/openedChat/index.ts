@@ -16,7 +16,7 @@ export type Message = {
 }
 
 interface ChatOpenItemProps {
-    id: string | number;
+    id: string;
     chatName: string;
     callParentMethodFiles: Function;
     callParentMethodSend: Function;
@@ -52,11 +52,11 @@ export class OpenedChat extends Block<ChatOpenItemProps>{
             label: '',
             placeholder: 'Сообщение',
             name: 'message',
-            className: 'message-input',
+            classes: ['message-input'],
             value: '',
         });
         this.children.buttonFiles = new Button({
-            className: 'files-btn',
+            classes: ['files-btn'],
             label: '',
             style: "",
             events: {
@@ -65,7 +65,7 @@ export class OpenedChat extends Block<ChatOpenItemProps>{
             replaceNode: true
         });
         this.children.buttonSend = new Button({
-            className: 'send-btn',
+            classes: ['send-btn'],
             label: '',
             style: "",
             events: {
@@ -74,7 +74,7 @@ export class OpenedChat extends Block<ChatOpenItemProps>{
             replaceNode: true
         });
         this.children.buttonMenu = new Button({
-            className: 'menu-btn',
+            classes: ['menu-btn'],
             label: '',
             style: "",
             events: {},
