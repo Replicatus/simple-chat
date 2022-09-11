@@ -1,5 +1,6 @@
 import type {formField} from './types'
 import {regularExpressions} from './helpers/helpers'
+import {Nullable, StringOrNumber} from "./types";
 
 const fields: formField[] = [
     {
@@ -68,12 +69,12 @@ const fields: formField[] = [
     },
 ];
 const passwordRules = [
-    (v: any) => !!v || 'Обязательное поле',
-    (v: any) => (typeof v === 'string') && v.length >= 8 || 'Минимальное число символов 8',
-    (v: any) => (typeof v === 'string') && v.length <= 40 || 'Максимальное число символов 40',
-    (v: any) => {
+    (v: Nullable<StringOrNumber>) => !!v || 'Обязательное поле',
+    (v: Nullable<StringOrNumber>) => typeof v === "string" && v.length >= 8  || 'Минимальное число символов 8',
+    (v: Nullable<StringOrNumber>) =>  typeof v === "string" && v.length <= 40 || 'Максимальное число символов 40',
+    (v: Nullable<StringOrNumber>) => {
         const pattern = regularExpressions.password
-        return typeof v === 'string' && pattern.test(v) || 'Неверно указан пароль'
+        return  typeof v === "string" && pattern.test(v) || 'Неверно указан пароль'
     },
 ]
 

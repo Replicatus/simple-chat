@@ -5,7 +5,7 @@ import {Input} from "../../components/input";
 import template from "./Profile.hbs"
 import Avatar from "../../components/avatar";
 import {Dialog} from "../../components/dialog";
-
+import img from '../../assets/icons/Union.svg'
 import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
 import {formField} from "../../types";
 
@@ -87,7 +87,7 @@ export class Profile extends Block {
             this.children.inputs = this.props.fields.map((el: formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
@@ -102,7 +102,7 @@ export class Profile extends Block {
             this.children.inputs = this.props.fieldsForPasswordPage.map((el: formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
@@ -113,14 +113,8 @@ export class Profile extends Block {
         this.props.changeAvatar = !this.props.changeAvatar;
     }
     init() {
-         const imageUrl = new URL(
-            '/src/assets/icons/Union.svg',
-            // @ts-ignore
-            import.meta.url
-        );
-        // console.log(import.meta.url, imageUrl)
         this.children.avatar = new Avatar({
-            url: `${imageUrl}`,
+            url: img,
             withoutWrapper: false,
             label: 'Поменять аватар',
             // path: `/src/assets/icons/Union.svg`,
@@ -132,14 +126,14 @@ export class Profile extends Block {
             this.children.inputs = this.props.fields.map((el:formField) => {
                 return new Input({
                     ...el,
-                    className: 'profile',
+                    classes: ['profile'],
                 })
             });
         }
         [
             {
                 name: 'buttonChange',
-                className: 'text',
+                classes: ['text'],
                 label: 'Изменить данные',
                 events: {click: () => this.editProfile()}
             },
@@ -159,23 +153,23 @@ export class Profile extends Block {
             },
             {
                 name: 'buttonChangePassword',
-                className: 'text',
+                classes: ['text'],
                 label: 'Изменить пароль',
                 events: {click: () => this.editPassword()}
             },
             {
                 name: 'buttonChangeAvatar',
-                className: 'button',
+                classes: ['button'],
                 label: 'Поменять',
                 events: {click: () => console.log('changeAvatar')}
             },
             {
                 name: 'buttonExit',
-                className: 'text error',
+                classes: ['text', 'error'],
                 label: 'Выйти',
                 events: {click: () => console.log('clicked on buttonExit'),}
             },
-        ].forEach(el => {
+        ].forEach((el: any) => {
             this.children[el.name] = new Button({
                 ...el,
                 replaceNode: true
@@ -193,7 +187,7 @@ export class Profile extends Block {
             }
         });
         this.children.dialog.children.buttonChangeAvatar = new Button({
-            className: 'button',
+            classes: ['button'],
             label: 'Поменять',
             events: {click: () => console.log('changeAvatar')},
             replaceNode: true

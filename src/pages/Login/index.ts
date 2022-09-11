@@ -34,7 +34,7 @@ export class Login extends Block {
                 result.push(value)
                 el.setProps({
                     value: value.value,
-                    disabled: true
+                    disabled: false
                 });
             });
         }
@@ -52,7 +52,7 @@ export class Login extends Block {
             this.children.inputs = this.props.fieldsLoginPage.map((el:formField) => {
                 return new Input({
                     ...el,
-                    className: 'enter',
+                    classes: ['enter'],
                 })
             });
         }
@@ -63,7 +63,7 @@ export class Login extends Block {
         });
 
         this.children.buttonAuth = new Button({
-            className: 'button',
+            classes: ['button'],
             label: 'Авторизоваться',
             style: "max-width: 280px;",
             events: {
