@@ -4,9 +4,12 @@
             <h2>Вход</h2>
         </div>
         <form>
+            {{#if errorLogin}}
+                <div class="error-text mb-4 text-center">Неверный логин или пароль</div>
+            {{/if}}
             {{#each inputs}}
                 <div>
-                    <span>
+                    <span >
                         {{#with (lookup ../fieldsLoginPage @key)~}}
                             {{text}}
                         {{/with}}

@@ -2,6 +2,7 @@ const METHODS = {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
+    PATCH: 'PATCH',
     DELETE: 'DELETE',
 } as const;
 
@@ -22,34 +23,36 @@ function queryStringify(data : Record<string, any> | undefined | null) {
 }
 type Options = {
     headers?: Record<string, any>,
-    data?: {},
-    method: keyof typeof METHODS | Lowercase<keyof typeof METHODS>,
+    data?: Record<string, any>,
+    method?: keyof typeof METHODS | Lowercase<keyof typeof METHODS>,
     timeout?: number,
-    retries: number
+    retries?: number
 }
-class HTTPTransport {
-    get = (url: string, options: Options) => {
+export class HTTPTransport {
+    static API_URL = 'https://ya-praktikum.tech/api/v2';
+    protected endpoint: string;
+    protected defaultTimeout: number = 5000;
+    constructor(endpoint: string) {
+        this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
+    }
+    public get (path: string, options?: Options) : Promise<XMLHttpRequest> {
 
-        return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+        return this.request(this.endpoint + path, { ...options, method: METHODS.GET }, options?.timeout ?? this.defaultTimeout);
     };
-    post = (url: string, options: Options ) => {
+    public post  (path: string, options?: Options ) : Promise<XMLHttpRequest> {
 
-        return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+        return this.request(this.endpoint + path, { ...options, method: METHODS.POST }, options?.timeout ?? this.defaultTimeout);
     };
-    put = (url: string, options: Options ) => {
+    public put(path: string, options: Options ) : Promise<XMLHttpRequest>  {
 
-        return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+        return this.request(this.endpoint + path, { ...options, method: METHODS.PUT }, options?.timeout ?? this.defaultTimeout);
     };
-    delete = (url: string, options: Options ) => {
+    public delete (path: string, options: Options ) : Promise<XMLHttpRequest>{
 
-        return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+        return this.request(this.endpoint + path, { ...options, method: METHODS.DELETE }, options?.timeout ?? this.defaultTimeout);
     };
-    // PUT, POST, DELETE
 
-    // options:
-    // headers — obj
-    // data — obj
-    request = (url: string, options: Options & {method :string}, timeout = 5000) => {
+    private request (url: string, options: Options & {method :string}, timeout = 5000): Promise<XMLHttpRequest> {
         return new Promise((res, rej) => {
             const xhr = new XMLHttpRequest();
             setTimeout(() => {
@@ -67,7 +70,7 @@ class HTTPTransport {
             const handleError = (err: any) => {
                 throw new Error(err)
             };
-
+            xhr.withCredentials = true;
             xhr.onabort = handleError;
             xhr.onerror = handleError;
             xhr.ontimeout = handleError;
@@ -80,7 +83,7 @@ class HTTPTransport {
 }
 export default function fetchWithRetry(url: string, options: Options) {
     let { retries, method } = options;
-    const transport = new HTTPTransport();
+    const transport = new HTTPTransport(url);
     if (!retries)
         retries = 1;
     if (
@@ -96,7 +99,7 @@ export default function fetchWithRetry(url: string, options: Options) {
     else
         return;
     function onError(err: Error){
-        const triesLeft = retries - 1;
+        const triesLeft = retries! - 1;
         if(!triesLeft){
             throw err;
         }

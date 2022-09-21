@@ -1,19 +1,27 @@
 import Block from "../../utils/Block";
 import {Button} from "../../components/button";
 import {Input} from "../../components/input";
-
+import { withStore } from '../../utils/Store';
 import template from "./Profile.hbs"
 import Avatar from "../../components/avatar";
 import {Dialog} from "../../components/dialog";
 import img from '../../assets/icons/Union.svg'
 import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
 import {formField} from "../../types";
-
-export class Profile extends Block {
+import SideMenu from "../../blocks/side-menu";
+import {fields, fieldsForPasswordPage} from "../../consts";
+class ProfileBase extends Block {
 
     // protected form : HTMLFormElement | null = null;
     constructor(props: {}) {
-        super('section', {...props, changePassword: false, changeProfile: false, changeAvatar: false});
+        super('section', {
+            ...props,
+            fieldsForPasswordPage: fieldsForPasswordPage,
+            fields: fields,
+            changePassword: false,
+            changeProfile: false,
+            changeAvatar: false
+        });
     }
 
     protected editProfile() {
@@ -79,8 +87,8 @@ export class Profile extends Block {
                 });
             });
         }
-        if (this.props.fields && Array.isArray(this.props.fields)) {
-            this.children.inputs = this.props.fields.map((el: formField) => {
+        if (fields && Array.isArray(fields)) {
+            this.children.inputs = fields.map((el: formField) => {
                 return new Input({
                     ...el,
                     classes: ['profile'],
@@ -94,8 +102,8 @@ export class Profile extends Block {
 
     protected editPassword() {
         console.log('editPassword')
-        if (this.props.fieldsForPasswordPage && Array.isArray(this.props.fieldsForPasswordPage)) {
-            this.children.inputs = this.props.fieldsForPasswordPage.map((el: formField) => {
+        if (fieldsForPasswordPage && Array.isArray(fieldsForPasswordPage)) {
+            this.children.inputs = fieldsForPasswordPage.map((el: formField) => {
                 return new Input({
                     ...el,
                     classes: ['profile'],
@@ -117,9 +125,10 @@ export class Profile extends Block {
             events: {
               click: () => this.editAvatar(),
             }
-        })
-        if (this.props.fields && Array.isArray(this.props.fields)) {
-            this.children.inputs = this.props.fields.map((el:formField) => {
+        });
+        this.children.sideMenu = new SideMenu()
+        if (fields && Array.isArray(fields)) {
+            this.children.inputs = fields.map((el:formField) => {
                 return new Input({
                     ...el,
                     classes: ['profile'],
@@ -200,3 +209,5 @@ export class Profile extends Block {
         return this.compile(template, this.props)
     }
 }
+const withUser = withStore((state) => ({ ...state.user }));
+export const Profile = withUser(ProfileBase)

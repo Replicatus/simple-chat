@@ -2,18 +2,21 @@ import Block from "../../utils/Block";
 import {Button} from "../../components/button";
 import {Input} from "../../components/input";
 import template from "./Login.hbs"
-import {Link} from "../../components/link";
-import {formField} from "../../types";
+import {RouterLink} from "../../components/link";
+import {formField, Nullable} from "../../types";
+import {fieldsLoginPage} from "../../consts";
+import {SigninData} from "../../api/AuthAPI";
+import AuthController from "../../controllers/AuthController";
+import {withStore} from "../../utils/Store";
 
-export class Login extends Block {
+class BaseLogin extends Block {
 
-    // protected form : HTMLFormElement | null = null;
     constructor(props: {}) {
-        super('section', props);
+        super('section', {...props, fieldsLoginPage: fieldsLoginPage});
     }
 
     protected async savePassword() {
-        const result: unknown[] = [];
+        const result: {value: Nullable<string | number>, name: string}[] = [];
         let valid = false;
         let beErrorValid = false;
         if (Array.isArray(this.children.inputs)) {
@@ -36,8 +39,13 @@ export class Login extends Block {
                 });
             });
         }
-        this.props.changePassword = false;
-        console.log('saved password', result);
+
+        const data = result.reduce((acc, el) => {
+            if (el.name)
+                acc[el.name] = el.value;
+            return acc
+        }, {} as any);
+        await AuthController.signin(data as SigninData);
     }
 
     protected editAvatar() {
@@ -45,7 +53,6 @@ export class Login extends Block {
     }
 
     init() {
-
         if (this.props.fieldsLoginPage && Array.isArray(this.props.fieldsLoginPage)) {
             this.children.inputs = this.props.fieldsLoginPage.map((el:formField) => {
                 return new Input({
@@ -55,9 +62,9 @@ export class Login extends Block {
             });
         }
 
-        this.children.link = new Link({
+        this.children.link = new RouterLink({
             label: "Нет аккаунта?",
-            href: "Register"
+            to: "/sign-up"
         });
 
         this.children.buttonAuth = new Button({
@@ -78,7 +85,11 @@ export class Login extends Block {
     }
 
     render() {
-        this.element!.classList.add('enter-page')
+        this.element!.classList.add('enter-page');
+        console.log(111,this.props,this.props.errorlogin)
+        debugger
         return this.compile(template, this.props)
     }
 }
+export const withUser = withStore((state) => ({ ...state.user }));
+export const Login = withUser(BaseLogin)

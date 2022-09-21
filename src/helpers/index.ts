@@ -2,13 +2,13 @@ type Indexed<T = unknown> = {
     [key in string]: T;
 };
 
-function merge(lhs: Indexed, rhs: Indexed): Indexed {
+function index(lhs: Indexed, rhs: Indexed): Indexed {
     const result: Indexed = lhs;
     Object.entries(rhs).forEach(
         ([key, value]) => {
             if (Object.prototype.hasOwnProperty.call(result, key)) {
                 if (typeof value === 'object') {
-                    result[key] = merge(result[key] as Indexed, value as Indexed);
+                    result[key] = index(result[key] as Indexed, value as Indexed);
                 }
             } else {
                 result[key] = value;
@@ -26,7 +26,7 @@ function set(object: Indexed | unknown, path: string, value: unknown): Indexed |
     const newObj = path.split('.').reduceRight<Indexed>((acc, key) => ({
         [key]: acc,
     }), value as any);
-    return merge(object as Indexed, newObj);
+    return index(object as Indexed, newObj);
 }
 
 type PlainObject<T = any> = {
@@ -141,27 +141,6 @@ function cloneDeep<T extends object = object>(obj: T) {
         throw new Error(`Unable to copy object: ${item}`);
     })(obj);
 }
-// type StringIndexed = Record<string, any>;
-//
-// function getPairs (obj : StringIndexed, keys: unknown[] = []) : any[]{
-//     return Object.entries(obj).reduce((pairs, [key, value])=> {
-//         if (typeof value === 'object')
-//             pairs.push(...getPairs(value, [...keys, key]));
-//         else
-//             pairs.push([[...keys, key], encodeURIComponent(String(value))]);
-//         return pairs;
-//     }, [] as any[])
-// }
-//
-// function queryStringify(obj : StringIndexed) : string | never {
-//     if (!isPlainObject(obj))
-//         throw new Error('input must be an object');
-//     const result = getPairs(obj)
-//         .map(([[key0, ...keysRest], value]) =>
-//             `${key0}${keysRest.map((a: string) => `[${a}]`).join('')}=${value}`)
-//         .join('&');
-//     return result
-// }
 
 function getKey(key: string, parentKey?: string) {
     return parentKey ? `${parentKey}[${key}]` : key;
@@ -189,6 +168,6 @@ function queryString(data: PlainObject) {
     return getParams(data).map(arr => arr.join('=')).join('&');
 }
 
-export {set, merge, isEqual, cloneDeep, queryString}
+export {set, index, isEqual, cloneDeep, queryString}
 
 

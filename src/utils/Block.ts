@@ -1,8 +1,8 @@
 import {EventBus} from "./EventBas";
 import {nanoid} from "nanoid";
+import {isEqual} from "../helpers";
 
 type Children = Record<string, Block | Block[]>;
-
 // Нельзя создавать экземпляр данного класса
 class Block<P extends Record<string, any> = any> {
     static EVENTS = {
@@ -95,9 +95,7 @@ class Block<P extends Record<string, any> = any> {
     }
 
     componentDidUpdate(oldProps: P, newProps: P) {
-        const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps;
-        const stringNewProps = newProps ? Object.entries(newProps).join(' ') : newProps;
-        if (stringNewProps !== stringOldProps)
+        if (!isEqual(oldProps, newProps))
             return true;
     }
 
@@ -115,10 +113,10 @@ class Block<P extends Record<string, any> = any> {
 
     _render() {
         const block = this.render();
+
         if (this._element) {
             this._removeEvents();
             this._element.innerText = '';
-
             if (this.props.withoutWrapper) {
                 this._element = block.firstElementChild as HTMLElement;
             } else

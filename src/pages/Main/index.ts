@@ -2,7 +2,7 @@ import Block from "../../utils/Block";
 
 import template from "./Main.hbs";
 import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
-import {Link} from "../../components/link";
+import {RouterLink} from "../../components/link";
 import {Input} from "../../components/input";
 import {ChatItem} from "../../components/chatItem";
 import {nanoid} from "nanoid";
@@ -241,8 +241,8 @@ export class Main extends Block {
             avatar: ''
         });
 
-        this.children.profileLink = new Link({
-            href: '/Profile',
+        this.children.profileLink = new RouterLink({
+            to: '/settings',
             label: 'Профиль ⟩',
             class: 'profile-link'
         });

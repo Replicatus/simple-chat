@@ -1,30 +1,72 @@
 .d-flex
-  display: flex!important
+  display: flex !important
+
 .flex-row
-  flex-direction: row!important
+  flex-direction: row !important
+
 .flex-column
-  flex-direction: column!important
+  flex-direction: column !important
+
 .justify-center
-  justify-content: center!important
+  justify-content: center !important
+
 .justify-start
-  justify-content: flex-start!important
+  justify-content: flex-start !important
+
 .justify-end
-  justify-content: flex-end!important
+  justify-content: flex-end !important
+
 .justify-space-between
-  justify-content: space-between!important
+  justify-content: space-between !important
+
 .align-center
-  align-items: center!important
+  align-items: center !important
+
 .align-start
-  align-items: flex-start!important
+  align-items: flex-start !important
+
 .align-end
-  align-items: flex-end!important
+  align-items: flex-end !important
+
 .flex-0
   flex: 0 0 100%
+
 .flex-1
   flex: 1 0 100%
+
 .border-zero
-  border: 0!important
+  border: 0 !important
+
 .help-text
   font-size: $font-size-small
   line-height: $font-size-small
   color: $secondary
+
+.error-text
+  color: $error
+  font-size: $font-size-big
+  line-height: $font-size-big
+
+.text-center
+  text-align: center !important
+$margins: (1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12)
+@mixin margins-modifiers
+  @each $name, $value in $margins
+    .mb-#{$name}
+      margin-bottom: calc(#{$value} * 4px) !important
+    .mt-#{$name}
+      margin-top: calc(#{$value} * 4px) !important
+    .ml-#{$name}
+      margin-left: calc(#{$value} * 4px) !important
+    .mr-#{$name}
+      margin-right: calc(#{$value} * 4px) !important
+    .pb-#{$name}
+      padding-bottom: calc(#{$value} * 4px) !important
+    .pt-#{$name}
+      padding-top: calc(#{$value} * 4px) !important
+    .pl-#{$name}
+      padding-left: calc(#{$value} * 4px) !important
+    .pr-#{$name}
+      padding-right: calc(#{$value} * 4px) !important
+@include margins-modifiers
+
