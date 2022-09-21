@@ -86,8 +86,8 @@ class BaseLogin extends Block {
 
     render() {
         this.element!.classList.add('enter-page');
-        console.log(111,this.props,this.props.errorlogin)
-        debugger
+        console.log(111,this.props,this.props.errorLogin)
+        // debugger
         return this.compile(template, this.props)
     }
 }

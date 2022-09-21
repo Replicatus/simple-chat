@@ -42,7 +42,7 @@ class AuthController {
             if (res.status >= 400)
                 throw new Error(JSON.parse(res.response)?.reason)
             console.log('res', res)
-            const user = res.response as User
+            const user = JSON.parse(res.response) as User
             store.set('user', user);
         } catch (e) {
             router.go('/');
