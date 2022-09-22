@@ -3,17 +3,18 @@ type Indexed<T = unknown> = {
 };
 
 function index(lhs: Indexed, rhs: Indexed): Indexed {
-    const result: Indexed = lhs;
-    Object.entries(rhs).forEach(
-        ([key, value]) => {
-            if (Object.prototype.hasOwnProperty.call(result, key)) {
-                if (typeof value === 'object') {
-                    result[key] = index(result[key] as Indexed, value as Indexed);
+    const result: Indexed = lhs ?? {};
+    if (rhs)
+        Object.entries(rhs).forEach(
+            ([key, value]) => {
+                if (Object.prototype.hasOwnProperty.call(result, key)) {
+                    if (typeof value === 'object') {
+                        result[key] = index(result[key] as Indexed, value as Indexed);
+                    }
+                } else {
+                    result[key] = value;
                 }
-            } else {
-                result[key] = value;
-            }
-        })
+            })
 
     return result;
 }
@@ -123,7 +124,7 @@ function cloneDeep<T extends object = object>(obj: T) {
         // Handle:
         // * Object
         if (item instanceof Object) {
-            let copy: Record<string | symbol, any> = {} ;
+            let copy: Record<string | symbol, any> = {};
 
             // Handle:
             // * Object.symbol
@@ -133,7 +134,7 @@ function cloneDeep<T extends object = object>(obj: T) {
             // Handle:
             // * Object.name (other)
             // @ts-ignore
-            Object.keys(item).forEach((k : string) => (copy[k] = _cloneDeep(item[k])));
+            Object.keys(item).forEach((k: string) => (copy[k] = _cloneDeep(item[k])));
 
             return copy;
         }
@@ -149,7 +150,7 @@ function getKey(key: string, parentKey?: string) {
 function getParams(data: PlainObject | [], parentKey?: string) {
     const result: [string, string][] = [];
 
-    for(const [key, value] of Object.entries(data)) {
+    for (const [key, value] of Object.entries(data)) {
         if (isArrayOrObject(value)) {
             result.push(...getParams(value, getKey(key, parentKey)));
         } else {

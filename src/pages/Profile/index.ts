@@ -117,7 +117,8 @@ class ProfileBase extends Block {
     protected editAvatar(){
         this.props.changeAvatar = !this.props.changeAvatar;
     }
-    init() {
+    async init() {
+        await AuthController.fetchUser();
         this.children.avatar = new Avatar({
             url: img,
             withoutWrapper: false,

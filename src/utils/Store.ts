@@ -10,8 +10,8 @@ export class Store extends EventBus {
     private state: any = {};
 
     public set(keypath: string, data: unknown) {
-        set(this.state, keypath, data);
         // debugger
+        set(this.state, keypath, data);
         this.emit(StoreEvents.Updated, this.getState());
     }
 
@@ -25,13 +25,13 @@ const store = new Store();
 export function withStore(mapStateToProps: (state: any) => any) {
 
     return function wrap(Component: ComponentConstructable<any>): ComponentConstructable<any> {
-        let previousState: any;
+
 
 
         return class WithStore extends Component {
 
             constructor(props: any) {
-
+                let previousState: any;
                 previousState = mapStateToProps(store.getState());
 
                 super({...props, ...previousState});
@@ -42,7 +42,7 @@ export function withStore(mapStateToProps: (state: any) => any) {
                     if (isEqual(previousState, stateProps))
                         return;
                     previousState = stateProps;
-                    console.log('!',stateProps?.errorLogin)
+                    // console.log('!',stateProps?.errorLogin)
                     this.setProps({...stateProps});
                 });
             }

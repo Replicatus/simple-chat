@@ -2,7 +2,7 @@ import pages from "./pages";
 import Router from './utils/Router';
 import AuthController from "./controllers/AuthController";
 
-enum Routes {
+export enum Routes {
     Index = '/',
     Register = '/sign-up',
     Profile = '/settings',
@@ -31,12 +31,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     try {
         await AuthController.fetchUser();
         Router.start();
-        // if (!isProtectedRoute) {
-        //     Router.go(Routes.Profile)
-        // }
+        if (!isProtectedRoute) {
+            console.log(333)
+            Router.go(Routes.Profile)
+        }
     } catch (e) {
         Router.start();
-
+        console.error(4444, e)
         if (isProtectedRoute) {
             Router.go(Routes.Index);
         }
