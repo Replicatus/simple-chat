@@ -117,8 +117,8 @@ class ProfileBase extends Block {
     protected editAvatar(){
         this.props.changeAvatar = !this.props.changeAvatar;
     }
-    async init() {
-        await AuthController.fetchUser();
+     init() {
+        AuthController.fetchUser();
         this.children.avatar = new Avatar({
             url: img,
             withoutWrapper: false,
@@ -131,9 +131,10 @@ class ProfileBase extends Block {
         this.children.sideMenu = new SideMenu()
         if (fields && Array.isArray(fields)) {
             this.children.inputs = fields.map((el:formField) => {
+                console.log(el.name, ' - ',this.props[el.name])
                 return new Input({
                     ...el,
-                    value: this.props[el.name],
+                    value: this.props[el.name] ?? '',
                     classes: ['profile'],
                 })
             });
@@ -209,6 +210,7 @@ class ProfileBase extends Block {
 
     render() {
         this.element!.classList.add('profile-page')
+        console.log(this.props.email)
         return this.compile(template, this.props)
     }
 }

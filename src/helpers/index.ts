@@ -3,8 +3,8 @@ type Indexed<T = unknown> = {
 };
 
 function index(lhs: Indexed, rhs: Indexed): Indexed {
-    const result: Indexed = lhs ?? {};
-    if (rhs)
+    const result: Indexed = lhs;
+    if (typeof rhs === 'object' && rhs)
         Object.entries(rhs).forEach(
             ([key, value]) => {
                 if (Object.prototype.hasOwnProperty.call(result, key)) {

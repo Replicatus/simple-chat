@@ -44,18 +44,14 @@ class AuthController {
                 throw new Error(JSON.parse(res.response)?.reason)
             // console.log('res', res.response)
             const user = JSON.parse(res.response) as User
-            console.log('user', user)
             store.set('user', user);
         } catch (e) {
+            console.error('fetchUser', e)
             switch (window.location.pathname) {
                 case Routes.Index:
                 case Routes.Register:
-                {
-                    console.error('!!!', e)
                     break;
-                }
                 default: {
-                    console.error(222, e)
                     router.go('/');
                     break;
                 }
@@ -66,6 +62,8 @@ class AuthController {
     public async logout() {
         try {
             await this.api.logout();
+            store.set('user.errorLogin', '');
+            store.set('user.errorRegistration', '');
             router.go('/');
         } catch (e: any) {
             console.error('logout ', e);

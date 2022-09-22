@@ -32,12 +32,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         await AuthController.fetchUser();
         Router.start();
         if (!isProtectedRoute) {
-            console.log(333)
             Router.go(Routes.Profile)
         }
     } catch (e) {
         Router.start();
-        console.error(4444, e)
         if (isProtectedRoute) {
             Router.go(Routes.Index);
         }
