@@ -4,10 +4,7 @@
             <h2>Вход</h2>
         </div>
         <form>
-
-            {{#if errorLogin}}
-                <div class="error-text mb-4 text-center">Неверный логин или пароль</div>
-            {{/if}}
+            <div class="error-text mb-4 text-center">  {{#if errorLogin}}Неверный логин или пароль       {{/if}}</div>
             {{#each inputs}}
                 <div>
                     <span >

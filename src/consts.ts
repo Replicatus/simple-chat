@@ -194,7 +194,7 @@ export const fieldsRegisterPage: formField[] = [
         key: 'input6',
         text: 'Пароль',
         type: 'password',
-        name: 'newPassword',
+        name: 'password',
         value: '',
         rules: passwordRules
     },

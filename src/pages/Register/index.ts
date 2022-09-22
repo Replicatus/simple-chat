@@ -42,7 +42,7 @@ export class Register extends Block {
                 acc[el.name] = el.value;
             return acc
         }, {} as any);
-        console.log('saved register Data', result);
+        console.log('saved register Data', data);
         await AuthController.signup(data as SignupData)
     }
 

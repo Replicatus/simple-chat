@@ -77,7 +77,7 @@ export class HTTPTransport {
             if (['GET', 'DELETE'].includes(options.method))
                 xhr.send();
             else
-                xhr.send(JSON.stringify(options.data));
+                xhr.send(options.data instanceof FormData ? options.data: JSON.stringify(options.data));
         })
     };
 }

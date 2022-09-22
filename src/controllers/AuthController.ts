@@ -15,7 +15,7 @@ class AuthController {
             if (res.status >= 400) {
                 throw new Error(JSON.parse(res.response)?.reason)
             }
-            router.go('/profile');
+            router.go('/settings');
         } catch (e: any) {
             console.error('signin ', e.message,)
             store.set('user.errorLogin', e.message);
@@ -29,7 +29,7 @@ class AuthController {
                 throw new Error(JSON.parse(res.response)?.reason)
             await this.fetchUser();
 
-            router.go('/profile');
+            router.go('/settings');
         } catch (e: any) {
             store.set('user.errorRegistration', e.message);
             console.error('signup ', e)
@@ -52,7 +52,7 @@ class AuthController {
     public async logout() {
         try {
             await this.api.logout();
-
+            store.set('user', {});
             router.go('/');
         } catch (e: any) {
             console.error('logout ', e);

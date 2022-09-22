@@ -4,6 +4,9 @@
             <h2>Регистрация</h2>
         </div>
         <form class="register">
+            {{#if errorRegister}}
+                <div class="error-text mb-4 text-center">Неверно заполнена форма: {{errorRegister}}</div>
+            {{/if}}
             {{#each inputs}}
                 <div>
                     <span>

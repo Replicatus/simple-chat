@@ -10,6 +10,7 @@ import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
 import {formField} from "../../types";
 import SideMenu from "../../blocks/side-menu";
 import {fields, fieldsForPasswordPage} from "../../consts";
+import AuthController from "../../controllers/AuthController";
 class ProfileBase extends Block {
 
     // protected form : HTMLFormElement | null = null;
@@ -131,6 +132,7 @@ class ProfileBase extends Block {
             this.children.inputs = fields.map((el:formField) => {
                 return new Input({
                     ...el,
+                    value: this.props[el.name],
                     classes: ['profile'],
                 })
             });
@@ -172,7 +174,7 @@ class ProfileBase extends Block {
                 name: 'buttonExit',
                 classes: ['text', 'error'],
                 label: 'Выйти',
-                events: {click: () => console.log('clicked on buttonExit'),}
+                events: {click: () => AuthController.logout()}
             },
         ].forEach((el: any) => {
             this.children[el.name] = new Button({
