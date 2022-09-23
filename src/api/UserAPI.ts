@@ -23,6 +23,9 @@ export class UserAPI extends BaseAPI {
     read(id: string) {
         return this.http.get(`/${id}`);
     }
+    getSearchUser(data: {login: string}){
+        return this.http.post('/search', {data: data})
+    }
 
     updateProfile( data: UserProfile) {
         return this.http.put('/profile', {data: data})

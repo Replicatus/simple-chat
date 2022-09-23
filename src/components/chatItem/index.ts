@@ -1,18 +1,17 @@
 import template from "./chatItem.hbs";
 import Block from "../../utils/Block";
-import {nanoid} from "nanoid";
 import Avatar from "../avatar";
 
 type Message = {
-    id: string | number;
+    id: number;
     message: string;
     date: Date;
-    senderId: number | string;
+    senderId: number;
     status: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
 }
 
-interface ChatItemProps {
-    id: string;
+export interface ChatItemProps {
+    id: number;
     name: string;
     unreadCount: number | null;
     chosen: boolean;
@@ -22,7 +21,7 @@ interface ChatItemProps {
     avatar?: string;
     lastMessage?: Message | null;
 }
-const defaultProps: ChatItemProps = {
+/*const defaultProps: ChatItemProps = {
     id: nanoid(6),
     name: '',
     chosen: false,
@@ -35,10 +34,10 @@ const defaultProps: ChatItemProps = {
         senderId: nanoid(6),
         status: 'SENT'
     }
-}
+}*/
 export class ChatItem extends Block<ChatItemProps>{
-    constructor(props: ChatItemProps = defaultProps) {
-        super('div', {...defaultProps,...props});
+    constructor(props: ChatItemProps ) {
+        super('div', {...props});
         this.calcData()
     }
     calcData(){
@@ -46,8 +45,8 @@ export class ChatItem extends Block<ChatItemProps>{
     }
     init() {
         this.children.avatar = new Avatar({
-            withoutWrapper: true,
             url: this.props.avatar ? this.props.avatar : '',
+            path: this.props.avatar,
             label: '',
             width: 47,
             height: 47,

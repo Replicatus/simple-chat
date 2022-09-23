@@ -8,10 +8,10 @@ interface AvatarProps {
     path?:string;
     url?:string;
     label?:string;
+    backgroundImage?:string;
     width?: string|number;
     height?: string|number;
     events ?: {},
-    componentDidUpdate: Function
 }
 
 export default class Avatar extends Block<AvatarProps>{
@@ -32,8 +32,9 @@ export default class Avatar extends Block<AvatarProps>{
                     let imageUrl;
                     if (props.path)
                         imageUrl = defaultPath + props.path;
-                    console.log('!', imageUrl)
-                    this.element.style.backgroundImage = `url(${props.path? imageUrl :  props.url})`;
+                    // console.log('!', imageUrl)
+                    this.element.style.backgroundImage = `url(${imageUrl ? imageUrl :  props.url})`;
+                    // this.props.backgroundImage = `background-image: url(${props.path? imageUrl :  props.url})`
                 }
                 if (props.width)
                     this.element.style.width = props.width+'px';
@@ -44,12 +45,16 @@ export default class Avatar extends Block<AvatarProps>{
             }
         }
     }
-    componentDidUpdate(oldProps: AvatarProps, newProps: AvatarProps): boolean  {
-        return true
+
+    changeAvatar(path: string){
+        // this.props.backgroundImage = `background-image: url(${path})`
+        // console.error('path', path)
+        this.props.path = path
     }
 
     render() {
-        console.log('this.props.path', this.props.path)
+        // console.log('this.props.path', this.props.path)
+        this.element!.style.backgroundImage = `url(${this.props.path})`;
         return this.compile(template, this.props)
     }
 }

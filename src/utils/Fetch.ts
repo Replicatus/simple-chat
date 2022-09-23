@@ -98,7 +98,7 @@ export class HTTPTransport {
             xhr.onerror = handleError;
             xhr.ontimeout = handleError;
             // xhr.mode = 'cors';
-            if (['GET', 'DELETE'].includes(options.method))
+            if (['GET'].includes(options.method))
                 xhr.send();
             else
                 xhr.send(options.data instanceof FormData ? options.data : JSON.stringify(options.data));

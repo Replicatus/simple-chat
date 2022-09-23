@@ -1,5 +1,6 @@
 import store from '../utils/Store';
 import API, {UserAPI, UserProfile, UserPassword} from "../api/UserAPI";
+import {responseParser} from "./ChatController";
 
 class UserController {
     private readonly api: UserAPI;
@@ -17,6 +18,17 @@ class UserController {
             return response;
         }catch (e) {
             console.error('getUser ', e)
+        }
+    }
+    public async searchUser(search: string = ''){
+        try {
+            const res = await this.api.getSearchUser({
+                login: search
+            });
+            return responseParser(res);
+        }catch (e: any) {
+            console.error('searchUser ', e)
+            store.set('user.errorSearchUser', e.message);
         }
     }
 
@@ -54,7 +66,7 @@ class UserController {
             if (res.status >= 400) {
                 throw new Error(response?.reason)
             }
-            console.log(response.avatar)
+            // console.log(response.avatar)
             // debugger
             store.set('user', response);
             return response

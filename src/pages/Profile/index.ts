@@ -163,7 +163,10 @@ class ProfileBase extends Block {
             const ok = await UserController.updateAvatar(data);
             if (ok)
             {
-                this.closeDialog()
+                // this.props.avatar = ok.avatar;
+                this.closeDialog();
+                if (this.children.avatar instanceof Avatar)
+                    this.children.avatar.changeAvatar(ok.avatar)
             }
         }
     }
@@ -273,7 +276,7 @@ class ProfileBase extends Block {
 
     render() {
         this.element!.classList.add('profile-page');
-        console.log(this.props.avatar)
+        // console.log(this.props.avatar)
         return this.compile(template, this.props)
     }
 }

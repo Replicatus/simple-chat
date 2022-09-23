@@ -4,166 +4,177 @@ import template from "./Main.hbs";
 import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
 import {RouterLink} from "../../components/link";
 import {Input} from "../../components/input";
-import {ChatItem} from "../../components/chatItem";
+import {ChatItem, ChatItemProps} from "../../components/chatItem";
 import {nanoid} from "nanoid";
 import {Message, OpenedChat} from "../../components/openedChat";
+import ChatController from "../../controllers/ChatController";
+import {withStore} from "../../utils/Store";
 
-const chatInfo = {
-    id: nanoid(6),
-    chatName: 'test',
-    messages: [
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-   
-Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
-            date: '12:35',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-   
-Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
-            date: '12:35',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        }, {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        }, {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
+// const chatInfo = {
+//     id: nanoid(6),
+//     chatName: 'test',
+//     messages: [
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+//
+// Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
+//             date: '12:35',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+//
+// Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
+//             date: '12:35',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         }, {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         }, {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//
+//     ]
+// }
 
-    ]
-}
-
-export class Main extends Block {
+class BaseMain extends Block {
     constructor(props: {}) {
-        super('section', {...props, userId: 'd', chatInfo: chatInfo, propsForOpenedChat: null, chosenChat: null, openedChat: null});
+        super('section', {
+            ...props,
+            userId: 'd',
+            // chatInfo: chatInfo,
+            propsForOpenedChat: null,
+            chosenChat: null,
+            openedChat: null
+        });
     }
 
     getChosenChatInfo() {
         //TODO: здесь будет логика на получение даных по чату
+        if (this.props.chatInfo)
         return {
             ...this.props.chatInfo,
-            messages: this.props.chatInfo.messages.map((el: Message) => ({
-                ...el,
-                isYourMessage: this.props.userId === el.senderId
-            }))
+            messages: []
+            // messages: this.props.chatInfo.messages.map((el: Message) => ({
+            //     ...el,
+            //     isYourMessage: this.props.userId === el.senderId
+            // }))
         }
     }
 
@@ -212,28 +223,29 @@ export class Main extends Block {
         }
     }
     init() {
-        this.children.ch = [...Array(22)].map((_, index) => {
-            const id = nanoid(6);
-            return new ChatItem({
-                id: id,
-                name: `Chat number ${index}`,
-                chosen: false,
-                avatar: avatarDefault,
-                unreadCount: index % 2 ? index : null,
-                events: {
-                    'click': () => {
-                        this.openChat(id);
-                    }
-                },
-                lastMessage: {
-                    id: nanoid(6),
-                    message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
-                    date: new Date(),
-                    senderId: index,
-                    status: 'SENT'
-                }
-            })
-        })
+        ChatController.getChats();
+        console.log(this.props)
+        // this.children.ch = this.props.chats.forEach((el: ChatItemProps) => {
+        //     return new ChatItem({
+        //         id: el.id,
+        //         name: el.title,
+        //         chosen: false,
+        //         avatar: avatarDefault,
+        //         unreadCount: index % 2 ? index : null,
+        //         events: {
+        //             'click': () => {
+        //                 this.openChat(id);
+        //             }
+        //         },
+        //         lastMessage: {
+        //             id: nanoid(6),
+        //             message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
+        //             date: new Date(),
+        //             senderId: index,
+        //             status: 'SENT'
+        //         }
+        //     })
+        // })
         this.children.openedChat = new OpenedChat({
             ...this.getChosenChatInfo(),
             callParentMethodSend: this.sendMessage.bind(this),
@@ -262,3 +274,5 @@ export class Main extends Block {
         return this.compile(template, this.props)
     }
 }
+export const withChats = withStore((state) => ({...state.user, ...state.chats}));
+export const Main = withChats(BaseMain);
