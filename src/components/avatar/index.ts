@@ -10,7 +10,8 @@ interface AvatarProps {
     label?:string;
     width?: string|number;
     height?: string|number;
-    events ?: {}
+    events ?: {},
+    componentDidUpdate: Function
 }
 
 export default class Avatar extends Block<AvatarProps>{
@@ -27,10 +28,12 @@ export default class Avatar extends Block<AvatarProps>{
                 if (props.path || props.url)
                 {
                     //TODO: change meta url
+                    const defaultPath = `https://ya-praktikum.tech/api/v2/resources/`
                     let imageUrl;
                     if (props.path)
-                        imageUrl = import(props.path);
-                    this.element.style.backgroundImage = `url(${props.url? props.url :  imageUrl})`;
+                        imageUrl = defaultPath + props.path;
+                    console.log('!', imageUrl)
+                    this.element.style.backgroundImage = `url(${props.path? imageUrl :  props.url})`;
                 }
                 if (props.width)
                     this.element.style.width = props.width+'px';
@@ -41,7 +44,12 @@ export default class Avatar extends Block<AvatarProps>{
             }
         }
     }
+    componentDidUpdate(oldProps: AvatarProps, newProps: AvatarProps): boolean  {
+        return true
+    }
+
     render() {
+        console.log('this.props.path', this.props.path)
         return this.compile(template, this.props)
     }
 }

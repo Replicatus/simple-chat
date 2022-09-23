@@ -2,9 +2,9 @@ type Indexed<T = unknown> = {
     [key in string]: T;
 };
 
-function index(lhs: Indexed, rhs: Indexed): Indexed {
-    const result: Indexed = lhs;
-    if (typeof rhs === 'object' && rhs)
+function index(lhs: Indexed, rhs: Indexed<any>): Indexed {
+    /*const result: Indexed = lhs;
+    // if (typeof rhs === 'object' && rhs)
         Object.entries(rhs).forEach(
             ([key, value]) => {
                 if (Object.prototype.hasOwnProperty.call(result, key)) {
@@ -16,13 +16,29 @@ function index(lhs: Indexed, rhs: Indexed): Indexed {
                 }
             })
 
-    return result;
+    return result;*/
+    for (let p in rhs) {
+        if (!rhs.hasOwnProperty(p)) {
+            continue;
+        }
+
+        try {
+            if (rhs[p].constructor === Object) {
+                rhs[p] = index(lhs[p] as Indexed, rhs[p] as Indexed);
+            } else {
+                lhs[p] = rhs[p];
+            }
+        } catch (e) {
+            lhs[p] = rhs[p];
+        }
+    }
+    return lhs;
 }
 
 function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
     if (typeof path !== 'string')
         throw new Error('path must be string');
-    if (typeof object !== 'object' || !object)
+    if (typeof object !== 'object' || object === null)
         return object;
     const newObj = path.split('.').reduceRight<Indexed>((acc, key) => ({
         [key]: acc,

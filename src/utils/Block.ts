@@ -118,7 +118,7 @@ class Block<P extends Record<string, any> = any> {
             this._removeEvents();
             this._element.innerText = '';
             if (this.props.withoutWrapper) {
-                this._element = block.firstElementChild as HTMLElement;
+                this._element.replaceWith(block.firstElementChild as HTMLElement);
             } else
                 this._element.append(block);
             this._addEvents();

@@ -64,6 +64,8 @@ class AuthController {
             await this.api.logout();
             store.set('user.errorLogin', '');
             store.set('user.errorRegistration', '');
+            store.set('user.errorUpdatePassword', '');
+            store.set('user.errorUpdateProfile', '');
             router.go('/');
         } catch (e: any) {
             console.error('logout ', e);
