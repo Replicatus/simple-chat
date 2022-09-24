@@ -1,7 +1,7 @@
 import BaseAPI from "./BaseAPI";
 
 export interface DataCreateChat {
-    title: "string"
+    title: string | number
 }
 export interface ChatUser {
     id: number,

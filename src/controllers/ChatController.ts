@@ -22,6 +22,7 @@ class ChatController {
             const res = await this.api.read();
             const response = responseParser(res);
             store.set('chats', response)
+            return response
         }catch (e: any) {
             console.error('getChats ',e)
             store.set('chats.errorLoading', e.message)

@@ -1,3 +1,4 @@
+@import "profile"
 .chats
   display: flex
   flex-direction: row
@@ -28,7 +29,7 @@
         height: 54px
         display: flex
         align-items: center
-        justify-content: flex-end
+        justify-content: space-between
         .profile-link
           color: $secondary
     &__body
@@ -227,3 +228,36 @@
         align-items: center
         height: 100%
         max-height: 100%
+  .dialog-form
+    position: relative
+    //right: 20px
+    //top: 10px
+    display: flex
+    flex-direction: column
+    align-items: center
+    &__action-close
+      position: absolute
+      right: 0
+      top: 10px
+  .open-dialog-btn
+    @extend %dialog-btn
+    &.open-dialog-btn-delete
+      &:before
+        background-image: url('~/src/assets/icons/Ellipse 34delete.svg')
+%dialog-btn
+  position: relative
+  padding: 0
+  right: 0
+  height: 28px
+  width: 28px
+  background-color: $white!important
+  &:before
+      position: absolute
+      content: ''
+      top: 0px
+      left: 0
+      height: 28px
+      width: 28px
+      background-repeat: no-repeat
+      background-position: center center
+      background-image: url('~/src/assets/icons/Ellipse 34plus.svg')

@@ -35,7 +35,7 @@ export class Input extends Block<InputProps> {
             }
         });
         if (this.element) {
-            if (Array.isArray(props.classes))
+            if (Array.isArray(props.classes) && props.classes.length)
                 this.element.classList.add('input', ...props.classes);
             else
                 this.element.classList.add('input');

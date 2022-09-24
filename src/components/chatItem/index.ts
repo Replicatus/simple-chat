@@ -1,13 +1,15 @@
 import template from "./chatItem.hbs";
 import Block from "../../utils/Block";
 import Avatar from "../avatar";
+import {UserProfile} from "../../api/UserAPI";
+import {Nullable} from "../../types";
 
-type Message = {
+export type LastMessage = {
     id: number;
-    message: string;
-    date: Date;
-    senderId: number;
-    status: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
+    content: string;
+    time: Date;
+    user: UserProfile;
+    status?: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
 }
 
 export interface ChatItemProps {
@@ -16,10 +18,10 @@ export interface ChatItemProps {
     unreadCount: number | null;
     chosen: boolean;
     withoutWrapper?: boolean;
-    events?: {},
+    events?: Record<string, any>,
     messageDate?: string,
     avatar?: string;
-    lastMessage?: Message | null;
+    lastMessage?: Nullable<LastMessage>;
 }
 /*const defaultProps: ChatItemProps = {
     id: nanoid(6),
@@ -30,7 +32,7 @@ export interface ChatItemProps {
     lastMessage: {
         id: nanoid(6),
         message: '',
-        date: new Date(),
+        time: new Date(),
         senderId: nanoid(6),
         status: 'SENT'
     }
@@ -41,7 +43,7 @@ export class ChatItem extends Block<ChatItemProps>{
         this.calcData()
     }
     calcData(){
-        this.props.messageDate = this.props.lastMessage?.date.toLocaleString(['ru-RU'])
+        this.props.messageDate = this.props.lastMessage?.time.toLocaleString(['ru-RU'])
     }
     init() {
         this.children.avatar = new Avatar({

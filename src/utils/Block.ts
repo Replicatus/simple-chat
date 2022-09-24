@@ -94,7 +94,7 @@ class Block<P extends Record<string, any> = any> {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps: P, newProps: P) {
+    protected componentDidUpdate(oldProps: P, newProps: P) {
         if (!isEqual(oldProps, newProps))
             return true;
     }
