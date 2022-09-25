@@ -1,28 +1,29 @@
 import template from "./chatItem.hbs";
 import Block from "../../utils/Block";
-import {nanoid} from "nanoid";
 import Avatar from "../avatar";
-
-type Message = {
-    id: string | number;
-    message: string;
-    date: Date;
-    senderId: number | string;
-    status: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
+import {UserProfile} from "../../api/UserAPI";
+import {Nullable} from "../../types";
+import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
+export type LastMessage = {
+    id: number;
+    content: string;
+    time: Date;
+    user: UserProfile;
+    status?: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
 }
 
-interface ChatItemProps {
-    id: string;
+export interface ChatItemProps {
+    id: number;
     name: string;
     unreadCount: number | null;
     chosen: boolean;
     withoutWrapper?: boolean;
-    events?: {},
+    events?: Record<string, any>,
     messageDate?: string,
-    avatar?: string;
-    lastMessage?: Message | null;
+    avatar?: Nullable<string>;
+    lastMessage?: Nullable<LastMessage>;
 }
-const defaultProps: ChatItemProps = {
+/*const defaultProps: ChatItemProps = {
     id: nanoid(6),
     name: '',
     chosen: false,
@@ -31,23 +32,23 @@ const defaultProps: ChatItemProps = {
     lastMessage: {
         id: nanoid(6),
         message: '',
-        date: new Date(),
+        time: new Date(),
         senderId: nanoid(6),
         status: 'SENT'
     }
-}
+}*/
 export class ChatItem extends Block<ChatItemProps>{
-    constructor(props: ChatItemProps = defaultProps) {
-        super('div', {...defaultProps,...props});
+    constructor(props: ChatItemProps ) {
+        super('div', {...props, withoutWrapper: props.withoutWrapper || true});
         this.calcData()
     }
     calcData(){
-        this.props.messageDate = this.props.lastMessage?.date.toLocaleString(['ru-RU'])
+        this.props.messageDate = this.props.lastMessage?.time.toLocaleString(['ru-RU'])
     }
     init() {
         this.children.avatar = new Avatar({
-            withoutWrapper: true,
-            url: this.props.avatar ? this.props.avatar : '',
+            url: !this.props.avatar ? avatarDefault : null,
+            path: this.props.avatar ?? undefined,
             label: '',
             width: 47,
             height: 47,

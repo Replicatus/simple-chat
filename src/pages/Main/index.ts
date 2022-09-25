@@ -1,181 +1,215 @@
 import Block from "../../utils/Block";
 
 import template from "./Main.hbs";
-import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
-import {Link} from "../../components/link";
+// @ts-ignore
+
+import {RouterLink} from "../../components/link";
 import {Input} from "../../components/input";
-import {ChatItem} from "../../components/chatItem";
+// @ts-ignore
+import {ChatItem, ChatItemProps, LastMessage} from "../../components/chatItem";
 import {nanoid} from "nanoid";
 import {Message, OpenedChat} from "../../components/openedChat";
+import ChatController from "../../controllers/ChatController";
+import store, {withStore} from "../../utils/Store";
+import {Button} from "../../components/button";
+import {Nullable} from "../../types";
 
-const chatInfo = {
-    id: nanoid(6),
-    chatName: 'test',
-    messages: [
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-   
-Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
-            date: '12:35',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-   
-Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
-            date: '12:35',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdfasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'af dasdf asdf asdf asdf asdf',
-            date: '12:34',
-            senderId: 'b',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        }, {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        }, {
-            id: nanoid(6),
-            message: 'fasdf sadf asdf asdf sadf sa',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-        {
-            id: nanoid(6),
-            message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
-            date: '12:33',
-            senderId: 'd',
-            status: 'SENT'
-        },
-
-    ]
+// const chatInfo = {
+//     id: nanoid(6),
+//     chatName: 'test',
+//     messages: [
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+//
+// Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
+//             date: '12:35',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+//
+// Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
+//             date: '12:35',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdfasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'af dasdf asdf asdf asdf asdf',
+//             date: '12:34',
+//             senderId: 'b',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         }, {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         }, {
+//             id: nanoid(6),
+//             message: 'fasdf sadf asdf asdf sadf sa',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//         {
+//             id: nanoid(6),
+//             message: 'fasdf asdf asdf asdf asdf asdf asdf safasdf',
+//             date: '12:33',
+//             senderId: 'd',
+//             status: 'SENT'
+//         },
+//
+//     ]
+// }
+const defaultValues = {
+    dialogChatAdd: false,
+    dialogChatDelete: false,
+    changeChats: false,
 }
 
-export class Main extends Block {
+interface ServerChat {
+    "id": number,
+    "title": string,
+    "avatar": null | string,
+    "created_by": number,
+    "unread_count": number,
+    "last_message": Nullable<LastMessage>
+}
+class BaseMain extends Block {
     constructor(props: {}) {
-        super('section', {...props, userId: 'd', chatInfo: chatInfo, propsForOpenedChat: null, chosenChat: null, openedChat: null});
+        super('section', {
+            ...defaultValues,
+            withoutWrapper: false,
+            ...props,
+            userId: 'd',
+            // chatInfo: chatInfo,
+            propsForOpenedChat: null,
+            chosenChat: null,
+            openedChat: null
+        });
     }
 
     getChosenChatInfo() {
         //TODO: здесь будет логика на получение даных по чату
-        return {
-            ...this.props.chatInfo,
-            messages: this.props.chatInfo.messages.map((el: Message) => ({
-                ...el,
-                isYourMessage: this.props.userId === el.senderId
-            }))
-        }
+        if (this.props.chatInfo)
+            return {
+                ...this.props.chatInfo,
+                messages: []
+                // messages: this.props.chatInfo.messages.map((el: Message) => ({
+                //     ...el,
+                //     isYourMessage: this.props.userId === el.senderId
+                // }))
+            }
     }
 
     openChat(id: string | number) {
-        if (Array.isArray(this.children.ch)) {
-            const chatItem = this.children.ch.find((el: any) => el.getIdChat() === id) as ChatItem;
+        if (Array.isArray(this.children.chatsItem)) {
+            const chatItem = this.children.chatsItem.find((el: any) => el.getIdChat() === id) as ChatItem;
             const chatProps = chatItem.getChatProps();
             // chatItem.changeChosenStatus();
+            this.props.chats = this.props.chats.map((el: ChatItem) => ({...el, chosen : false}))
+            const chat = this.props.chats.find((el: ChatItem) => el.id === id);
+            chat.chosen = true;
             const props = {
-                ...this.getChosenChatInfo(),
+                // ...this.getChosenChatInfo(),
+                ...chatProps,
                 chatName: chatProps.name,
-                userId: 'd',
+                userId: this.props.user.id,
                 avatar: chatProps.avatar ?? ''
             };
             this.setProps(
@@ -189,13 +223,13 @@ export class Main extends Block {
             );
         }
     }
-    sendMessage(){
-        if (this.children.openedChat && this.children.openedChat instanceof OpenedChat)
-        {
+
+    sendMessage() {
+        if (this.children.openedChat && this.children.openedChat instanceof OpenedChat) {
             const value = this.children.openedChat.sendMessage();
             const chatInfo = this.props.chatInfo;
             console.log(value);
-            if (value){
+            if (value) {
                 chatInfo.messages.push({
                     id: nanoid(6),
                     message: value.value,
@@ -205,44 +239,137 @@ export class Main extends Block {
                 })
                 this.props.chatInfo = {
                     ...chatInfo,
-                    messages: chatInfo.messages.map((el: Message) => ({...el, isYourMessage: this.props.userId === el.senderId}))
+                    messages: chatInfo.messages.map((el: Message) => ({
+                        ...el,
+                        isYourMessage: this.props.userId === el.senderId
+                    }))
                 };
                 this.children.openedChat.getNewMessages(this.props.chatInfo.messages);
             }
         }
     }
+
+    closeDialog() {
+        this.props.changeChats = false
+    }
+
+    async addNewChat() {
+        if (!(this.children.inputDialogChat instanceof Input))
+            return;
+        const valid = !!(await this.children.inputDialogChat.checkValue());
+        if (!valid)
+            return;
+        const value = this.children.inputDialogChat.getValue();
+        await ChatController.createChat({
+            title: value?.value ?? ''
+        })
+        this.closeDialog();
+    }
+
+    async deleteChat() {
+        const chosenChat = this.props.chats.find((el: ChatItemProps ) => el.chosen)
+        if (chosenChat){
+            await ChatController.deleteChat(chosenChat.id);
+        }else
+            alert('Выберите чат для удаления')
+    }
+
+    openDialog(type: 'open' | 'delete') {
+        this.setProps({
+            changeChats: true,
+            dialogChatAdd: type === 'open',
+            dialogChatDelete: type === 'delete',
+        })
+    }
+
     init() {
-        this.children.ch = [...Array(22)].map((_, index) => {
-            const id = nanoid(6);
+        ChatController.getChats();
+        // if (this.props.chats)
+        this.children.chatsItem = this.props.chats?.map((el: ServerChat) => {
             return new ChatItem({
-                id: id,
-                name: `Chat number ${index}`,
+                id: el.id,
+                name: el.title,
                 chosen: false,
-                avatar: avatarDefault,
-                unreadCount: index % 2 ? index : null,
+                avatar: el.avatar,
+                unreadCount: el.unread_count,
                 events: {
                     'click': () => {
-                        this.openChat(id);
+                        this.openChat(el.id);
                     }
                 },
-                lastMessage: {
+                lastMessage: el.last_message as LastMessage /*{
                     id: nanoid(6),
                     message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
                     date: new Date(),
                     senderId: index,
                     status: 'SENT'
-                }
+                }*/
             })
-        })
-        this.children.openedChat = new OpenedChat({
-            ...this.getChosenChatInfo(),
-            callParentMethodSend: this.sendMessage.bind(this),
-            chatName: '',
-            avatar: ''
+        }) ?? []
+        this.children.inputDialogChat = new Input({
+            label: 'Название чата', type: 'text', name: 'text', value: '', rules: [
+                (v) => !!v || 'Обязательное поле',
+                (v) => (typeof v === 'string') && v.length > 3 || 'Минимальное число символов 3',
+                (v) => (typeof v === 'string') && v.length <= 20 || 'Максимальное число символов 20',
+            ],
+            classes: ['flex-1'],
+        });
+        this.children.closeDialog = new Button({
+            classes: ['close-dialog-btn'],
+            label: '',
+            style: "",
+            events: {
+                click: () => this.closeDialog()
+            },
+        });
+        this.children.openDialog = new Button({
+            classes: ['open-dialog-btn'],
+            label: '',
+            style: "",
+            events: {
+                click: () => this.openDialog('open')
+            },
+        });
+        this.children.openDeleteDialog = new Button({
+            classes: ['open-dialog-btn', 'open-dialog-btn-delete', 'ml-1'],
+            label: '',
+            style: "",
+            events: {
+                click: () => this.deleteChat()//this.openDialog('delete')
+            },
         });
 
-        this.children.profileLink = new Link({
-            href: '/Profile',
+        this.children.buttonAddChat = new Button({
+            classes: ['button'],
+            label: 'Добавить',
+            type: 'button',
+            events: {click: () => this.addNewChat()}
+        });
+        this.children.buttonDeleteChat = new Button({
+            classes: ['button'],
+            label: 'Добавить',
+            type: 'button',
+            events: {click: () => this.deleteChat()}
+        });
+        this.children.openedChat = new OpenedChat({
+            ...this.props.propsForOpenedChat,
+            id: this.props.propsForOpenedChat?.id ?? 0,
+            chatName: this.props.propsForOpenedChat?.name ?? '',
+            userId: this.props.user.id,
+            callParentMethodSend: this.sendMessage.bind(this),
+            // chatName: '',
+            // avatar: ''
+        })
+        // this.children.openedChat = new OpenedChat({
+        //     ...this.getChosenChatInfo(),
+        //     userId: this.props.user.id,
+        //     callParentMethodSend: this.sendMessage.bind(this),
+        //     chatName: '',
+        //     avatar: ''
+        // });
+
+        this.children.profileLink = new RouterLink({
+            to: '/settings',
             label: 'Профиль ⟩',
             class: 'profile-link'
         });
@@ -257,8 +384,42 @@ export class Main extends Block {
         super.init();
     }
 
+    protected componentDidUpdate(_oldProps: any, newProps: any) {
+        // super.componentDidUpdate(oldProps, newProps);
+        if (newProps.chats && Array.isArray(newProps.chats)){
+            this.children.chatsItem = newProps.chats.map((el: ServerChat & {chosen: boolean}) => {
+                return new ChatItem({
+                    id: el.id,
+                    name: el.title,
+                    chosen: el.chosen ?? false,
+                    avatar: el.avatar,
+                    unreadCount: el.unread_count,
+                    events: {
+                        'click': () => {
+                            this.openChat(el.id);
+                        }
+                    },
+                    lastMessage: el.last_message as LastMessage /*{
+                    id: nanoid(6),
+                    message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
+                    date: new Date(),
+                    senderId: index,
+                    status: 'SENT'
+                }*/
+                })
+            })
+        }
+        if (newProps.propsForOpenedChat)
+            store.set('openedChat', newProps.propsForOpenedChat)
+        return true
+    }
+
     render() {
         this.element!.classList.add('chats')
+        // console.log(this.props.openedChat)
         return this.compile(template, this.props)
     }
 }
+
+export const withChats = withStore((state) => ({...state}));
+export const Main = withChats(BaseMain);

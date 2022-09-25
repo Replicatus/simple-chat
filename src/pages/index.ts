@@ -9,7 +9,7 @@ import {Login} from "./Login"
 const pages: Record<string, any> = {
     Page404,
     Page500,
-    "": Main,
+    Main,
     Profile,
     Register,
     Login

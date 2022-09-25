@@ -1,10 +1,10 @@
 import type {formField} from './types'
-import {regularExpressions} from './helpers/helpers'
+import {regularExpressions} from './helpers/regularExpressions'
 import {Nullable, StringOrNumber} from "./types";
 
-const fields: formField[] = [
+export const fields: formField[] = [
     {
-        key: 'input0', text: 'Почта', name: 'email', value: 'test@test.ru', disabled: true, rules: [
+        key: 'input0', text: 'Почта', name: 'email', value: '', disabled: true, rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length >= 5 || 'Минимальное число символов 5',
             value => {
@@ -14,7 +14,7 @@ const fields: formField[] = [
         ]
     },
     {
-        key: 'input1', text: 'Логин', name: 'login', value: 'Testvalue', disabled: true,
+        key: 'input1', text: 'Логин', name: 'login', value: '', disabled: true,
         rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length > 3 || 'Минимальное число символов 3',
@@ -26,7 +26,7 @@ const fields: formField[] = [
         ]
     },
     {
-        key: 'input2', text: 'Имя', name: 'second_name', value: 'Testvalue', disabled: true,
+        key: 'input2', text: 'Имя', name: 'second_name', value: '', disabled: true,
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -36,7 +36,7 @@ const fields: formField[] = [
         ]
     },
     {
-        key: 'input3', text: 'Фамилия', name: 'first_name', value: 'Testvalue', disabled: true,
+        key: 'input3', text: 'Фамилия', name: 'first_name', value: '', disabled: true,
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -46,7 +46,7 @@ const fields: formField[] = [
         ]
     },
     {
-        key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'Testvalue', disabled: true,
+        key: 'input4', text: 'Имя в чате', name: 'display_name', value: '', disabled: true,
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -56,7 +56,7 @@ const fields: formField[] = [
         ]
     },
     {
-        key: 'input5', text: 'Телефон', name: 'phone', value: '+7916161', disabled: true,
+        key: 'input5', text: 'Телефон', name: 'phone', value: '', disabled: true,
         rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length >= 10 || 'Минимальное число символов 10',
@@ -68,7 +68,7 @@ const fields: formField[] = [
         ]
     },
 ];
-const passwordRules = [
+export const passwordRules = [
     (v: Nullable<StringOrNumber>) => !!v || 'Обязательное поле',
     (v: Nullable<StringOrNumber>) => typeof v === "string" && v.length >= 8  || 'Минимальное число символов 8',
     (v: Nullable<StringOrNumber>) =>  typeof v === "string" && v.length <= 40 || 'Максимальное число символов 40',
@@ -78,13 +78,13 @@ const passwordRules = [
     },
 ]
 
-const fieldsForPasswordPage: formField[] = [
+export const fieldsForPasswordPage: formField[] = [
     {
         key: 'input0',
         text: 'Старый пароль',
         type: 'password',
         name: 'oldPassword',
-        value: 'afsdfasA54.',
+        value: '',
         rules: passwordRules
     },
     {
@@ -92,7 +92,7 @@ const fieldsForPasswordPage: formField[] = [
         text: 'Новый пароль',
         type: 'password',
         name: 'newPassword',
-        value: 'afsdfasA54.',
+        value: '',
         rules: passwordRules
     },
     {
@@ -100,13 +100,13 @@ const fieldsForPasswordPage: formField[] = [
         text: 'Повторите новый пароль',
         type: 'password',
         name: 'newPasswordConfirmed',
-        value: 'afsdfasA54.',
+        value: '',
         rules: passwordRules
     },
 ];
-const fieldsLoginPage: formField[] = [
+export const fieldsLoginPage: formField[] = [
     {
-        key: 'input-login', label: 'Логин', type: 'text', name: 'login', value: 'test-login', rules: [
+        key: 'input-login', label: 'Логин', type: 'text', name: 'login', value: '', rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length > 3 || 'Минимальное число символов 3',
             (v) => (typeof v === 'string') && v.length <= 20 || 'Максимальное число символов 20',
@@ -121,13 +121,13 @@ const fieldsLoginPage: formField[] = [
         label: 'Пароль',
         type: 'password',
         name: 'password',
-        value: 'testPassword',
+        value: '',
         rules: passwordRules
     },
 ];
-const fieldsRegisterPage: formField[] = [
+export const fieldsRegisterPage: formField[] = [
     {
-        key: 'input0', text: 'Почта', name: 'email', value: 'test@test.ru',  rules: [
+        key: 'input0', text: 'Почта', name: 'email', value: '',  rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length >= 5 || 'Минимальное число символов 5',
             value => {
@@ -137,7 +137,7 @@ const fieldsRegisterPage: formField[] = [
         ]
     },
     {
-        key: 'input1', text: 'Логин', name: 'login', value: 'Testvalue', 
+        key: 'input1', text: 'Логин', name: 'login', value: '',
         rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length > 3 || 'Минимальное число символов 3',
@@ -149,7 +149,7 @@ const fieldsRegisterPage: formField[] = [
         ]
     },
     {
-        key: 'input2', text: 'Имя', name: 'second_name', value: 'Testvalue', 
+        key: 'input2', text: 'Имя', name: 'second_name', value: '',
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -159,7 +159,7 @@ const fieldsRegisterPage: formField[] = [
         ]
     },
     {
-        key: 'input3', text: 'Фамилия', name: 'first_name', value: 'Testvalue', 
+        key: 'input3', text: 'Фамилия', name: 'first_name', value: '',
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -169,7 +169,7 @@ const fieldsRegisterPage: formField[] = [
         ]
     },
     {
-        key: 'input4', text: 'Имя в чате', name: 'display_name', value: 'Testvalue', 
+        key: 'input4', text: 'Имя в чате', name: 'display_name', value: '',
         rules: [
             (v) => !!v || 'Обязательное поле',
             value => {
@@ -179,7 +179,7 @@ const fieldsRegisterPage: formField[] = [
         ]
     },
     {
-        key: 'input5', text: 'Телефон', name: 'phone', value: '+7916161', 
+        key: 'input5', text: 'Телефон', name: 'phone', value: '',
         rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length >= 10 || 'Минимальное число символов 10',
@@ -194,7 +194,7 @@ const fieldsRegisterPage: formField[] = [
         key: 'input6',
         text: 'Пароль',
         type: 'password',
-        name: 'newPassword',
+        name: 'password',
         value: '',
         rules: passwordRules
     },
@@ -206,21 +206,13 @@ const fieldsRegisterPage: formField[] = [
         value: '',
         rules: passwordRules
     },
-    // {label: 'Пароль', type: 'password', name: 'password', value: '', error: true, errorText: ''},
+    // {label: 'Пароль', type: 'password', name: 'password', value: ', error: true, errorText: ''},
     // {
     //     label: 'Повторите пароль',
     //     type: 'password',
     //     name: 'passwordConfirmed',
-    //     value: '',
+    //     value: ',
     //     error: true,
     //     errorText: 'Пароли не совпадают'
     // },
 ];
-export default {
-    fields,
-    fieldsForPasswordPage,
-    fieldsLoginPage,
-    fieldsRegisterPage,
-    changeUserProfile: false,
-    changeUserPassword: false,
-}

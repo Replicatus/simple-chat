@@ -1,5 +1,5 @@
 import Block from "../../utils/Block";
-import {Link} from "../../components/link";
+import { RouterLink} from "../../components/link";
 
 import  template from "./404.hbs"
 
@@ -11,9 +11,9 @@ export class Page404 extends Block{
 
     }
     init() {
-        this.children.link = new Link({
+        this.children.link = new RouterLink({
             label: "Назад к чатам",
-            href: "/"
+            to: "/"
         });
         super.init();
     }
