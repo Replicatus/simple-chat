@@ -31,6 +31,7 @@ class UserController {
         }catch (e: any) {
             console.error('searchUser ', e)
             store.set('user.errorSearchUser', e.message);
+            store.set('openedChat.errorSearchUser', e.message);
         }
     }
 

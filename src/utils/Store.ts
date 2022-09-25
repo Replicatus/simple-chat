@@ -10,7 +10,6 @@ export class Store extends EventBus {
     private state: any = {};
 
     public set(keypath: string, data: unknown) {
-        // debugger
         set(this.state, keypath, data);
         this.emit(StoreEvents.Updated, this.getState());
     }

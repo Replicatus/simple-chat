@@ -38,7 +38,7 @@
             <div class="dialog-form__action-close">{{{closeDialog}}}</div>
             <form class="dialog-form">
                 <span class="error-text mb-4 text-center">
-                    {{#if user.errorSearchUser}} Ошибка добавления, такого пользователя не существует{{/if}}
+                    {{#if errorSearchUser}} Ошибка добавления, такого пользователя не существует{{/if}}
                     {{#if errorAddUsersToChat}} Ошибка добавления: {{ errorCreate}}{{/if}}
                     {{#if errorDeleteUsersFromChat}} Ошибка удаления: {{ errorDelete}}{{/if}}
                 </span>

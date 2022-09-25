@@ -215,12 +215,13 @@ class BaseMain extends Block {
             this.setProps(
                 {
                     propsForOpenedChat: props,
-                    openedChat: new OpenedChat(
-                        props
-                    ),
+                    // openedChat: new OpenedChat(props),
                     chosenChat: chatItem,
                 }
             );
+            // store.set('openedChat', props)
+            console.log('22',props.chatName)
+            this.children.openedChat = new OpenedChat(props)
         }
     }
 
@@ -409,8 +410,8 @@ class BaseMain extends Block {
                 })
             })
         }
-        if (newProps.propsForOpenedChat)
-            store.set('openedChat', newProps.propsForOpenedChat)
+        // if (newProps.propsForOpenedChat)
+        //     store.set('openedChat', newProps.propsForOpenedChat)
         return true
     }
 

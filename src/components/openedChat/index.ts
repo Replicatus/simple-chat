@@ -50,7 +50,8 @@ const defaultProps: ChatOpenItemProps = {
 
 class OpenedChatBase extends Block<ChatOpenItemProps>{
     constructor(props: ChatOpenItemProps = defaultProps) {
-        super('div', {...defaultProps,...props});
+         super('div', {...defaultProps,...props});
+        // console.log('constructor', {...defaultProps,...props}.chatName)
     }
     openMiniModal(){
         this.props.miniMenuOpen = !this.props.miniMenuOpen
@@ -214,6 +215,7 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
     render(): DocumentFragment | HTMLElement {
         this.element?.classList.add('chats-section');
         console.log('opend chat', this.props.chatName)
+        // debugger
         return this.compile(template, this.props);
     }
 }
