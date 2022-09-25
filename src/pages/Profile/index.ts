@@ -274,6 +274,18 @@ class ProfileBase extends Block {
         super.init();
     }
 
+    protected componentDidUpdate(_oldProps: any, newProps: any): boolean {
+        (this.children.inputs as Input[]).forEach((el) =>{
+            el.setProps({
+                value: newProps[el.getValue()!.name]
+            })
+        });
+        (this.children.avatar as Avatar).setProps({
+            path: newProps.avatar
+        })
+        return true
+    }
+
     render() {
         this.element!.classList.add('profile-page');
         // console.log(this.props.avatar)

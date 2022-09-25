@@ -110,13 +110,13 @@ export class Input extends Block<InputProps> {
     public getValue(): ReturnedValueFromInput {
         const el = this.getContent();
         if (el) {
-            const input = el.querySelector("input");
+            const input= el.querySelector("input") as HTMLInputElement;
             return {name: this.props.name ?? '', value: input?.value ?? null}
         }
         return null
     }
 
     render() {
-        return this.compile(template, {...this.props});
+        return this.compile(template, this.props);
     }
 }

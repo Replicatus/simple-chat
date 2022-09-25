@@ -22,8 +22,10 @@ class UserController {
     }
     public async searchUser(search: string = ''){
         try {
+            if (!search)
+                throw new Error('Строка не может быть пустой')
             const res = await this.api.getSearchUser({
-                login: search
+                login: `${search}`
             });
             return responseParser(res);
         }catch (e: any) {

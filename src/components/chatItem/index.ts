@@ -3,7 +3,7 @@ import Block from "../../utils/Block";
 import Avatar from "../avatar";
 import {UserProfile} from "../../api/UserAPI";
 import {Nullable} from "../../types";
-
+import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
 export type LastMessage = {
     id: number;
     content: string;
@@ -20,7 +20,7 @@ export interface ChatItemProps {
     withoutWrapper?: boolean;
     events?: Record<string, any>,
     messageDate?: string,
-    avatar?: string;
+    avatar?: Nullable<string>;
     lastMessage?: Nullable<LastMessage>;
 }
 /*const defaultProps: ChatItemProps = {
@@ -39,7 +39,7 @@ export interface ChatItemProps {
 }*/
 export class ChatItem extends Block<ChatItemProps>{
     constructor(props: ChatItemProps ) {
-        super('div', {...props});
+        super('div', {...props, withoutWrapper: props.withoutWrapper || true});
         this.calcData()
     }
     calcData(){
@@ -47,8 +47,8 @@ export class ChatItem extends Block<ChatItemProps>{
     }
     init() {
         this.children.avatar = new Avatar({
-            url: this.props.avatar ? this.props.avatar : '',
-            path: this.props.avatar,
+            url: !this.props.avatar ? avatarDefault : null,
+            path: this.props.avatar ?? undefined,
             label: '',
             width: 47,
             height: 47,

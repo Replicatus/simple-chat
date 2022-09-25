@@ -48,6 +48,8 @@
         border-top: 1px solid $border-color
         border-bottom: 1px solid $border-color
         border-collapse: collapse
+        &.chosen
+          background-color: $background-color-hover
         &:hover
           background-color: $background-color-hover
           cursor: pointer
@@ -113,27 +115,39 @@
       justify-content: space-between
       height: 54px
       border-bottom: 1px solid $border-color
-      .menu-btn
+      &-menu
         position: relative
-        padding: 0
-        height: 25px
-        width: 25px
-        background-color: $background-color!important
-        border-radius: 50%!important
-        &:before
+        &__content
           position: absolute
-          content: ''
-          top: 5px
-          height: 15px
+          z-index: 4
+          left: -250px
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.14)
+          background-color: $white
+          padding: 10px 20px
+          border-radius: 12px
+          min-width: 250px
+          min-height: 70px
+        .menu-btn
+          position: relative
+          padding: 0
+          height: 25px
           width: 25px
-          background-repeat: no-repeat
-          background-position: center center
-          background-image: url('~/src/assets/icons/Group 194.svg')
+          background-color: $background-color!important
+          border-radius: 50%!important
+          &:before
+            position: absolute
+            content: ''
+            top: 5px
+            height: 15px
+            width: 25px
+            background-repeat: no-repeat
+            background-position: center center
+            background-image: url('~/src/assets/icons/Group 194.svg')
     &__body
       display: flex
       flex-direction: column
       align-self: stretch
-      height: calc(100vh - 100px)
+      height: calc(100vh - 60px)
       //flex: 1
       &-messages
         display: flex

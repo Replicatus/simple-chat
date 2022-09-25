@@ -2,7 +2,7 @@ import Block from "../../utils/Block";
 
 import template from "./Main.hbs";
 // @ts-ignore
-import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
+
 import {RouterLink} from "../../components/link";
 import {Input} from "../../components/input";
 // @ts-ignore
@@ -10,7 +10,7 @@ import {ChatItem, ChatItemProps, LastMessage} from "../../components/chatItem";
 import {nanoid} from "nanoid";
 import {Message, OpenedChat} from "../../components/openedChat";
 import ChatController from "../../controllers/ChatController";
-import {withStore} from "../../utils/Store";
+import store, {withStore} from "../../utils/Store";
 import {Button} from "../../components/button";
 import {Nullable} from "../../types";
 
@@ -174,6 +174,7 @@ class BaseMain extends Block {
     constructor(props: {}) {
         super('section', {
             ...defaultValues,
+            withoutWrapper: false,
             ...props,
             userId: 'd',
             // chatInfo: chatInfo,
@@ -197,14 +198,18 @@ class BaseMain extends Block {
     }
 
     openChat(id: string | number) {
-        if (Array.isArray(this.children.ch)) {
-            const chatItem = this.children.ch.find((el: any) => el.getIdChat() === id) as ChatItem;
+        if (Array.isArray(this.children.chatsItem)) {
+            const chatItem = this.children.chatsItem.find((el: any) => el.getIdChat() === id) as ChatItem;
             const chatProps = chatItem.getChatProps();
             // chatItem.changeChosenStatus();
+            this.props.chats = this.props.chats.map((el: ChatItem) => ({...el, chosen : false}))
+            const chat = this.props.chats.find((el: ChatItem) => el.id === id);
+            chat.chosen = true;
             const props = {
-                ...this.getChosenChatInfo(),
+                // ...this.getChosenChatInfo(),
+                ...chatProps,
                 chatName: chatProps.name,
-                userId: 'd',
+                userId: this.props.user.id,
                 avatar: chatProps.avatar ?? ''
             };
             this.setProps(
@@ -262,16 +267,11 @@ class BaseMain extends Block {
     }
 
     async deleteChat() {
-        // if (!(this.children.inputDialogChat instanceof Input))
-        //     return;
-        // const valid = !!(await this.children.inputDialogChat.checkValue());
-        // if (!valid)
-        //     return;
-        // const value = this.children.inputDialogChat.getValue();
-        // await ChatController.createChat({
-        //     title: value?.value ?? ''
-        // })
-        this.closeDialog();
+        const chosenChat = this.props.chats.find((el: ChatItemProps ) => el.chosen)
+        if (chosenChat){
+            await ChatController.deleteChat(chosenChat.id);
+        }else
+            alert('Выберите чат для удаления')
     }
 
     openDialog(type: 'open' | 'delete') {
@@ -284,14 +284,13 @@ class BaseMain extends Block {
 
     init() {
         ChatController.getChats();
-        console.log('2', this.props.chats)
         // if (this.props.chats)
-        this.children.chatsItem = this.props.chats?.forEach((el: ServerChat) => {
+        this.children.chatsItem = this.props.chats?.map((el: ServerChat) => {
             return new ChatItem({
                 id: el.id,
                 name: el.title,
                 chosen: false,
-                avatar: el.avatar ?? avatarDefault,
+                avatar: el.avatar,
                 unreadCount: el.unread_count,
                 events: {
                     'click': () => {
@@ -352,13 +351,22 @@ class BaseMain extends Block {
             type: 'button',
             events: {click: () => this.deleteChat()}
         });
-
         this.children.openedChat = new OpenedChat({
-            ...this.getChosenChatInfo(),
+            ...this.props.propsForOpenedChat,
+            id: this.props.propsForOpenedChat?.id ?? 0,
+            chatName: this.props.propsForOpenedChat?.name ?? '',
+            userId: this.props.user.id,
             callParentMethodSend: this.sendMessage.bind(this),
-            chatName: '',
-            avatar: ''
-        });
+            // chatName: '',
+            // avatar: ''
+        })
+        // this.children.openedChat = new OpenedChat({
+        //     ...this.getChosenChatInfo(),
+        //     userId: this.props.user.id,
+        //     callParentMethodSend: this.sendMessage.bind(this),
+        //     chatName: '',
+        //     avatar: ''
+        // });
 
         this.children.profileLink = new RouterLink({
             to: '/settings',
@@ -378,39 +386,37 @@ class BaseMain extends Block {
 
     protected componentDidUpdate(_oldProps: any, newProps: any) {
         // super.componentDidUpdate(oldProps, newProps);
-        // if (newProps.chats){
-            // this.setProps({
-            //     chats: newProps.chats
-            // })
-            // this.children.chatsItem = newProps.chats?.forEach((el: ServerChat) => {
-            //     return new ChatItem({
-            //         id: el.id,
-            //         name: el.title,
-            //         chosen: false,
-            //         avatar: el.avatar ?? avatarDefault,
-            //         unreadCount: el.unread_count,
-            //         events: {
-            //             'click': () => {
-            //                 this.openChat(el.id);
-            //             }
-            //         },
-            //         lastMessage: el.last_message as LastMessage /*{
-            //         id: nanoid(6),
-            //         message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
-            //         date: new Date(),
-            //         senderId: index,
-            //         status: 'SENT'
-            //     }*/
-            //     })
-            // })
-
-        // }
+        if (newProps.chats && Array.isArray(newProps.chats)){
+            this.children.chatsItem = newProps.chats.map((el: ServerChat & {chosen: boolean}) => {
+                return new ChatItem({
+                    id: el.id,
+                    name: el.title,
+                    chosen: el.chosen ?? false,
+                    avatar: el.avatar,
+                    unreadCount: el.unread_count,
+                    events: {
+                        'click': () => {
+                            this.openChat(el.id);
+                        }
+                    },
+                    lastMessage: el.last_message as LastMessage /*{
+                    id: nanoid(6),
+                    message: 'FIO ' + [...Array(index)].map((_, i) => i * 10).join(''),
+                    date: new Date(),
+                    senderId: index,
+                    status: 'SENT'
+                }*/
+                })
+            })
+        }
+        if (newProps.propsForOpenedChat)
+            store.set('openedChat', newProps.propsForOpenedChat)
         return true
     }
 
     render() {
         this.element!.classList.add('chats')
-        console.log('1', this.props.chats)
+        // console.log(this.props.openedChat)
         return this.compile(template, this.props)
     }
 }

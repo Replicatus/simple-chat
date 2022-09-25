@@ -80,7 +80,7 @@ class Block<P extends Record<string, any> = any> {
     }
 
     // @ts-ignore
-    componentDidMount(oldProps ?: unknown) {
+    public componentDidMount(oldProps ?: unknown) {
 
     }
 

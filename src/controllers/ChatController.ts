@@ -31,8 +31,8 @@ class ChatController {
     async createChat(data: DataCreateChat){
         try {
             const res = await this.api.create(data);
-            const response = responseParser(res);
-            store.set('chats', response);
+            responseParser(res);
+            await this.getChats()
         }catch (e: any) {
             console.error('createChat ',e)
             store.set('chats.errorCreate', e.message)
@@ -75,7 +75,7 @@ class ChatController {
             return responseParser(res)
         }catch (e: any) {
             console.error('getTokenChat ',e)
-            store.set('chats.errorGetTokenChat', e.message)
+            store.set('openedChat.errorGetTokenChat', e.message)
         }
     }
     async addUsersToChat(chatId: number, users: number[]){
@@ -84,7 +84,7 @@ class ChatController {
             return responseParser(res)
         }catch (e: any) {
             console.error('addUsersToChat ',e)
-            store.set('chats.errorAddUsersToChat', e.message)
+            store.set('openedChat.errorAddUsersToChat', e.message)
         }
     }
     async deleteUsersFromChat(chatId: number, users: number[]){
@@ -93,7 +93,7 @@ class ChatController {
             return responseParser(res)
         }catch (e: any) {
             console.error('deleteUsersFromChat ',e)
-            store.set('chats.errorDeleteUsersFromChat', e.message)
+            store.set('openedChat.errorDeleteUsersFromChat', e.message)
         }
     }
 
