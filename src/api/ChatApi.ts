@@ -3,6 +3,7 @@ import BaseAPI from "./BaseAPI";
 export interface DataCreateChat {
     title: string | number
 }
+
 export interface ChatUser {
     id: number,
     first_name: string,
@@ -14,6 +15,7 @@ export interface ChatUser {
     avatar: string,
     role: string
 }
+
 export class ChatApi extends BaseAPI {
     constructor() {
         super('/chats');
@@ -38,8 +40,9 @@ export class ChatApi extends BaseAPI {
     getChatUsers(chatId: number) {
         return this.http.get(`${chatId}/users`);
     }
+
     getChatToken(chatId: number) {
-        return this.http.get(`/token/${chatId}`);
+        return this.http.post(`/token/${chatId}`);
     }
 
     getNewMessagesCountsInChat(chatId: number) {

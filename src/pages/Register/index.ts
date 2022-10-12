@@ -9,24 +9,22 @@ import AuthController from "../../controllers/AuthController";
 import {SignupData} from "../../api/AuthAPI";
 
 export class Register extends Block {
-
-    // protected form : HTMLFormElement | null = null;
     constructor(props: {}) {
         super('section', {...props, fieldsRegisterPage: fieldsRegisterPage});
     }
 
     protected async register() {
-        const result: {value: Nullable<string | number>, name: string}[] = [];
+        const result: { value: Nullable<string | number>, name: string }[] = [];
         let valid = false;
         let beErrorValid = false;
         if (Array.isArray(this.children.inputs)) {
             for (const input of this.children.inputs) {
-                if (input instanceof Input)
-                {
+                if (input instanceof Input) {
                     valid = !!(await input.checkValue());
                     if (!valid && !beErrorValid)
                         beErrorValid = true
-                }            }
+                }
+            }
             if (!valid || beErrorValid)
                 return;
             this.children.inputs.forEach((el: any) => {
@@ -53,7 +51,7 @@ export class Register extends Block {
     init() {
 
         if (this.props.fieldsRegisterPage && Array.isArray(this.props.fieldsRegisterPage)) {
-            this.children.inputs = this.props.fieldsRegisterPage.map((el:formField) => {
+            this.children.inputs = this.props.fieldsRegisterPage.map((el: formField) => {
                 return new Input({
                     ...el,
                     classes: ['enter', 'dense'],

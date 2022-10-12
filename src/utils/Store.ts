@@ -1,9 +1,19 @@
 import {isEqual, set} from '../helpers';
 import {EventBus} from './EventBas';
 import {ComponentConstructable} from "../hocs/withRouter";
+import {ChatOpenItemProps} from "../components/openedChat";
+import {UserProfile} from "../api/UserAPI";
+import {ChatItemProps} from "../components/chatItem";
+import {Message} from "../controllers/MessagesController";
 
 export enum StoreEvents {
     Updated = 'updated'
+}
+interface State {
+    user: UserProfile;
+    chats: ChatItemProps[];
+    openedChat?: ChatOpenItemProps | null;
+    messages: Record<number, Message[]>;
 }
 
 export class Store extends EventBus {
@@ -24,7 +34,7 @@ export class Store extends EventBus {
 
 const store = new Store();
 
-export function withStore(mapStateToProps: (state: any) => any) {
+export function withStore(mapStateToProps: (state: State) => any) {
 
     return function wrap(Component: ComponentConstructable<any>): ComponentConstructable<any> {
 
@@ -44,7 +54,6 @@ export function withStore(mapStateToProps: (state: any) => any) {
                     if (isEqual(previousState, stateProps))
                         return;
                     previousState = stateProps;
-                    // console.log('!',stateProps?.errorLogin)
                     this.setProps({...stateProps});
                 });
             }
