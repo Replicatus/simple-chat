@@ -2,3 +2,7 @@
   environment = { NODE_VERSION = "16.13.0" }
   publish = "dist"
   command = "npm run build"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
