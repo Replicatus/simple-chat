@@ -106,7 +106,6 @@ class Router {
     }
 
     go(pathname: string) {
-        console.log('go', pathname)
         this.history.pushState({}, "", pathname);
         this._onRoute(pathname);
     }

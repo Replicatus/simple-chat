@@ -1,55 +1,55 @@
-<div class="chats-section__top">
-    <div class="d-flex flex-row align-center">
-        {{{avatar}}}
-        <span>{{chatName}}</span>
-    </div>
-    <div class="chats-section__top-menu">
-        {{{buttonMenu}}}
-        {{#if miniMenuOpen}}
-            <div class="chats-section__top-menu__content d-flex flex-column justify-center">
-                <div>{{{addUserToChat}}}</div>
-                <div>{{{deleteUserFromChat}}}</div>
-            </div>
-        {{/if}}
-    </div>
-</div>
-<div class="chats-section__body">
-    <div class="chats-section__body-messages">
-        {{#each messages as |message|}}
-            <div class="message {{#if isYourMessage}}your-message{{else}}{{/if}}">
-                <p class="message-block">{{message.message}}</p>
-            </div>
-        {{/each}}
-    </div>
-    <div class="chats-section__body-actions">
-        {{{buttonFiles}}}
-        {{{inputMessage}}}
-        {{{buttonSend}}}
-    </div>
-</div>
-{{#if openDialog}}
-    <div class="overlay">
-        <div class="overlay__background">
-
+<!--<div class="chats-section">-->
+    <div class="chats-section__top">
+        <div class="d-flex flex-row align-center">
+            {{{avatar}}}
+            <span>{{chatName}}</span>
+        </div>
+        <div class="chats-section__top-menu">
+            {{{buttonMenu}}}
+            {{#if miniMenuOpen}}
+                <div class="chats-section__top-menu__content d-flex flex-column justify-center">
+                    <div>{{{addUserToChat}}}</div>
+                    <div>{{{deleteUserFromChat}}}</div>
+                </div>
+            {{/if}}
         </div>
     </div>
-    <div class="dialog">
-        <div class="dialog__content">
-            <div class="dialog-form__action-close">{{{closeDialog}}}</div>
-            <form class="dialog-form">
+    <div class="chats-section__body">
+        <div class="chats-section__body-messages">
+            {{#each messages}}
+                {{{this}}}
+            {{/each}}
+        </div>
+        <div class="chats-section__body-actions">
+            {{{buttonFiles}}}
+            {{{inputMessage}}}
+            {{{buttonSend}}}
+        </div>
+    </div>
+    {{#if openDialog}}
+        <div class="overlay">
+            <div class="overlay__background">
+
+            </div>
+        </div>
+        <div class="dialog">
+            <div class="dialog__content">
+                <div class="dialog-form__action-close">{{{closeDialog}}}</div>
+                <form class="dialog-form">
                 <span class="error-text mb-4 text-center">
-                    {{#if user.errorSearchUser}} Ошибка добавления, такого пользователя не существует{{/if}}
+                    {{#if errorSearchUser}} Ошибка добавления, такого пользователя не существует{{/if}}
                     {{#if errorAddUsersToChat}} Ошибка добавления: {{ errorCreate}}{{/if}}
                     {{#if errorDeleteUsersFromChat}} Ошибка удаления: {{ errorDelete}}{{/if}}
                 </span>
-                <form>
-                    {{{inputDialogUser}}}
+                    <form>
+                        {{{inputDialogUser}}}
+                    </form>
+                    <div class="d-flex align-center mt-5" style="flex: 1 0 100%">
+                        {{#if addDialog}}{{{ buttonDialogAddUser }}}{{/if}}
+                        {{#if deleteDialog}}{{{ buttonDialogDeleteUser }}}{{/if}}
+                    </div>
                 </form>
-                <div class="d-flex align-center mt-5" style="flex: 1 0 100%">
-                    {{#if addDialog}}{{{ buttonDialogAddUser }}}{{/if}}
-                    {{#if deleteDialog}}{{{ buttonDialogDeleteUser }}}{{/if}}
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-{{/if}}
+    {{/if}}
+<!--</div>-->

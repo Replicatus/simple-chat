@@ -23,20 +23,7 @@ export interface ChatItemProps {
     avatar?: Nullable<string>;
     lastMessage?: Nullable<LastMessage>;
 }
-/*const defaultProps: ChatItemProps = {
-    id: nanoid(6),
-    name: '',
-    chosen: false,
-    withoutWrapper: true,
-    unreadCount: null,
-    lastMessage: {
-        id: nanoid(6),
-        message: '',
-        time: new Date(),
-        senderId: nanoid(6),
-        status: 'SENT'
-    }
-}*/
+
 export class ChatItem extends Block<ChatItemProps>{
     constructor(props: ChatItemProps ) {
         super('div', {...props, withoutWrapper: props.withoutWrapper || true});

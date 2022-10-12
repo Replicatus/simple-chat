@@ -23,24 +23,26 @@ export class UserAPI extends BaseAPI {
     read(id: string) {
         return this.http.get(`/${id}`);
     }
-    getSearchUser(data: {login: string}){
-        return this.http.post('/search', {data: data})
+
+    getSearchUser(data: { login: string }) {
+        return this.http.post('/search', {data})
     }
 
-    updateProfile( data: UserProfile) {
-        return this.http.put('/profile', {data: data})
+    updateProfile(data: UserProfile) {
+        return this.http.put('/profile', {data})
     }
 
     updatePassword(data: UserPassword) {
-        return this.http.put('/password', {data: data})
+        return this.http.put('/password', {data})
     }
 
     updateAvatar(data: FormData) {
-        return this.http.put('/profile/avatar', {data: data})
+        return this.http.put('/profile/avatar', {data})
     }
 
     create = undefined;
     update = undefined;
     delete = undefined;
 }
+
 export default new UserAPI();

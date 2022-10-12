@@ -3,9 +3,7 @@ import {Button} from "../../components/button";
 import {Input} from "../../components/input";
 import template from "./Profile.hbs"
 import Avatar from "../../components/avatar";
-// import {Dialog} from "../../components/dialog";
 import img from '../../assets/icons/Union.svg'
-// import dialogTemplate from "../../blocks/dialogs/avatarChange.hbs"
 import {formField, FormRow} from "../../types";
 import SideMenu from "../../blocks/side-menu";
 import {fields, fieldsForPasswordPage} from "../../consts";
@@ -16,7 +14,6 @@ import {withUser} from "../Login";
 
 class ProfileBase extends Block {
 
-    // protected form : HTMLFormElement | null = null;
     constructor(props: {}) {
         super('section', {
             ...props,
@@ -25,11 +22,6 @@ class ProfileBase extends Block {
             changePassword: false,
             changeProfile: false,
             changeAvatar: false,
-            events: {
-                // click: (e: MouseEvent) => {
-                //     this.closeDialog(e);
-                // }
-            }
         });
     }
 
@@ -68,16 +60,16 @@ class ProfileBase extends Block {
             return acc
         }, {} as any);
         const ok = await UserController.updateProfile(data as UserProfile)
-        if (ok){
+        if (ok) {
             console.log('saved', result);
             if (Array.isArray(this.children.inputs))
-            this.children.inputs.forEach((el: any) => {
-                const value = el.getValue();
-                el.setProps({
-                    value: value.value,
-                    disabled: true
+                this.children.inputs.forEach((el: any) => {
+                    const value = el.getValue();
+                    el.setProps({
+                        value: value.value,
+                        disabled: true
+                    });
                 });
-            });
             this.props.changeProfile = false;
         }
     }
@@ -108,7 +100,7 @@ class ProfileBase extends Block {
             if (Array.isArray(this.children.inputs) && this.children.inputs.length > 0 && this.children.inputs[2] instanceof Input)
                 this.children.inputs[2].setProps({error: true, errorText: 'Пароли должны совпадать'})
             return;
-        }else{
+        } else {
             if (Array.isArray(this.children.inputs) && this.children.inputs.length > 0 && this.children.inputs[2] instanceof Input)
                 this.children.inputs[2].setProps({error: false, errorText: ''})
         }
@@ -123,7 +115,8 @@ class ProfileBase extends Block {
             this.returnDefaultFormFields();
         console.log('saved password', result);
     }
-    protected returnDefaultFormFields(){
+
+    protected returnDefaultFormFields() {
         if (fields && Array.isArray(fields)) {
             this.children.inputs = fields.map((el: formField) => {
                 return new Input({
@@ -135,8 +128,8 @@ class ProfileBase extends Block {
         }
         this.props.changePassword = false;
     }
+
     protected editPassword() {
-        console.log('editPassword')
         if (fieldsForPasswordPage && Array.isArray(fieldsForPasswordPage)) {
             this.children.inputs = fieldsForPasswordPage.map((el: formField) => {
                 return new Input({
@@ -152,32 +145,27 @@ class ProfileBase extends Block {
         this.props.changeAvatar = !this.props.changeAvatar;
     }
 
-    protected async changeAvatarSubmit(e: Event){
+    protected async changeAvatarSubmit(e: Event) {
         e.preventDefault();
         const inputFile = this.element?.querySelector('#avatar') as HTMLInputElement;
-        if (inputFile){
+        if (inputFile) {
             const data = new FormData();
             if (!inputFile.files)
                 return
             data.set('avatar', inputFile.files[0]);
             const ok = await UserController.updateAvatar(data);
-            if (ok)
-            {
-                // this.props.avatar = ok.avatar;
+            if (ok) {
                 this.closeDialog();
-                if (this.children.avatar instanceof Avatar)
+                if (this.children.avatar instanceof Avatar && ok.avatar)
                     this.children.avatar.changeAvatar(ok.avatar)
             }
         }
     }
 
-    closeDialog(/*e: MouseEvent*/){
-        // console.log(e)
-        // const target = e.target;
-        // const notDialog = this.element
-        // if(e && e.path && this.props.changeAvatar)
-            this.props.changeAvatar = false
+    closeDialog() {
+        this.props.changeAvatar = false
     }
+
     init() {
 
         AuthController.fetchUser();
@@ -220,13 +208,13 @@ class ProfileBase extends Block {
                 style: "max-width: 280px;",
                 events: {click: () => this.savePassword()}
             }, {
-                name: 'buttonCancelSavePassword',
-                type: 'button',
-                label: 'Отменить',
-                classes: ['ml-3'],
-                style: "max-width: 280px;",
-                events: {click: () => this.returnDefaultFormFields()}
-            },
+            name: 'buttonCancelSavePassword',
+            type: 'button',
+            label: 'Отменить',
+            classes: ['ml-3'],
+            style: "max-width: 280px;",
+            events: {click: () => this.returnDefaultFormFields()}
+        },
             {
                 name: 'buttonChangePassword',
                 classes: ['text'],
@@ -260,22 +248,11 @@ class ProfileBase extends Block {
                 click: () => this.closeDialog()
             },
         });
-        // this.children.dialog = new Dialog({
-        //     withoutWrapper: false,
-        //     template: dialogTemplate,
-        //     events: {
-        //         click: (e: Event) => {
-        //             console.log(e)
-        //             // if (!this.children.dialog.element.contains(e.target) && !this.children.dialog.element.contains(e.target))
-        //             //   this.editAvatar()
-        //         }
-        //     }
-        // });
         super.init();
     }
 
     protected componentDidUpdate(_oldProps: any, newProps: any): boolean {
-        (this.children.inputs as Input[]).forEach((el) =>{
+        (this.children.inputs as Input[]).forEach((el) => {
             el.setProps({
                 value: newProps[el.getValue()!.name]
             })
@@ -288,7 +265,6 @@ class ProfileBase extends Block {
 
     render() {
         this.element!.classList.add('profile-page');
-        // console.log(this.props.avatar)
         return this.compile(template, this.props)
     }
 }

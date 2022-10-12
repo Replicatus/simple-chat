@@ -3,23 +3,17 @@ import Block from "../../utils/Block";
 import Avatar from "../avatar";
 import {Input} from "../input";
 import {Button} from "../button";
-import store, {withStore} from "../../utils/Store";
+import {withStore} from "../../utils/Store";
 import UserController from "../../controllers/UserController";
 import ChatController from "../../controllers/ChatController";
-import {Nullable} from "../../types";
+import MessagesController, {Message as MessageInfo} from "../../controllers/MessagesController";
+import {Message} from "../message";
+// import {UserProfile} from "../../api/UserAPI";
+// import ChatController from "../../controllers/ChatController";
+// import {Nullable} from "../../types";
 
 
-
-export type Message = {
-    id: string | number;
-    message: string;
-    isYourMessage: boolean;
-    date: number | string;
-    senderId: number | string;
-    status: 'SENDING' | 'SENT' | 'ERROR' | 'READ'
-}
-
-interface ChatOpenItemProps {
+export interface ChatOpenItemProps {
     id: number;
     chatName: string;
     callParentMethodFiles: Function;
@@ -27,22 +21,32 @@ interface ChatOpenItemProps {
     buttonSend?: null;
     events?: {},
     avatar?: string;
+    errorCreate?: string;
+    errorDelete?: string;
+    errorAddUsersToChat?: boolean;
+    errorDeleteUsersFromChat?: boolean;
+    errorSearchUser?: boolean;
     userId: number;
     miniMenuOpen: boolean;
     openDialog: boolean;
     addDialog: boolean;
+    withoutWrapper: boolean;
     deleteDialog: boolean;
-    messages: Message[]
+    messages: MessageInfo[]
 }
 const defaultProps: ChatOpenItemProps = {
     id: 0,
     chatName: '',
+    errorAddUsersToChat: false,
+    errorDeleteUsersFromChat: false,
+    errorSearchUser: false,
     callParentMethodFiles: () => {},
     callParentMethodSend: () => {},
     userId: 0,
     buttonSend: null,
     miniMenuOpen: false,
     openDialog: false,
+    withoutWrapper: true,
     addDialog: false,
     deleteDialog: false,
     messages: []
@@ -50,18 +54,12 @@ const defaultProps: ChatOpenItemProps = {
 
 class OpenedChatBase extends Block<ChatOpenItemProps>{
     constructor(props: ChatOpenItemProps = defaultProps) {
-        super('div', {...defaultProps,...props});
+         super('div', {...defaultProps,...props, withoutWrapper: false});
     }
     openMiniModal(){
         this.props.miniMenuOpen = !this.props.miniMenuOpen
-        // store.set('openedChat.miniMenuOpen', this.props.miniMenuOpen)
     }
     openDialogUser(type: 'add' | 'delete' = 'add'){
-        // store.set('openedChat', {
-        //     openDialog: true,
-        //     addDialog: type === 'add',
-        //     deleteDialog: type === 'delete'
-        // })
         this.setProps({
             openDialog: true,
             addDialog: type === 'add',
@@ -69,10 +67,12 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         })
     }
     closeDialog() {
-        this.props.openDialog = false
-        // store.set('openedChat.openDialog', false)
+        this.setProps({
+            openDialog: false,
+            errorSearchUser: false,
+        });
     }
-    async setNewUserToChat(){
+    async setNewUserToChat(deleteUser: boolean = false){
         if (!(this.children.inputDialogUser instanceof Input))
             return;
         const valid = !!(await this.children.inputDialogUser.checkValue());
@@ -82,22 +82,23 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         if (!value?.value)
             return
         const searchUser = await UserController.searchUser(`${value.value}`);
-        if (searchUser && searchUser.length)
+        if (searchUser && Array.isArray(searchUser) && searchUser.length > 0)
         {
-            console.log(this.props)
-            console.log('searchUser', searchUser)
-            const idUserToAdd = searchUser.find((el: any) => !!el).id
-            console.log('idUserToAdd', idUserToAdd, this.props?.id)
-            return
-            if (!idUserToAdd || this.props?.id)
+            const idUserToAdd = searchUser.find((el) => !!el)?.id;
+            if (!idUserToAdd || !this.props?.id)
                 return;
-            // const res = await ChatController.addUsersToChat(this.props?.id, [idUserToAdd]);
-            // if (res)
-            //     this.closeDialog()
-        }
+            const res = deleteUser ? await ChatController.deleteUsersFromChat(this.props?.id, [idUserToAdd]) : await ChatController.addUsersToChat(this.props?.id, [idUserToAdd]);
+            if (res)
+            {
+                this.closeDialog();
+            }
+        }else
+            this.props.errorSearchUser = true;
+
     }
 
     init() {
+        this.children.messages = this.createMessages(this.props);
         this.children.avatar = new Avatar({
             withoutWrapper: true,
             url: this.props.avatar ? this.props.avatar : '',
@@ -134,9 +135,7 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
             label: 'Удалить пользователя',
             style: "",
             events: {
-                click: () => {
-
-                }
+                click: () => this.setNewUserToChat(true)
             },
         })
         this.children.inputMessage = new Input({
@@ -176,7 +175,15 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
             label: '',
             style: "",
             events: {
-                click: () => this.props.callParentMethodSend()
+                click: () => {
+                    const input =this.children.inputMessage as Input;
+                    const message = input.getValue();
+                    if (!message?.value)
+                        return
+                    input.setValue('');
+
+                    MessagesController.sendMessage(this.props.id, String(message.value));
+                }
             },
             replaceNode: true
         });
@@ -199,23 +206,38 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         else
             return;
     }
-    public getNewMessages(data: Message[] = []){
-        this.props.messages = [...data];
-    }
     public sendMessage(){
         return this.getMessage();
     }
 
-    componentDidUpdate(_oldProps: ChatOpenItemProps, _newProps: ChatOpenItemProps): boolean {
-        console.log('chatName ',_newProps, _newProps.chatName)
-        return  true
+    componentDidUpdate(_oldProps: ChatOpenItemProps, newProps: ChatOpenItemProps): boolean {
+        this.children.messages = this.createMessages(newProps);
+        return  true;
     }
-
+    private createMessages(props: ChatOpenItemProps) {
+        return props.messages.map(data => {
+            return new Message({...data, isYourMessage: props.userId === data.user_id });
+        })
+    }
     render(): DocumentFragment | HTMLElement {
-        this.element?.classList.add('chats-section');
-        console.log('opend chat', this.props.chatName)
-        return this.compile(template, this.props);
+        if (this.element && !this.element?.classList.contains('chats-section'))
+            this.element?.classList.add('chats-section');
+
+        return this.compile(template, {...this.props});
     }
 }
-export const withOpenChat = withStore((state) => ({...state.openedChat}));
+export const withOpenChat = withStore((state) => {
+    if (!state.openedChat) {
+        return {
+            messages: [],
+            openedChat: undefined,
+            userId: state.user.id
+        };
+    }
+    return {
+        messages: (state.messages || {})[state.openedChat.id] || [],
+        openedChat: state.openedChat,
+        userId: state.user.id
+    };
+});
 export const OpenedChat = withOpenChat(OpenedChatBase);

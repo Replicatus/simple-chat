@@ -1,6 +1,6 @@
 import {EventBus} from "./EventBas";
 import {nanoid} from "nanoid";
-import {isEqual} from "../helpers";
+
 
 type Children = Record<string, Block | Block[]>;
 // Нельзя создавать экземпляр данного класса
@@ -53,7 +53,7 @@ class Block<P extends Record<string, any> = any> {
         const props: Record<string, unknown> = {};
         const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
-            if (Array.isArray(value) && value.every(v => v instanceof Block)) {
+            if (Array.isArray(value) && value.length && value.every(v => v instanceof Block)) {
                 children[key] = value;
             } else if (value instanceof Block) {
                 children[key] = value;
@@ -89,14 +89,12 @@ class Block<P extends Record<string, any> = any> {
     }
 
     _componentDidUpdate(oldProps: P, newProps: P) {
-        const response = this.componentDidUpdate(oldProps, newProps);
-        if (response)
+        if (this.componentDidUpdate(oldProps, newProps))
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    protected componentDidUpdate(oldProps: P, newProps: P) {
-        if (!isEqual(oldProps, newProps))
-            return true;
+    protected componentDidUpdate(_oldProps: P, _newProps: P): boolean {
+        return true//!isEqual(oldProps, newProps);
     }
 
     setProps = (nextProps: unknown) => {
@@ -116,11 +114,14 @@ class Block<P extends Record<string, any> = any> {
 
         if (this._element) {
             this._removeEvents();
-            this._element.innerText = '';
+
             if (this.props.withoutWrapper) {
                 this._element = block.firstElementChild as HTMLElement;
             } else
+            {
+                this._element.innerText = '';
                 this._element.append(block);
+            }
             this._addEvents();
         } else
             throw new Error(`_element doesn\'t exist ${this._element}`)

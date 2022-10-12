@@ -76,6 +76,11 @@ export class Input extends Block<InputProps> {
             disabled: flag
         })
     }
+    public setValue(value: string) {
+        this.setProps({
+            value: value
+        })
+    }
     public checkValue(){
         return new Promise((resolve,_) => {
             if (Array.isArray(this.props.rules)) {
@@ -110,7 +115,7 @@ export class Input extends Block<InputProps> {
     public getValue(): ReturnedValueFromInput {
         const el = this.getContent();
         if (el) {
-            const input= el.querySelector("input") as HTMLInputElement;
+            const input= el.querySelector<HTMLInputElement>("input") ;
             return {name: this.props.name ?? '', value: input?.value ?? null}
         }
         return null

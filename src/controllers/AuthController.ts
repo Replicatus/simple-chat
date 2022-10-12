@@ -2,6 +2,7 @@ import API, {AuthAPI, SigninData, SignupData, User} from '../api/AuthAPI';
 import store from '../utils/Store';
 import router from '../utils/Router';
 import {Routes} from "../index";
+import MessagesController from "./MessagesController";
 
 class AuthController {
     private readonly api: AuthAPI;
@@ -42,7 +43,6 @@ class AuthController {
             const res = await this.api.read();
             if (res.status >= 400)
                 throw new Error(JSON.parse(res.response)?.reason)
-            // console.log('res', res.response)
             const user = JSON.parse(res.response) as User
             store.set('user', user);
         } catch (e) {
@@ -61,6 +61,7 @@ class AuthController {
 
     public async logout() {
         try {
+            MessagesController.closeAll();
             await this.api.logout();
             store.clearState()
             router.go('/');

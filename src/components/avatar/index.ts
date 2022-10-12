@@ -27,14 +27,11 @@ export default class Avatar extends Block<AvatarProps>{
                     Object.entries(props.style).forEach(([key, value]: [any, string]) => this.element!.style[key] = value)
                 if (props.path || props.url)
                 {
-                    //TODO: change meta url
                     const defaultPath = `https://ya-praktikum.tech/api/v2/resources/`
                     let imageUrl;
                     if (props.path)
                         imageUrl = defaultPath + props.path;
-                    // console.log('!', imageUrl)
-                    this.element.style.backgroundImage = `url(${imageUrl ? imageUrl :  props.url})`;
-                    // this.props.backgroundImage = `background-image: url(${props.path? imageUrl :  props.url})`
+                    this.element.style.backgroundImage = `url(${imageUrl ?? props.url})`;
                 }
                 if (props.width)
                     this.element.style.width = props.width+'px';
@@ -53,7 +50,6 @@ export default class Avatar extends Block<AvatarProps>{
     }
 
     render() {
-        // console.log('this.props.path', this.props.path)
         this.element!.style.backgroundImage = `url(${this.props.path})`;
         return this.compile(template, this.props)
     }

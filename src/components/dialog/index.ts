@@ -25,8 +25,6 @@ class DialogBase extends Block<DialogProps>{
     }
 
     render() {
-        // const currentTemplate = this.props.template ? this.props.template : defaultTemplate;
-        console.log('dialog ', this.props, this.children.buttonChangeAvatar)
         return this.compile(this.props.templateWrapper, this.props)
     }
 }

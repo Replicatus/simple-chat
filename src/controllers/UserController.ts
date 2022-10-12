@@ -8,7 +8,8 @@ class UserController {
     constructor() {
         this.api = API;
     }
-    public async getUser(id: number){
+
+    public async getUser(id: number): Promise<UserProfile | undefined> {
         try {
             const res = await this.api.read(String(id));
             const response = JSON.parse(res.response);
@@ -16,11 +17,12 @@ class UserController {
                 throw new Error(response?.reason)
             }
             return response;
-        }catch (e) {
+        } catch (e) {
             console.error('getUser ', e)
         }
     }
-    public async searchUser(search: string = ''){
+
+    public async searchUser(search: string = ''): Promise<UserProfile[] | undefined> {
         try {
             if (!search)
                 throw new Error('Строка не может быть пустой')
@@ -28,13 +30,14 @@ class UserController {
                 login: `${search}`
             });
             return responseParser(res);
-        }catch (e: any) {
+        } catch (e: any) {
             console.error('searchUser ', e)
             store.set('user.errorSearchUser', e.message);
+            store.set('openedChat.errorSearchUser', e.message);
         }
     }
 
-    public async updateProfile(data: UserProfile){
+    public async updateProfile(data: UserProfile): Promise<boolean | undefined> {
         try {
             const res = await this.api.updateProfile(data);
             const response = JSON.parse(res.response);
@@ -43,12 +46,13 @@ class UserController {
             }
             store.set('user', response);
             return true
-        }catch (e: any) {
+        } catch (e: any) {
             console.error('updateProfile ', e);
             store.set('user.errorUpdateProfile', e.message);
         }
     }
-    public async updatePassword(data: UserPassword){
+
+    public async updatePassword(data: UserPassword): Promise<boolean | undefined> {
         try {
             const res = await this.api.updatePassword(data);
             const response = res.status >= 400 ? JSON.parse(res.response) : res.response;
@@ -56,28 +60,26 @@ class UserController {
                 throw new Error(response?.reason)
             }
             return true;
-        }catch (e: any) {
+        } catch (e: any) {
             console.error('updatePassword ', e);
             store.set('user.errorUpdatePassword', e.message);
         }
     }
-    public async updateAvatar(data: FormData){
+
+    public async updateAvatar(data: FormData): Promise<UserProfile | undefined> {
         try {
             const res = await this.api.updateAvatar(data);
             const response = JSON.parse(res.response);
             if (res.status >= 400) {
                 throw new Error(response?.reason)
             }
-            // console.log(response.avatar)
-            // debugger
             store.set('user', response);
             return response
-        }catch (e: any) {
+        } catch (e: any) {
             console.error('updateAvatar ', e);
             store.set('user.errorUpdateAvatar', e.message);
         }
     }
-
 
 
 }
