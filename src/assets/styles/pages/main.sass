@@ -1,3 +1,4 @@
+@import "profile"
 .chats
   display: flex
   flex-direction: row
@@ -28,7 +29,7 @@
         height: 54px
         display: flex
         align-items: center
-        justify-content: flex-end
+        justify-content: space-between
         .profile-link
           color: $secondary
     &__body
@@ -36,7 +37,7 @@
       flex-direction: column
       overflow-y: auto
       align-self: stretch
-      max-height: calc(100vh - 150px)
+      max-height: calc(100vh - 110px)
       .chat-list__item
         display: flex
         padding: 12px 10px
@@ -47,6 +48,8 @@
         border-top: 1px solid $border-color
         border-bottom: 1px solid $border-color
         border-collapse: collapse
+        &.chosen
+          background-color: $background-color-hover
         &:hover
           background-color: $background-color-hover
           cursor: pointer
@@ -112,27 +115,39 @@
       justify-content: space-between
       height: 54px
       border-bottom: 1px solid $border-color
-      .menu-btn
+      &-menu
         position: relative
-        padding: 0
-        height: 25px
-        width: 25px
-        background-color: $background-color!important
-        border-radius: 50%!important
-        &:before
+        &__content
           position: absolute
-          content: ''
-          top: 5px
-          height: 15px
+          z-index: 4
+          left: -250px
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.14)
+          background-color: $white
+          padding: 10px 20px
+          border-radius: 12px
+          min-width: 250px
+          min-height: 70px
+        .menu-btn
+          position: relative
+          padding: 0
+          height: 25px
           width: 25px
-          background-repeat: no-repeat
-          background-position: center center
-          background-image: url('~/src/assets/icons/Group 194.svg')
+          background-color: $background-color!important
+          border-radius: 50%!important
+          &:before
+            position: absolute
+            content: ''
+            top: 5px
+            height: 15px
+            width: 25px
+            background-repeat: no-repeat
+            background-position: center center
+            background-image: url('~/src/assets/icons/Group 194.svg')
     &__body
       display: flex
       flex-direction: column
       align-self: stretch
-      height: calc(100vh - 100px)
+      height: calc(100vh - 60px)
       //flex: 1
       &-messages
         display: flex
@@ -227,3 +242,36 @@
         align-items: center
         height: 100%
         max-height: 100%
+  .dialog-form
+    position: relative
+    //right: 20px
+    //top: 10px
+    display: flex
+    flex-direction: column
+    align-items: center
+    &__action-close
+      position: absolute
+      right: 0
+      top: 10px
+  .open-dialog-btn
+    @extend %dialog-btn
+    &.open-dialog-btn-delete
+      &:before
+        background-image: url('~/src/assets/icons/Ellipse 34delete.svg')
+%dialog-btn
+  position: relative
+  padding: 0
+  right: 0
+  height: 28px
+  width: 28px
+  background-color: $white!important
+  &:before
+      position: absolute
+      content: ''
+      top: 0px
+      left: 0
+      height: 28px
+      width: 28px
+      background-repeat: no-repeat
+      background-position: center center
+      background-image: url('~/src/assets/icons/Ellipse 34plus.svg')

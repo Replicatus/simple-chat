@@ -1,8 +1,8 @@
 import {EventBus} from "./EventBas";
 import {nanoid} from "nanoid";
 
-type Children = Record<string, Block | Block[]>;
 
+type Children = Record<string, Block | Block[]>;
 // Нельзя создавать экземпляр данного класса
 class Block<P extends Record<string, any> = any> {
     static EVENTS = {
@@ -53,7 +53,7 @@ class Block<P extends Record<string, any> = any> {
         const props: Record<string, unknown> = {};
         const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
-            if (Array.isArray(value) && value.every(v => v instanceof Block)) {
+            if (Array.isArray(value) && value.length && value.every(v => v instanceof Block)) {
                 children[key] = value;
             } else if (value instanceof Block) {
                 children[key] = value;
@@ -80,7 +80,7 @@ class Block<P extends Record<string, any> = any> {
     }
 
     // @ts-ignore
-    componentDidMount(oldProps ?: unknown) {
+    public componentDidMount(oldProps ?: unknown) {
 
     }
 
@@ -89,16 +89,12 @@ class Block<P extends Record<string, any> = any> {
     }
 
     _componentDidUpdate(oldProps: P, newProps: P) {
-        const response = this.componentDidUpdate(oldProps, newProps);
-        if (response)
+        if (this.componentDidUpdate(oldProps, newProps))
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps: P, newProps: P) {
-        const stringOldProps = oldProps ? Object.entries(oldProps).join(' ') : oldProps;
-        const stringNewProps = newProps ? Object.entries(newProps).join(' ') : newProps;
-        if (stringNewProps !== stringOldProps)
-            return true;
+    protected componentDidUpdate(_oldProps: P, _newProps: P): boolean {
+        return true//!isEqual(oldProps, newProps);
     }
 
     setProps = (nextProps: unknown) => {
@@ -115,14 +111,17 @@ class Block<P extends Record<string, any> = any> {
 
     _render() {
         const block = this.render();
+
         if (this._element) {
             this._removeEvents();
-            this._element.innerText = '';
 
             if (this.props.withoutWrapper) {
                 this._element = block.firstElementChild as HTMLElement;
             } else
+            {
+                this._element.innerText = '';
                 this._element.append(block);
+            }
             this._addEvents();
         } else
             throw new Error(`_element doesn\'t exist ${this._element}`)

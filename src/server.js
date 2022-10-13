@@ -1,13 +1,10 @@
 const express = require('express');
-
+const fallback = require('express-history-api-fallback');
+const path = require('path');
 const app = express();
 const PORT = 3000;
+const root = path.resolve(__dirname, '../dist/');
+app.use(express.static(root))
+app.use(fallback('index.html', { root: root }))
 
-app.use(express.static(`${__dirname}./dist/`));
-
-app.listen(PORT, (err) => {
-  if (err) {
-    // console.error('error', err);
-  }
-  // console.log('express');
-});
+app.listen(process.env.PORT || PORT, () => {});

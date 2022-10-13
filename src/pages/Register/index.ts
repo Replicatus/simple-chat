@@ -2,28 +2,29 @@ import Block from "../../utils/Block";
 import {Button} from "../../components/button";
 import {Input} from "../../components/input";
 import template from "./Register.hbs"
-import {Link} from "../../components/link";
-import {formField} from "../../types";
+import {RouterLink} from "../../components/link";
+import {formField, Nullable} from "../../types";
+import {fieldsRegisterPage} from "../../consts";
+import AuthController from "../../controllers/AuthController";
+import {SignupData} from "../../api/AuthAPI";
 
 export class Register extends Block {
-
-    // protected form : HTMLFormElement | null = null;
     constructor(props: {}) {
-        super('section', props);
+        super('section', {...props, fieldsRegisterPage: fieldsRegisterPage});
     }
 
     protected async register() {
-        const result: unknown[] = [];
+        const result: { value: Nullable<string | number>, name: string }[] = [];
         let valid = false;
         let beErrorValid = false;
         if (Array.isArray(this.children.inputs)) {
             for (const input of this.children.inputs) {
-                if (input instanceof Input)
-                {
+                if (input instanceof Input) {
                     valid = !!(await input.checkValue());
                     if (!valid && !beErrorValid)
                         beErrorValid = true
-                }            }
+                }
+            }
             if (!valid || beErrorValid)
                 return;
             this.children.inputs.forEach((el: any) => {
@@ -34,11 +35,13 @@ export class Register extends Block {
                 });
             });
         }
-        console.log('saved password', result);
-        setTimeout(() => {
-            if (this.children.link instanceof Link)
-                this.children.link.click();
-        }, 4000)
+        const data = result.reduce((acc, el) => {
+            if (el.name)
+                acc[el.name] = el.value;
+            return acc
+        }, {} as any);
+        console.log('saved register Data', data);
+        await AuthController.signup(data as SignupData)
     }
 
     protected editAvatar() {
@@ -48,7 +51,7 @@ export class Register extends Block {
     init() {
 
         if (this.props.fieldsRegisterPage && Array.isArray(this.props.fieldsRegisterPage)) {
-            this.children.inputs = this.props.fieldsRegisterPage.map((el:formField) => {
+            this.children.inputs = this.props.fieldsRegisterPage.map((el: formField) => {
                 return new Input({
                     ...el,
                     classes: ['enter', 'dense'],
@@ -56,9 +59,9 @@ export class Register extends Block {
             });
         }
 
-        this.children.link = new Link({
+        this.children.link = new RouterLink({
             label: "Войти",
-            href: "Login"
+            to: "/"
         });
 
         this.children.buttonRegister = new Button({

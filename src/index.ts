@@ -1,48 +1,44 @@
-import NavBar from "./blocks/navbar/index"
 import pages from "./pages";
-import consts from './consts'
-import type {ArrayLinks} from "./types";
+import Router from './utils/Router';
+import AuthController from "./controllers/AuthController";
 
-const links = () : ArrayLinks => {
-    return document.querySelectorAll('a');
-};
+export enum Routes {
+    Index = '/',
+    Register = '/sign-up',
+    Profile = '/settings',
+    Main = '/messenger',
+    Page404 = '/404',
+    Page500 = '/500',
+}
 
-window.addEventListener('DOMContentLoaded', () => {
-    try {
-        const app: HTMLElement | null = document.querySelector('#app');
-        const header: HTMLElement | null = document.querySelector('#header');
-        const leftBar: HTMLElement | null = document.querySelector('#left-bar');
-        if (!app || !header)
-            return;
-        const navBar = new NavBar();
-        header.append(navBar.getContent()!);
-        const entryPage = new pages['']({});
-        app.append(entryPage.getContent()!);
-        const a = links();
-        const refreshLink = (arr: ArrayLinks) => {
-            arr.forEach((el : HTMLAnchorElement) => el.onclick = (e: MouseEvent) => {
-                e.preventDefault();
-                // const target : EventTarget = e.target;
-                // @ts-ignore
-                const href: any = e.target?.href;
-                const path = href.split('/');
-                const pageName = path[path.length - 1];
-                if (pageName === 'Profile' && leftBar)
-                    leftBar.style.display = 'flex';
-                else if (leftBar)
-                    leftBar.style.display = 'none';
-                const page = new pages[pageName]({...consts});
-                app.innerText = '';
-                console.log('page', page)
-                app.append(page.getContent());
-                page.dispatchComponentDidMount();
-                refreshLink(links());
-            });
-        }
-        refreshLink(a);
-    }catch (e) {
-        console.error('1', e)
+window.addEventListener('DOMContentLoaded', async () => {
+
+    Router
+        .use(Routes.Index, pages.Login)
+        .use(Routes.Register, pages.Register)
+        .use(Routes.Profile, pages.Profile)
+        .use(Routes.Main, pages.Main)
+        .use(Routes.Page404, pages.Page404)
+        .use(Routes.Page500, pages.Page500)
+    let isProtectedRoute = true;
+
+    switch (window.location.pathname) {
+        case Routes.Index:
+        case Routes.Register:
+            isProtectedRoute = false;
+            break;
     }
-
+    try {
+        await AuthController.fetchUser();
+        Router.start();
+        if (!isProtectedRoute) {
+            Router.go(Routes.Profile)
+        }
+    } catch (e) {
+        Router.start();
+        if (isProtectedRoute) {
+            Router.go(Routes.Index);
+        }
+    }
 });
 

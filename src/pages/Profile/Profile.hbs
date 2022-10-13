@@ -1,13 +1,13 @@
 <div class="profile-page__content">
     <div class="header">
-        <div>
-
+<!--        <div>-->
             {{{avatar}}}
-        </div>
-        <h2>Roman</h2>
+<!--        </div>-->
+        <h2>{{display_name}}</h2>
     </div>
     <form>
         {{#if changePassword}}
+            <span class="error-text mb-4 text-center">  {{#if errorUpdatePassword}} Неверный пароль {{/if}}</span>
             {{#each inputs}}
                 <div>
                     <span>
@@ -19,6 +19,8 @@
                 </div>
             {{/each}}
         {{else}}
+            <span class="error-text mb-4 text-center">  {{#if errorUpdateProfile}}
+                Ошибка сохранения: {{ errorUpdateProfile}}{{/if}}</span>
             {{#each inputs}}
                 <div>
                     <span>
@@ -41,6 +43,7 @@
             {{#if changePassword}}
                 <div class="border-zero d-flex justify-center flex-1">
                     {{{ buttonSavePassword }}}
+                    {{{ buttonCancelSavePassword }}}
                 </div>
             {{else}}
                 <div>
@@ -56,34 +59,35 @@
         {{/if}}
     </div>
 </div>
-
+{{{sideMenu}}}
 {{#if changeAvatar}}
-    {{{dialog}}}
-<!--    <div>-->
-<!--        <div class="overlay">-->
-<!--            <div class="overlay__background">-->
+    <div class="overlay">
+        <div class="overlay__background">
 
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="dialog">-->
-<!--            <div class="dialog__content">-->
-<!--                <form class="file-form">-->
-<!--                    <h2>Загрузите файл</h2>-->
-<!--                    <label class="input-file">-->
-<!--                        Выбрать файл на компьютере-->
-<!--                        <input-->
-<!--                                type="file"-->
-<!--                                id="avatar"-->
-<!--                                name="avatar"-->
-<!--                                autocomplete="off"-->
-<!--                        >-->
-<!--                    </label>-->
-
-<!--                    <div class="d-flex align-center" style="flex: 1 0 100%">-->
-<!--                        {{{ buttonChangeAvatar }}}-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+        </div>
+    </div>
+    <div class="dialog">
+        <div class="dialog__content">
+            <div class="file-form__action-close">{{{closeDialog}}}</div>
+            <form class="file-form">
+                <span class="error-text mb-4 text-center">
+                    {{#if errorUpdateAvatar}} Ошибка сохранения: {{ errorUpdateAvatar}}{{/if}}
+                </span>
+                <h2>Загрузите файл</h2>
+                <label class="input-file">
+                    Выбрать файл на компьютере
+                    <input
+                            type="file"
+                            id="avatar"
+                            name="avatar"
+                            accept="image/*"
+                            autocomplete="off"
+                    >
+                </label>
+                <div class="d-flex align-center" style="flex: 1 0 100%">
+                    {{{ buttonChangeAvatar }}}
+                </div>
+            </form>
+        </div>
+    </div>
 {{/if}}

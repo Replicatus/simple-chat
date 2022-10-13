@@ -1,6 +1,10 @@
 <div class="chats-list-section">
     <div class="chats-list-section__top">
         <div class="chats-list-section__top-link">
+            <div class="d-flex flex-row align-center">
+                {{{openDialog}}}
+                {{{openDeleteDialog}}}
+            </div>
             {{{profileLink}}}
         </div>
         <div>
@@ -8,7 +12,7 @@
         </div>
     </div>
     <div class="chats-list-section__body">
-        {{#each ch}}
+        {{#each chatsItem}}
             {{{this}}}
         {{/each}}
     </div>
@@ -18,5 +22,30 @@
 {{else}}
     <div class="chats-section">
         <div class="chats-section__body-empty help-text">Выберите чат чтобы отправить сообщение</div>
+    </div>
+{{/if}}
+{{#if changeChats}}
+    <div class="overlay">
+        <div class="overlay__background">
+
+        </div>
+    </div>
+    <div class="dialog">
+        <div class="dialog__content">
+            <div class="dialog-form__action-close">{{{closeDialog}}}</div>
+            <form class="dialog-form">
+                <span class="error-text mb-4 text-center">
+                    {{#if errorCreate}} Ошибка добавления: {{ errorCreate}}{{/if}}
+                    {{#if errorDelete}} Ошибка добавления: {{ errorDelete}}{{/if}}
+                </span>
+                <form>
+                    {{{inputDialogChat}}}
+                </form>
+                <div class="d-flex align-center mt-5" style="flex: 1 0 100%">
+                    {{#if dialogChatAdd}}{{{ buttonAddChat }}}{{/if}}
+                    {{#if dialogChatDelete}}{{{ buttonDeleteChat }}}{{/if}}
+                </div>
+            </form>
+        </div>
     </div>
 {{/if}}
