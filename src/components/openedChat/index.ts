@@ -34,14 +34,17 @@ export interface ChatOpenItemProps {
     deleteDialog: boolean;
     messages: MessageInfo[]
 }
+
 const defaultProps: ChatOpenItemProps = {
     id: 0,
     chatName: '',
     errorAddUsersToChat: false,
     errorDeleteUsersFromChat: false,
     errorSearchUser: false,
-    callParentMethodFiles: () => {},
-    callParentMethodSend: () => {},
+    callParentMethodFiles: () => {
+    },
+    callParentMethodSend: () => {
+    },
     userId: 0,
     buttonSend: null,
     miniMenuOpen: false,
@@ -52,27 +55,31 @@ const defaultProps: ChatOpenItemProps = {
     messages: []
 }
 
-class OpenedChatBase extends Block<ChatOpenItemProps>{
+class OpenedChatBase extends Block<ChatOpenItemProps> {
     constructor(props: ChatOpenItemProps = defaultProps) {
-         super('div', {...defaultProps,...props, withoutWrapper: false});
+        super('div', {...defaultProps, ...props, withoutWrapper: false});
     }
-    openMiniModal(){
+
+    openMiniModal() {
         this.props.miniMenuOpen = !this.props.miniMenuOpen
     }
-    openDialogUser(type: 'add' | 'delete' = 'add'){
+
+    openDialogUser(type: 'add' | 'delete' = 'add') {
         this.setProps({
             openDialog: true,
             addDialog: type === 'add',
             deleteDialog: type === 'delete'
         })
     }
+
     closeDialog() {
         this.setProps({
             openDialog: false,
             errorSearchUser: false,
         });
     }
-    async setNewUserToChat(deleteUser: boolean = false){
+
+    async setNewUserToChat(deleteUser: boolean = false) {
         if (!(this.children.inputDialogUser instanceof Input))
             return;
         const valid = !!(await this.children.inputDialogUser.checkValue());
@@ -82,17 +89,15 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         if (!value?.value)
             return
         const searchUser = await UserController.searchUser(`${value.value}`);
-        if (searchUser && Array.isArray(searchUser) && searchUser.length > 0)
-        {
+        if (searchUser && Array.isArray(searchUser) && searchUser.length > 0) {
             const idUserToAdd = searchUser.find((el) => !!el)?.id;
             if (!idUserToAdd || !this.props?.id)
                 return;
             const res = deleteUser ? await ChatController.deleteUsersFromChat(this.props?.id, [idUserToAdd]) : await ChatController.addUsersToChat(this.props?.id, [idUserToAdd]);
-            if (res)
-            {
+            if (res) {
                 this.closeDialog();
             }
-        }else
+        } else
             this.props.errorSearchUser = true;
 
     }
@@ -107,7 +112,7 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
             height: 47,
         });
         this.children.inputDialogUser = new Input({
-            id:'searchValue',label: 'Логин пользователя', type: 'text', name: 'searchValue', value: '', rules: [
+            id: 'searchValue', label: 'Логин пользователя', type: 'text', name: 'searchValue', value: '', rules: [
                 (v) => !!v || 'Обязательное поле',
                 (v) => (typeof v === 'string') && v.length > 3 || 'Минимальное число символов 3',
                 (v) => (typeof v === 'string') && v.length <= 10 || 'Максимальное число символов 10',
@@ -176,7 +181,7 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
             style: "",
             events: {
                 click: () => {
-                    const input =this.children.inputMessage as Input;
+                    const input = this.children.inputMessage as Input;
                     const message = input.getValue();
                     if (!message?.value)
                         return
@@ -197,7 +202,8 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         });
         super.init();
     }
-    protected getMessage(){
+
+    protected getMessage() {
         let value;
         if (this.children.inputMessage instanceof Input)
             value = this.children.inputMessage.getValue();
@@ -206,19 +212,22 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         else
             return;
     }
-    public sendMessage(){
+
+    public sendMessage() {
         return this.getMessage();
     }
 
     componentDidUpdate(_oldProps: ChatOpenItemProps, newProps: ChatOpenItemProps): boolean {
         this.children.messages = this.createMessages(newProps);
-        return  true;
+        return true;
     }
+
     private createMessages(props: ChatOpenItemProps) {
         return props.messages.map(data => {
-            return new Message({...data, isYourMessage: props.userId === data.user_id });
+            return new Message({...data, isYourMessage: props.userId === data.user_id});
         })
     }
+
     render(): DocumentFragment | HTMLElement {
         if (this.element && !this.element?.classList.contains('chats-section'))
             this.element?.classList.add('chats-section');
@@ -226,6 +235,7 @@ class OpenedChatBase extends Block<ChatOpenItemProps>{
         return this.compile(template, {...this.props});
     }
 }
+
 export const withOpenChat = withStore((state) => {
     if (!state.openedChat) {
         return {

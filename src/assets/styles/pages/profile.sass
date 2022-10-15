@@ -5,21 +5,27 @@
     justify-content: space-around
     align-items: center
     padding: 20px
+
     h2
       margin-bottom: 42px
-    >div:first-child
+
+    > div:first-child
       margin-bottom: 42px
-    >div:last-child
+
+    > div:last-child
       margin-top: 42px
+
   &__content
     width: 510px
     display: flex
     flex-direction: column
+
     .header
       display: flex
       justify-content: center
       align-items: center
       flex-direction: column
+
       div:first-child
         position: relative
         height: 130px
@@ -29,6 +35,7 @@
         background-position: center center
         background-color: $border-color
         background-image: url('~/src/assets/icons/Union.svg')
+
         span
           display: none
           position: absolute
@@ -37,6 +44,7 @@
           height: 130px
           width: 130px
           border-radius: 50%
+
         .avatar
           position: absolute
           z-index: 1
@@ -48,8 +56,10 @@
           background-position: center center
           background-image: url('~/src/assets/icons/Union.svg')
           border: 1px solid $border-color
+
         &:hover
           cursor: pointer
+
           span
             display: flex
             flex-direction: row
@@ -64,49 +74,57 @@
             height: 130px
             width: 130px
             border-radius: 50%
+
       h2
         margin-top: 20px
         font-size: $font-size-16
         font-weight: 600
+
     form
       margin-top: 60px
       display: flex
       flex-direction: column
+
       > div
         @extend %form-layout
         align-items: flex-start
         padding-bottom: 0
+
         span
           color: $primary
           font-weight: 500
           font-family: Inter, sans-serif
           font-size: $font-size-16
           line-height: $font-size-16
+
     &-actions
       margin-top: 60px
       display: flex
       flex-direction: column
+
       > div
         @extend %form-layout
+
   .file-form__action-close
     position: absolute
     right: 20px
     top: 10px
 
 .close-dialog-btn
-    position: relative
-    padding: 0
-    right: 0
+  position: relative
+  padding: 0
+  right: 0
+  height: 28px
+  width: 28px
+  background-color: $white !important
+
+  &:before
+    position: absolute
+    content: ''
+    top: 0px
+    left: 0
     height: 28px
     width: 28px
-    background-color: $white!important
-    &:before
-      position: absolute
-      content: ''
-      top: 0px
-      left: 0
-      height: 28px
-      width: 28px
-      background-repeat: no-repeat
-      background-position: center center
-      background-image: url('~/src/assets/icons/Group 200.svg')
+    background-repeat: no-repeat
+    background-position: center center
+    background-image: url('~/src/assets/icons/Group 200.svg')

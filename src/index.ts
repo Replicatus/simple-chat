@@ -1,6 +1,7 @@
 import pages from "./pages";
 import Router from './utils/Router';
 import AuthController from "./controllers/AuthController";
+import './assets/styles/index.sass'
 
 export enum Routes {
     Index = '/',
