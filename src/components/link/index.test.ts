@@ -22,6 +22,6 @@ describe('Link', () => {
 
     element.click();
 
-    expect(spy.calledOnce).to.eq(false);
+    expect(spy.calledOnce).to.eq(true);
   });
 });

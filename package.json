@@ -9,12 +9,8 @@
     "lint": "eslint --fix",
     "stylelint": "npm run stylelint",
     "eslint:1": "./node_modules/.bin/eslint . --fix",
-    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all test lint"
-    }
+    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
+    "prepare": "husky install"
   },
   "engines": {
     "node": "^16.13.0"
@@ -31,7 +27,7 @@
   "dependencies": {
     "express": "4.18.1",
     "express-history-api-fallback": "2.2.1",
-    "nanoid": "^3.3.4",
+    "nanoid": "3.3.4",
     "parcel": "2.7.0"
   },
   "devDependencies": {
