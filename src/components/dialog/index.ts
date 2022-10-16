@@ -10,9 +10,9 @@ interface DialogProps {
     events?: {}
 }
 
-class DialogBase extends Block<DialogProps>{
+class DialogBase extends Block<DialogProps> {
     constructor(props: DialogProps) {
-        super('div', {templateWrapper: defaultTemplate , withoutWrapper: true, ...props});
+        super('div', {templateWrapper: defaultTemplate, withoutWrapper: true, ...props});
     }
 
     init() {

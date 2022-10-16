@@ -82,7 +82,7 @@ class ChatController {
         }
     }
 
-    async getTokenChat(chatId: number):Promise<{
+    async getTokenChat(chatId: number): Promise<{
         token: string
     } | undefined> {
         try {

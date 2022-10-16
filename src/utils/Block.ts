@@ -3,6 +3,7 @@ import {nanoid} from "nanoid";
 
 
 type Children = Record<string, Block | Block[]>;
+
 // Нельзя создавать экземпляр данного класса
 class Block<P extends Record<string, any> = any> {
     static EVENTS = {
@@ -49,7 +50,7 @@ class Block<P extends Record<string, any> = any> {
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _getChildrensAndProps(chAndProps: P) : {props: P, children: Children} {
+    _getChildrensAndProps(chAndProps: P): { props: P, children: Children } {
         const props: Record<string, unknown> = {};
         const children: Children = {};
         Object.entries(chAndProps).forEach(([key, value]) => {
@@ -117,8 +118,7 @@ class Block<P extends Record<string, any> = any> {
 
             if (this.props.withoutWrapper) {
                 this._element = block.firstElementChild as HTMLElement;
-            } else
-            {
+            } else {
                 this._element.innerText = '';
                 this._element.append(block);
             }
@@ -137,9 +137,9 @@ class Block<P extends Record<string, any> = any> {
     }
 
     _removeEvents() {
-        const {events = {}} = this.props as P &  { events: Record<string, () => void> };
+        const {events = {}} = this.props as P & { events: Record<string, () => void> };
         Object.keys(events).forEach(eventName => {
-            if (this._element instanceof HTMLElement)
+            if (this._element && this._element instanceof HTMLElement)
                 this._element.removeEventListener(eventName, events[eventName]);
         });
     }

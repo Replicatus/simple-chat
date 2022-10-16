@@ -7,7 +7,7 @@
             <div class="error-text mb-4 text-center">  {{#if errorLogin}} Неверный логин или пароль {{/if}}</div>
             {{#each inputs}}
                 <div>
-                    <span >
+                    <span>
                         {{#with (lookup ../fieldsLoginPage @key)~}}
                             {{text}}
                         {{/with}}

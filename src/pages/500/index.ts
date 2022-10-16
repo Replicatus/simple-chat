@@ -1,14 +1,14 @@
 import Block from "../../utils/Block";
 import {RouterLink} from "../../components/link";
 
-import  template from "./500.hbs"
+import template from "./500.hbs"
 
 
-
-export class Page500 extends Block{
+export class Page500 extends Block {
     constructor(props: {}) {
         super('section', {...props});
     }
+
     init() {
 
         this.children.link = new RouterLink({

@@ -4,7 +4,7 @@ import template from "./Main.hbs";
 import {RouterLink} from "../../components/link";
 import {Input} from "../../components/input";
 import {ChatItem, ChatItemProps, LastMessage} from "../../components/chatItem";
-import { OpenedChat} from "../../components/openedChat";
+import {OpenedChat} from "../../components/openedChat";
 import ChatController from "../../controllers/ChatController";
 import store, {withStore} from "../../utils/Store";
 import {Button} from "../../components/button";
@@ -24,6 +24,7 @@ interface ServerChat {
     "unread_count": number,
     "last_message": Nullable<LastMessage>
 }
+
 class BaseMain extends Block {
     constructor(props: {}) {
         super('section', {
@@ -41,7 +42,7 @@ class BaseMain extends Block {
         if (Array.isArray(this.children.chatsItem) && this.props.propsForOpenedChat?.id !== id) {
             const chatItem = this.children.chatsItem.find((el: any) => el.getIdChat() === id) as ChatItem;
             const chatProps = chatItem.getChatProps();
-            this.props.chats = this.props.chats.map((el: ChatItem) => ({...el, chosen : false}))
+            this.props.chats = this.props.chats.map((el: ChatItem) => ({...el, chosen: false}))
             const chat = this.props.chats.find((el: ChatItem) => el.id === id);
             chat.chosen = true;
             const props = {
@@ -79,10 +80,10 @@ class BaseMain extends Block {
     }
 
     async deleteChat() {
-        const chosenChat = this.props.chats.find((el: ChatItemProps ) => el.chosen)
-        if (chosenChat){
+        const chosenChat = this.props.chats.find((el: ChatItemProps) => el.chosen)
+        if (chosenChat) {
             await ChatController.deleteChat(chosenChat.id);
-        }else
+        } else
             alert('Выберите чат для удаления')
     }
 
@@ -175,8 +176,8 @@ class BaseMain extends Block {
     }
 
     protected componentDidUpdate(_oldProps: any, newProps: any) {
-        if (newProps.chats && Array.isArray(newProps.chats)){
-            this.children.chatsItem = newProps.chats.map((el: ServerChat & {chosen: boolean}) => {
+        if (newProps.chats && Array.isArray(newProps.chats)) {
+            this.children.chatsItem = newProps.chats.map((el: ServerChat & { chosen: boolean }) => {
                 return new ChatItem({
                     id: el.id,
                     name: el.title,
@@ -192,8 +193,7 @@ class BaseMain extends Block {
                 })
             })
         }
-        if (newProps.propsForOpenedChat)
-        {
+        if (newProps.propsForOpenedChat) {
             this.children.openedChat = new OpenedChat({
                 ...newProps.propsForOpenedChat,
                 id: newProps.propsForOpenedChat?.id ?? 0,

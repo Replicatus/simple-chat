@@ -4,6 +4,7 @@ import Avatar from "../avatar";
 import {UserProfile} from "../../api/UserAPI";
 import {Nullable} from "../../types";
 import avatarDefault from "/src/assets/icons/avatar-user-svgrepo-com.svg";
+
 export type LastMessage = {
     id: number;
     content: string;
@@ -24,14 +25,16 @@ export interface ChatItemProps {
     lastMessage?: Nullable<LastMessage>;
 }
 
-export class ChatItem extends Block<ChatItemProps>{
-    constructor(props: ChatItemProps ) {
+export class ChatItem extends Block<ChatItemProps> {
+    constructor(props: ChatItemProps) {
         super('div', {...props, withoutWrapper: props.withoutWrapper || true});
         this.calcData()
     }
-    calcData(){
+
+    calcData() {
         this.props.messageDate = this.props.lastMessage?.time.toLocaleString(['ru-RU'])
     }
+
     init() {
         this.children.avatar = new Avatar({
             url: !this.props.avatar ? avatarDefault : null,
@@ -42,17 +45,20 @@ export class ChatItem extends Block<ChatItemProps>{
         })
         super.init();
     }
-    public getIdChat(){
+
+    public getIdChat() {
         return this.props.id
     }
-    public changeChosenStatus(){
+
+    public changeChosenStatus() {
         this.setProps(
             {
                 chosen: !this.props.chosen
             }
         )
     }
-    public getChatProps(){
+
+    public getChatProps() {
         return this.props
     }
 
