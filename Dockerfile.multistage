@@ -22,7 +22,7 @@ RUN npm install --production
 COPY --from=builder /var/www/app/dist ./dist
 COPY --from=builder /var/www/app/server.js ./
 
-EXPOSE process.env.PORT || 3000
+EXPOSE 3000
 
 CMD ["node", "./server.js"]
 
