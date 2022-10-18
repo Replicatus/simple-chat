@@ -1,8 +1,5 @@
-version: "3.9"
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.multistage
-    ports:
-      - "3000:3000"
+build:
+  context: .
+  dockerfile: Dockerfile.multistage
+ports:
+  - "3000:3000"
