@@ -1,8 +1,10 @@
 import store from '../utils/Store';
 import API, {ChatApi, DataCreateChat} from "../api/ChatApi";
-import {ChatItemProps} from "../components/chatItem";
+import {ChatItemProps, LastMessage} from "../components/chatItem";
 import MessagesController from "./MessagesController";
 import {UserProfile} from "../api/UserAPI";
+import controller from "./MessagesController";
+import {ServerChat} from "../pages/Main";
 
 export function responseParser(res: XMLHttpRequest) {
     const response = JSON.parse(res.response);
@@ -22,7 +24,14 @@ class ChatController {
     async getChats(): Promise<ChatItemProps[] | undefined> {
         try {
             const res = await this.api.read();
-            const chats: ChatItemProps[] = responseParser(res);
+            const chats: ChatItemProps[] = responseParser(res)?.map((el: ServerChat) => ({
+                id: el.id,
+                name: el.title,
+                chosen: false,
+                avatar: el.avatar,
+                unreadCount: el.unread_count,
+                lastMessage: el.last_message as LastMessage
+            }));
             for (const chat of chats) {
                 const tokenResponse = await this.getTokenChat(chat.id);
                 if (!tokenResponse)
@@ -52,8 +61,10 @@ class ChatController {
         try {
             const res = await this.api.delete(chatId);
             responseParser(res);
+            controller.close(chatId);
             const newChats = store.getState().chats.filter((el: ChatItemProps) => el.id !== chatId);
             store.set('chats', newChats);
+            store.set('openedChat', null);
         } catch (e: any) {
             console.error('deleteChat ', e)
             store.set('chats.errorDelete', e.message)

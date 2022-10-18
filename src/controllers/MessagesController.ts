@@ -84,6 +84,16 @@ class MessagesController {
     private onClose(id: number) {
         this.sockets.delete(id);
     }
+    close(id: number){
+        if (this.sockets.has(id))
+        {
+            const socket = this.sockets.get(id);
+            if (socket)
+                socket.emit(WSTransportEvents.Close);
+        }
+        else
+            throw new Error('socket id doesn\'t open');
+    }
 
     private subscribe(transport: WSTransport, id: number) {
         transport.on(WSTransportEvents.Message, (message) => MessagesController.onMessage(id, message));
@@ -93,8 +103,5 @@ class MessagesController {
 
 
 const controller = new MessagesController();
-
-// @ts-ignore
-window.messagesController = controller;
 
 export default controller;

@@ -1,4 +1,4 @@
-import {EventBus} from "./EventBas";
+import {EventBus} from "./EventBus";
 import {nanoid} from "nanoid";
 
 

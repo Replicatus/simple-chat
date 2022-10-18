@@ -24,8 +24,9 @@ export default class Avatar extends Block<AvatarProps> {
                 else
                     this.element.classList.add('avatar');
                 if (props.style)
-                    Object.entries(props.style).forEach(([key, value]: [any, string]) => this.element!.style[key] = value)
-                if (props.path || props.url) {
+                    Object.entries(props.style).forEach(([key, value]: [any, string]) => this.element!.style[key] = value);
+                const haveAvatar = props.path || props.url;
+                if (haveAvatar) {
                     const defaultPath = `https://ya-praktikum.tech/api/v2/resources/`
                     let imageUrl;
                     if (props.path)
@@ -43,8 +44,6 @@ export default class Avatar extends Block<AvatarProps> {
     }
 
     changeAvatar(path: string) {
-        // this.props.backgroundImage = `background-image: url(${path})`
-        // console.error('path', path)
         this.props.path = path
     }
 
