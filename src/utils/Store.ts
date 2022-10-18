@@ -1,5 +1,5 @@
 import {isEqual, set} from '../helpers';
-import {EventBus} from './EventBas';
+import {EventBus} from './EventBus';
 import {ComponentConstructable} from "../hocs/withRouter";
 import {ChatOpenItemProps} from "../components/openedChat";
 import {UserProfile} from "../api/UserAPI";
@@ -9,6 +9,7 @@ import {Message} from "../controllers/MessagesController";
 export enum StoreEvents {
     Updated = 'updated'
 }
+
 interface State {
     user: UserProfile;
     chats: ChatItemProps[];
@@ -27,7 +28,8 @@ export class Store extends EventBus {
     public getState() {
         return this.state;
     }
-    public clearState(){
+
+    public clearState() {
         this.state = {}
     }
 }
@@ -37,7 +39,6 @@ const store = new Store();
 export function withStore(mapStateToProps: (state: State) => any) {
 
     return function wrap(Component: ComponentConstructable<any>): ComponentConstructable<any> {
-
 
 
         return class WithStore extends Component {

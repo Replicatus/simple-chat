@@ -80,8 +80,8 @@ export class HTTPTransport {
             }, timeout);
             xhr.open(options.method, url + (['GET', 'DELETE'].includes(options.method) ? queryStringify(options.data) : ''));
             if (!(options.data instanceof FormData))
-            //     xhr.setRequestHeader('Content-Type', "multipart/form-data");
-            // else
+                //     xhr.setRequestHeader('Content-Type', "multipart/form-data");
+                // else
                 xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
             if (options.headers && typeof options.headers === 'object')

@@ -3,41 +3,50 @@
   display: flex
   flex-direction: row
   min-height: 100%
+
   &-list-section
     display: flex
     flex-direction: column
     align-self: stretch
     flex-basis: 25%
     min-width: 290px
+
     &__top
       display: flex
       flex-direction: column
-      padding: 0px 10px
+      padding: 0 10px
+
       &-input
         .input
           top: 10px
           text-align: center
           left: calc(50% - 16px)
-          &__slot
-            background-color: #EFEFEF
-            border-radius: 5px
-            border-bottom: 0
-            input
-              color: $secondary
-              padding-left: 10px
+
+        &__slot
+          background-color: #EFEFEF
+          border-radius: 5px
+          border-bottom: 0
+
+          input
+            color: $secondary
+            padding-left: 10px
+
       &-link
         height: 54px
         display: flex
         align-items: center
         justify-content: space-between
+
         .profile-link
           color: $secondary
+
     &__body
       display: flex
       flex-direction: column
       overflow-y: auto
       align-self: stretch
       max-height: calc(100vh - 110px)
+
       .chat-list__item
         display: flex
         padding: 12px 10px
@@ -48,38 +57,47 @@
         border-top: 1px solid $border-color
         border-bottom: 1px solid $border-color
         border-collapse: collapse
+
         &.chosen
           background-color: $background-color-hover
+
         &:hover
           background-color: $background-color-hover
           cursor: pointer
+
         &-avatar
           display: flex
           flex-basis: 47px
+
         &-content
           display: flex
           flex-basis: calc(100% - 57px)
           flex-direction: column
           justify-content: flex-start
           margin-left: 10px
+
           &__user
             display: flex
             flex-direction: row
             justify-content: space-between
+
             .fio
               font-size: $font-size-big
               line-height: $font-size-big
               font-weight: 600
               color: $primary
+
             .last-msg-date
               font-size: 9px
               line-height: $font-size-big
               color: $secondary
+
           &__info
             display: flex
             flex-direction: row
             justify-content: space-between
             margin-top: 5px
+
             .last-msg
               color: $secondary
               line-height: 15px
@@ -88,6 +106,7 @@
               overflow: hidden
               text-overflow: ellipsis
               white-space: nowrap
+
             .count
               background-color: #3369F3
               border-radius: 50%
@@ -107,7 +126,8 @@
     flex-basis: 75%
     align-self: stretch
     border-left: 1px solid $border-color
-    padding: 0px 18px 0 18px
+    padding: 0 18px 0 18px
+
     &__top
       display: flex
       flex-direction: row
@@ -115,8 +135,10 @@
       justify-content: space-between
       height: 54px
       border-bottom: 1px solid $border-color
+
       &-menu
         position: relative
+
         &__content
           position: absolute
           z-index: 4
@@ -127,13 +149,15 @@
           border-radius: 12px
           min-width: 250px
           min-height: 70px
+
         .menu-btn
           position: relative
           padding: 0
           height: 25px
           width: 25px
-          background-color: $background-color!important
-          border-radius: 50%!important
+          background-color: $background-color !important
+          border-radius: 50% !important
+
           &:before
             position: absolute
             content: ''
@@ -143,6 +167,7 @@
             background-repeat: no-repeat
             background-position: center center
             background-image: url('~/src/assets/icons/Group 194.svg')
+
     &__body
       display: flex
       flex-direction: column
@@ -159,13 +184,17 @@
         overflow-y: auto
         border-bottom: 1px solid $border-color
         padding-bottom: 10px
+
         .message
           display: flex
           justify-content: flex-start
+
           &:not(:last-child)
             margin-bottom: 10px
+
           p
             margin-bottom: 0
+
           &-block
             max-width: 50%
             background-color: $background-color-message
@@ -174,67 +203,79 @@
             padding: 11px
             font-size: $font-size-big
             line-height: 15px
+
           &.your-message
             display: flex
             justify-content: flex-end
+
             .message-block
               background-color: $background-color-your-message
               color: $primary
               font-size: $font-size-big
               line-height: 15px
+
       &-actions
         display: flex
         padding: 7px 0
         flex-direction: row
         align-items: center
+
         .message-input
           .input
             top: 10px
             text-align: center
             left: calc(50% - 16px)
+
             &__details
               display: none
+
             &__slot
               background-color: #EFEFEF
               border-radius: 30px
               border-bottom: 0
+
               input
                 color: $secondary
                 padding-left: 10px
+
         .files-btn
           position: relative
           padding: 0
           height: 37px
           max-width: 37px
-          background-color: $white!important
+          background-color: $white !important
+
           &:before
             position: absolute
             content: ''
             top: -3px
-            left: 0px
+            left: 0
             height: 37px
             width: 37px
             background-repeat: no-repeat
             background-position: center center
             background-image: url('~/src/assets/icons/Group 197.svg')
+
         .send-btn
           position: relative
           padding: 0
           height: 28px
           margin-left: 5px
           max-width: 28px
-          background-color: $white!important
+          background-color: $white !important
+
           &:before
             position: absolute
             content: ''
-            top: 0px
-            left: 0px
+            top: 0
+            left: 0
             height: 28px
             width: 28px
             background-repeat: no-repeat
             background-position: center center
             background-image: url('~/src/assets/icons/Group 202.svg')
             rotate: 200grad
+
       &-empty
         display: flex
         flex-direction: row
@@ -242,6 +283,7 @@
         align-items: center
         height: 100%
         max-height: 100%
+
   .dialog-form
     position: relative
     //right: 20px
@@ -249,29 +291,34 @@
     display: flex
     flex-direction: column
     align-items: center
+
     &__action-close
       position: absolute
       right: 0
       top: 10px
+
   .open-dialog-btn
     @extend %dialog-btn
+
     &.open-dialog-btn-delete
       &:before
         background-image: url('~/src/assets/icons/Ellipse 34delete.svg')
+
 %dialog-btn
   position: relative
   padding: 0
   right: 0
   height: 28px
   width: 28px
-  background-color: $white!important
+  background-color: $white !important
+
   &:before
-      position: absolute
-      content: ''
-      top: 0px
-      left: 0
-      height: 28px
-      width: 28px
-      background-repeat: no-repeat
-      background-position: center center
-      background-image: url('~/src/assets/icons/Ellipse 34plus.svg')
+    position: absolute
+    content: ''
+    top: 0
+    left: 0
+    height: 28px
+    width: 28px
+    background-repeat: no-repeat
+    background-position: center center
+    background-image: url('~/src/assets/icons/Ellipse 34plus.svg')

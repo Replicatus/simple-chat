@@ -70,11 +70,11 @@ export const fields: formField[] = [
 ];
 export const passwordRules = [
     (v: Nullable<StringOrNumber>) => !!v || 'Обязательное поле',
-    (v: Nullable<StringOrNumber>) => typeof v === "string" && v.length >= 8  || 'Минимальное число символов 8',
-    (v: Nullable<StringOrNumber>) =>  typeof v === "string" && v.length <= 40 || 'Максимальное число символов 40',
+    (v: Nullable<StringOrNumber>) => typeof v === "string" && v.length >= 8 || 'Минимальное число символов 8',
+    (v: Nullable<StringOrNumber>) => typeof v === "string" && v.length <= 40 || 'Максимальное число символов 40',
     (v: Nullable<StringOrNumber>) => {
         const pattern = regularExpressions.password
-        return  typeof v === "string" && pattern.test(v) || 'Неверно указан пароль'
+        return typeof v === "string" && pattern.test(v) || 'Неверно указан пароль'
     },
 ]
 
@@ -127,7 +127,7 @@ export const fieldsLoginPage: formField[] = [
 ];
 export const fieldsRegisterPage: formField[] = [
     {
-        key: 'input0', text: 'Почта', name: 'email', value: '',  rules: [
+        key: 'input0', text: 'Почта', name: 'email', value: '', rules: [
             (v) => !!v || 'Обязательное поле',
             (v) => (typeof v === 'string') && v.length >= 5 || 'Минимальное число символов 5',
             value => {

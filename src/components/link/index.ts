@@ -1,4 +1,4 @@
-import template from './link.hbs';
+import template from './linkTemplate.hbs';
 import Block from "../../utils/Block";
 import {PropsWithRouter, withRouter} from "../../hocs/withRouter";
 
@@ -9,28 +9,33 @@ interface LinkProps {
     label: string;
     style?: string;
 }
+
 interface LinkPropsWithRouter extends PropsWithRouter {
-    to:string;
+    to: string;
     withoutWrapper?: boolean;
     class?: string;
     label: string;
     style?: string;
     events?: {
-        click: (e: Event )  => void;
+        click: (e: Event) => void;
     };
 }
-class BaseLink extends Block<LinkProps>{
+
+class BaseLink extends Block<LinkProps> {
     constructor(props: LinkProps) {
-        super('a', {withoutWrapper: true, ...props });
+        super('a', {withoutWrapper: true, ...props});
     }
-    public click (){
+
+    public click() {
         this.element?.click();
     }
+
     render() {
         return this.compile(template, {...this.props});
     }
 }
-class LinkWithRouter extends Block<LinkPropsWithRouter>{
+
+class LinkWithRouter extends Block<LinkPropsWithRouter> {
     constructor(props: LinkPropsWithRouter) {
         super('a', {
             withoutWrapper: true,
@@ -40,9 +45,7 @@ class LinkWithRouter extends Block<LinkPropsWithRouter>{
             },
         });
     }
-    // public click (){
-    //     this.element?.click();
-    // }
+
     navigate(e: Event) {
         e.preventDefault();
         this.props.router.go(this.props.to);

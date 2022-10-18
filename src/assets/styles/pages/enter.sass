@@ -7,39 +7,48 @@
     min-height: 450px
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14)
     border-radius: 12px
+
     &-main
       display: flex
       flex-direction: column
+
     .header
       display: flex
       justify-content: center
       align-items: center
       flex-direction: column
+
       h2
         margin: 50px 106px
         font-size: $font-size-subtitle
         font-weight: 600
+
     form
       display: flex
       flex-direction: column
       padding: 0 30px
+
       &:not(.register)
         > div
           &:not(:last-child)
             margin-bottom: 14px
+
       &.register
         span
           font-size: $font-size-small
           line-height: $font-size-small
           color: $secondary
+
     &-actions
       margin-top: 30px
       display: flex
       flex-direction: column
       justify-content: center
       margin-bottom: 30px
+
       > div
         justify-content: center
         text-align: center
+
         &:not(:last-child)
           margin-bottom: 14px

@@ -4,14 +4,17 @@
 @import "components/index"
 @import "fonts/index"
 @import "classes"
+
 body
   margin: 0
   background: $white
   position: relative
   font-weight: normal
+
 div, h1, h2, h3, h4, h5, ul, li, label, span, input, p, button
   font-family: Inter, sans-serif
   font-weight: 500
+
 #app
   flex: 1 1 auto
   -webkit-backface-visibility: hidden
@@ -21,15 +24,18 @@ div, h1, h2, h3, h4, h5, ul, li, label, span, input, p, button
   min-height: calc(100vh)
   max-width: 100%
   position: relative
+
   section
     display: flex
     flex: 1 0 auto
     max-width: 100%
     min-width: 100%
-    transition: .2s cubic-bezier(.4,0,.2,1)
+    transition: .2s cubic-bezier(.4, 0, .2, 1)
+
 a
   color: $blue
   text-decoration: none
+
   &:hover
     text-decoration: underline
     cursor: pointer

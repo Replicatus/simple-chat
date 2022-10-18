@@ -16,13 +16,12 @@ class BaseLogin extends Block {
     }
 
     protected async savePassword() {
-        const result: {value: Nullable<string | number>, name: string}[] = [];
+        const result: { value: Nullable<string | number>, name: string }[] = [];
         let valid = false;
         let beErrorValid = false;
         if (Array.isArray(this.children.inputs)) {
             for (const input of this.children.inputs) {
-                if (input instanceof Input)
-                {
+                if (input instanceof Input) {
                     valid = !!(await input.checkValue());
                     if (!valid && !beErrorValid)
                         beErrorValid = true
@@ -54,7 +53,7 @@ class BaseLogin extends Block {
 
     init() {
         if (this.props.fieldsLoginPage && Array.isArray(this.props.fieldsLoginPage)) {
-            this.children.inputs = this.props.fieldsLoginPage.map((el:formField) => {
+            this.children.inputs = this.props.fieldsLoginPage.map((el: formField) => {
                 return new Input({
                     ...el,
                     classes: ['enter'],
@@ -89,5 +88,6 @@ class BaseLogin extends Block {
         return this.compile(template, this.props)
     }
 }
-export const withUser = withStore((state) => ({ ...state.user }));
+
+export const withUser = withStore((state) => ({...state.user}));
 export const Login = withUser(BaseLogin)

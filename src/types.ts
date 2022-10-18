@@ -14,6 +14,6 @@ type formField = {
 }
 
 type ArrayLinks = NodeListOf<HTMLElementTagNameMap['a']>;
-type FormRow = {value: Nullable<string | number>, name: string};
+type FormRow = { value: Nullable<string | number>, name: string };
 
 export {formField, ArrayLinks, Nullable, StringOrNumber, FormRow}

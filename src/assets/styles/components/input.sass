@@ -6,9 +6,11 @@
   font-size: $font-size-big
   line-height: $font-size-big
   text-align: right
+
 %default-input-styles-important
-  background-color: $white!important
-  color: $secondary!important
+  background-color: $white !important
+  color: $secondary !important
+
 .input
   align-items: flex-start
   display: flex
@@ -17,21 +19,26 @@
   letter-spacing: normal
   max-width: 100%
   text-align: left
+
   &.dense
     input
       max-height: 24px
+
     &.input__details
       max-height: 12px
       line-height: 10px
+
       .error
         max-height: 12px
         line-height: 10px
 
   &.error
-   .input__slot
-     border-bottom: 1px solid $error
-   input
+    .input__slot
+      border-bottom: 1px solid $error
+
+    input
       color: $error
+
   &__control
     display: flex
     flex-direction: column
@@ -40,17 +47,19 @@
     flex-wrap: wrap
     min-width: 0
     width: 100%
+
   &__slot
     align-items: center
     color: inherit
     display: flex
     min-height: inherit
     position: relative
-    transition: .3s cubic-bezier(.25,.8,.5,1)
+    transition: .3s cubic-bezier(.25, .8, .5, 1)
     width: 100%
     cursor: text
     flex: 1 1 auto
     border-bottom: 1px solid $blue
+
     label
       left: 0px
       right: auto
@@ -66,6 +75,7 @@
       color: $secondary
       white-space: nowrap
       pointer-events: none
+
     input
       max-height: 32px
       color: $primary
@@ -76,6 +86,7 @@
       max-width: 100%
       min-width: 0
       width: 100%
+
   &__details
     display: flex
     flex: 1 0 auto
@@ -83,23 +94,28 @@
     min-height: 14px
     overflow: hidden
     margin-top: 4px
+
     .error
-      color: $error!important
-      caret-color: $error!important
+      color: $error !important
+      caret-color: $error !important
       flex: 1 1 auto
       font-size: 12px
       min-height: 14px
       min-width: 1px
       position: relative
+
   &.profile
     display: flex
     flex-direction: column
     text-align: right
+
     .input__slot
       border-bottom: 0
+
     input
       padding: 0
       @extend %default-input-styles
+
     &.file
       cursor: pointer
       max-width: 122px
@@ -108,21 +124,27 @@
       color: $blue
       min-height: 16px
       width: 122px
+
       .input__slot
         cursor: pointer
+
       input
         display: none
         min-width: 130px
         min-height: 30px
+
       label
         overflow: visible
+
       &:hover
         text-decoration: underline
+
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus
       @extend %default-input-styles
       @extend %default-input-styles-important
+
 .input-file
   display: flex
   flex-direction: column
@@ -131,14 +153,18 @@
   font-size: 12px
   text-align: center
   color: $blue
+
   input
-      //display: none
-      text-align: center
-      text-indent: -113px
+    //display: none
+    text-align: center
+    text-indent: -113px
+
   &:hover
-      text-decoration: underline
+    text-decoration: underline
+
   input
     @extend %default-input-styles
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus

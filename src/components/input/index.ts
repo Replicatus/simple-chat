@@ -17,6 +17,7 @@ interface InputProps {
     events?: {},
     rules?: Array<(args: Nullable<StringOrNumber>) => boolean | string>;
 }
+
 type ReturnedValueFromInput = { name: string, value: string | number | null } | null;
 
 export class Input extends Block<InputProps> {
@@ -43,6 +44,7 @@ export class Input extends Block<InputProps> {
                 this.element.classList.add('error');
         }
     }
+
     private checkInputValues = (e: FocusEvent) => {
         if (!e) return
         if (Array.isArray(this.props.rules)) {
@@ -50,8 +52,7 @@ export class Input extends Block<InputProps> {
             let res;
             for (const rule of this.props.rules) {
                 res = rule(input.value);
-                if (res === false || typeof res === 'string')
-                {
+                if (typeof res === 'string') {
                     this.setProps({
                         error: true,
                         errorText: res,
@@ -61,7 +62,7 @@ export class Input extends Block<InputProps> {
                     break;
                 }
             }
-            if (res === true){
+            if (res === true) {
                 this.setProps({
                     error: false,
                     errorText: '',
@@ -71,25 +72,27 @@ export class Input extends Block<InputProps> {
             }
         }
     }
-    public changeDisableProperty(flag: boolean){
+
+    public changeDisableProperty(flag: boolean) {
         this.setProps({
             disabled: flag
         })
     }
+
     public setValue(value: string) {
         this.setProps({
             value: value
         })
     }
-    public checkValue(){
-        return new Promise((resolve,_) => {
+
+    public checkValue() {
+        return new Promise((resolve, _) => {
             if (Array.isArray(this.props.rules)) {
                 let res: string | boolean = true;
                 for (const rule of this.props.rules) {
                     const value = this.getValue()?.value ?? null;
                     res = rule(value);
-                    if (res === false || typeof res === 'string')
-                    {
+                    if (res === false || typeof res === 'string') {
                         this.setProps({
                             error: true,
                             errorText: res,
@@ -98,7 +101,7 @@ export class Input extends Block<InputProps> {
                         resolve(false);
                     }
                 }
-                if (res === true){
+                if (res === true) {
                     this.setProps({
                         error: false,
                         errorText: '',
@@ -106,7 +109,7 @@ export class Input extends Block<InputProps> {
                     this.element!.classList.remove('error');
                     resolve(true)
                 }
-            }else
+            } else
                 resolve(true)
         })
 
@@ -115,7 +118,7 @@ export class Input extends Block<InputProps> {
     public getValue(): ReturnedValueFromInput {
         const el = this.getContent();
         if (el) {
-            const input= el.querySelector<HTMLInputElement>("input") ;
+            const input = el.querySelector<HTMLInputElement>("input");
             return {name: this.props.name ?? '', value: input?.value ?? null}
         }
         return null

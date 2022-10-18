@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-//    "outDir": "dist",
     "target": "es2019",
-   "declaration": true,
+    "declaration": false,
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": true,
@@ -12,7 +11,14 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ]
+  },
+  "ts-node": {
+    "files": true
   },
   "exclude": [
     "node_modules",
