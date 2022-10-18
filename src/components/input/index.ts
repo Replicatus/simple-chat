@@ -52,7 +52,7 @@ export class Input extends Block<InputProps> {
             let res;
             for (const rule of this.props.rules) {
                 res = rule(input.value);
-                if (res === false || typeof res === 'string') {
+                if (typeof res === 'string') {
                     this.setProps({
                         error: true,
                         errorText: res,

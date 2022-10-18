@@ -1,5 +1,5 @@
 import {isEqual, set} from '../helpers';
-import {EventBus} from './EventBas';
+import {EventBus} from './EventBus';
 import {ComponentConstructable} from "../hocs/withRouter";
 import {ChatOpenItemProps} from "../components/openedChat";
 import {UserProfile} from "../api/UserAPI";
